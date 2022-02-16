@@ -1,0 +1,60 @@
+* {
+  color: white;
+}
+
+.mdc-text-field {
+  background-color: #393a3e;
+}
+
+.mdc-text-field__input {
+  color: white !important;
+  caret-color: white !important;
+}
+
+.mdc-text-field__input::placeholder {
+  color: #a4a4a4 !important;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+mat-panel-title {
+  font-weight: bold;
+}
+
+mat-expansion-panel {
+  width: 100%;
+  overflow-x: inherit;
+  background-color: #303134;
+}
+
+#settings-root-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  height: 100%;
+}
+
+.small-textfield {
+  height: 36px;
+  width: 75px;
+  margin: 0 5px;
+}
+
+.medium-textfield {
+  height: 36px;
+  width: 200px;
+}
+
+.large-textfield {
+  width: 100%;
+  height: 36px;
+  margin-bottom: 15px;
+}
+
+#port-container div {
+  margin-bottom: 10px;
+}

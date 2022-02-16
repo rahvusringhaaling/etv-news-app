@@ -1,0 +1,20 @@
+{
+  "name": "portaalid-2022",
+  "version": "10.0.1",
+  "description": "CasparCG control software",
+  "homepage": "https://www.err.ee/",
+  "author": {
+    "name": "Eesti Rahvusringhääling",
+    "email": "err@err.ee"
+  },
+  "main": "main.js",
+  "private": true,
+  "dependencies": {
+    "@electron/remote": "1.0.4",
+    "casparcg-connection": "^5.1.0",
+    "express": "^4.17.1",
+    "gsap": "^3.7.1",
+    "socket.io": "^4.1.3",
+    "tslib": "^2.3.1"
+  }
+}

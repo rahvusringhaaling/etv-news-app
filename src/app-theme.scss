@@ -1,0 +1,45 @@
+@use '~@angular/material' as mat;
+@import '~@angular/material/theming';
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+$app-primary: (
+  50: #e1f5ff,
+  100: #b2e5ff,
+  200: #7dd3ff,
+  300: #5280da,
+  400: #5280da,
+  500: #0054a8,
+  600: #0054a8,
+  700: #002c78,
+  800: #002c78,
+  900: #002c78,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  )
+);
+
+// Define a dark theme
+$primary-palette: mat-palette($app-primary);
+$accent-palette: mat.define-palette(mat.$blue-gray-palette);
+
+$app-theme: mat.define-dark-theme((
+ color: (
+   primary: $primary-palette,
+   accent: $accent-palette,
+ )
+));
+
+@include angular-material-theme($app-theme);

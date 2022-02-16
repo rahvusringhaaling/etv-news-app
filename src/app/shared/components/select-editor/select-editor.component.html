@@ -1,0 +1,13 @@
+<div class="custom-select-container" tabindex="0">
+  <span class="custom-select-value">
+    <span class="ag-rich-select-value-icon"></span>
+    <span>
+      {{ value }}
+    </span>
+  </span>
+  <ul class="custom-select-option-list">
+    <li class="custom-select-option" *ngFor="let option of options" (click)="selectOption(option)">
+      {{ option }}
+    </li>
+  </ul>
+</div>
