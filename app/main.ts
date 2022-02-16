@@ -228,7 +228,7 @@ function createWindow(): BrowserWindow {
     minWidth: 480,
     minHeight: 400,
     center: true,
-    icon: path.join(__dirname, '../src/assets/icons/tartu-maraton.png'),
+    icon: path.join(__dirname, '../src/assets/icons/err_logo.png'),
     webPreferences: {
       nodeIntegration: true,
       allowRunningInsecureContent: false,

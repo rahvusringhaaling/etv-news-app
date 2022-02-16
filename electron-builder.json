@@ -20,7 +20,7 @@
     }
   ],
   "win": {
-    "icon": "dist/assets/icons/tartu-maraton.png",
+    "icon": "dist/assets/icons/err_logo.png",
     "target": [
       "portable"
     ]
@@ -29,13 +29,13 @@
     "splashImage": "dist/assets/icons/electron.bmp"
   },
   "mac": {
-    "icon": "dist/assets/icons/tartu-maraton.png",
+    "icon": "dist/assets/icons/err_logo.png",
     "target": [
       "dmg"
     ]
   },
   "linux": {
-    "icon": "dist/assets/icons/tartu-maraton.png",
+    "icon": "dist/assets/icons/err_logo.png",
     "target": [
       "AppImage"
     ]
