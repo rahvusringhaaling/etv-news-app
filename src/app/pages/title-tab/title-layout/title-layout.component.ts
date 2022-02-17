@@ -29,7 +29,7 @@ export class TitleLayoutComponent implements OnInit {
     rowSelection: 'multiple',
     rowDragMultiRow: true,
     suppressRowDeselection: true,
-    frameworkComponents: {
+    components: {
       selectEditor: SelectEditorComponent
     },
     localeText: AG_GRID_LOCALE_EE,
@@ -106,8 +106,8 @@ export class TitleLayoutComponent implements OnInit {
 
   addRow() {
     const row = {
-      "firstRow": "",
-      "secondRow": "",
+      "firstRow": "123",
+      "secondRow": "123",
     };
 
     const data = this.getTableData();

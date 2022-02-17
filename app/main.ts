@@ -25,9 +25,6 @@ if (!gotTheLock) {
   app.exit();
 }
 
-// Initialize remote module
-require('@electron/remote/main').initialize();
-
 
 const webApp: any = express();
 const server = http.createServer(webApp);
@@ -212,8 +209,6 @@ ipcMain.on('get-server-port', (event, arg) => {
 function createWindow(): BrowserWindow {
   const electronScreen = screen;
   const size = electronScreen.getPrimaryDisplay().workAreaSize;
-  console.log(__dirname)
-  console.log(__dirname)
 
   // Create the browser window.
   win = new BrowserWindow({
@@ -229,7 +224,7 @@ function createWindow(): BrowserWindow {
       nodeIntegration: true,
       allowRunningInsecureContent: false,
       contextIsolation: false,  // false if you want to run 2e2 test with Spectron
-      enableRemoteModule: true, // true if you want to run 2e2 test  with Spectron or use remote module in renderer context (ie. Angular)
+      // enableRemoteModule: true, // true if you want to run 2e2 test  with Spectron or use remote module in renderer context (ie. Angular)
       backgroundThrottling: false
     },
   });
