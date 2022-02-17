@@ -45,7 +45,7 @@ export class TitleLayoutComponent implements OnInit {
     { 
       field: 'firstRow',
       headerName: 'Rida 1',
-      rowDrag: true
+      // rowDrag: true
     },
     { field: 'secondRow', headerName: 'Rida 2' },
   ];
@@ -106,8 +106,8 @@ export class TitleLayoutComponent implements OnInit {
 
   addRow() {
     const row = {
-      "firstRow": "123",
-      "secondRow": "123",
+      "firstRow": "",
+      "secondRow": "",
     };
 
     const data = this.getTableData();

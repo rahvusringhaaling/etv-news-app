@@ -13,18 +13,14 @@
     console.log("Changing background color to black.");
   }
 
-	let background;
-  let firstRow;
-  let secondRow; 
+	let background: HTMLImageElement;
+  let firstRow: HTMLElement;
+  let secondRow: HTMLElement; 
   let maxWidth = 1000;
   
-	let socket;
+	let socket: any;
 
   onMount(() => {
-    background = document.querySelector("#background") as HTMLImageElement;
-    firstRow = document.querySelector("#row-1") as HTMLElement;
-    secondRow = document.querySelector("#row-2") as HTMLElement;
-
     socket = io(`ws://localhost:${8089}`);
 
     socket.on("server/title/add", onTitleAdd);
@@ -61,13 +57,14 @@
     gsap.fromTo("#lower-third", { opacity: 1 }, { opacity: 0, duration: 0.6 });
   }
 
-  function scaleElement(element, maxWidth) {
+  function scaleElement(element: HTMLElement, maxWidth: number) {
     let scale =
       element.offsetWidth > maxWidth ? maxWidth / element.offsetWidth : 1;
     element.style.transform = "scale(" + scale + ")";
     element.style.webkitTransform = "scale(" + scale + ")";
   }
 </script>
+
 
 <main>
   <h1>Hello, {name}!</h1>
@@ -77,9 +74,9 @@
   </p>
 
   <div id="lower-third">
-    <img id="background" src="" alt="" />
-    <div id="row-1" class="title" />
-    <div id="row-2" class="title" />
+    <img bind:this="{background}" id="background" src="" alt="" />
+    <div bind:this="{firstRow}" id="row-1" class="title" />
+    <div bind:this="{secondRow}" id="row-2" class="title" />
   </div>
 </main>
 

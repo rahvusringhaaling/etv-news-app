@@ -96,7 +96,7 @@ const connection: CasparCG = new CasparCG({
         )
         .then()
         .catch(error => logError(error));
-    }, 2000);
+    }, 4000);
   }
 });
 
