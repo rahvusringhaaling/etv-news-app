@@ -29,8 +29,6 @@ if (!gotTheLock) {
 require('@electron/remote/main').initialize();
 
 
-const fsPromises = fs.promises;
-
 const webApp: any = express();
 const server = http.createServer(webApp);
 webApp.use(express.static(path.join(__dirname, '../svelte/public')));
