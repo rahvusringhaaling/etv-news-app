@@ -33,9 +33,7 @@ const fsPromises = fs.promises;
 
 const webApp: any = express();
 const server = http.createServer(webApp);
-webApp.use(express.static(path.join(__dirname, 'public')));
-
-webApp.use('/lib', express.static(path.join(__dirname, 'lib')));
+webApp.use(express.static(path.join(__dirname, '../svelte/public')));
 
 interface Data {
   channel: number,

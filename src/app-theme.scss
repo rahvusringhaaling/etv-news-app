@@ -31,9 +31,34 @@ $app-primary: (
   )
 );
 
+$app-secondary: (
+  50:  #e7e7e7,
+  100: #e7e7e7,
+  200: #e7e7e7,
+  300: #e7e7e7,
+  400: #e7e7e7,
+  500: #e7e7e7,
+  600: #e7e7e7,
+  700: #e7e7e7,
+  800: #e7e7e7,
+  900: #e7e7e7,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  )
+);
+
 // Define a dark theme
 $primary-palette: mat-palette($app-primary);
-$accent-palette: mat.define-palette(mat.$blue-gray-palette);
+$accent-palette: mat-palette($app-secondary);
 
 $app-theme: mat.define-dark-theme((
  color: (
