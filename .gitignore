@@ -2,6 +2,7 @@
 
 # compiled output
 /dist
+/app/dist
 /tmp
 /out
 /out-tsc
@@ -34,6 +35,7 @@ node_modules
 !.vscode/extensions.json
 
 # misc
+/.angular/cache
 /.sass-cache
 /connect.lock
 /coverage

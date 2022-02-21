@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "rootDir": "app/",
+    "outDir": "app/dist/",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",

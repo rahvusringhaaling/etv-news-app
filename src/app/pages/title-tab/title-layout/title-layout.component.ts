@@ -29,7 +29,7 @@ export class TitleLayoutComponent implements OnInit {
     rowSelection: 'multiple',
     rowDragMultiRow: true,
     suppressRowDeselection: true,
-    frameworkComponents: {
+    components: {
       selectEditor: SelectEditorComponent
     },
     localeText: AG_GRID_LOCALE_EE,
@@ -45,7 +45,7 @@ export class TitleLayoutComponent implements OnInit {
     { 
       field: 'firstRow',
       headerName: 'Rida 1',
-      rowDrag: true
+      // rowDrag: true
     },
     { field: 'secondRow', headerName: 'Rida 2' },
   ];
