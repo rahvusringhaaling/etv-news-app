@@ -3,25 +3,23 @@
   import { onMount } from "svelte";
   import { gsap } from "gsap";
 
-  export let name: string;
-
-  let chromeVersion = window.navigator.userAgent.match(/Chrome\/([^ ]+)/)[1];
-  let chromeMajorVersion = parseInt(chromeVersion.split(".")[0]);
+  const chromeVersion = window.navigator.userAgent.match(/Chrome\/([^ ]+)/)[1];
+  const chromeMajorVersion = parseInt(chromeVersion.split(".")[0]);
 
   if (!window["caspar"] && chromeMajorVersion > 90) {
     document.querySelector("body").style.backgroundColor = "black";
     console.log("Changing background color to black.");
   }
 
-	let background: HTMLImageElement;
+  let src: string;
   let firstRow: HTMLElement;
-  let secondRow: HTMLElement; 
+  let secondRow: HTMLElement;
   let maxWidth = 1000;
-  
-	let socket: any;
+
+  let socket: any;
 
   onMount(() => {
-    socket = io(`ws://localhost:${8089}`);
+    socket = io(`ws://localhost:${window.location.port}`);
 
     socket.on("server/title/add", onTitleAdd);
     socket.on("server/title/remove", onTitleRemove);
@@ -39,10 +37,10 @@
     secondRow.textContent = data.secondRow.toUpperCase();
 
     if (data.secondRow.length > 0) {
-      background.src = "/images/name_strap_2L.png";
+      src = "/images/name_strap_2L.png";
       firstRow.style.top = "920px";
     } else {
-      background.src = "/images/name_strap_1L.png";
+      src = "/images/name_strap_1L.png";
       firstRow.style.top = "960px";
     }
 
@@ -58,46 +56,20 @@
   }
 
   function scaleElement(element: HTMLElement, maxWidth: number) {
-    let scale =
-      element.offsetWidth > maxWidth ? maxWidth / element.offsetWidth : 1;
+    const width = element.offsetWidth;
+    const scale = width > maxWidth ? maxWidth / width : 1;
     element.style.transform = "scale(" + scale + ")";
     element.style.webkitTransform = "scale(" + scale + ")";
   }
 </script>
 
-
 <main>
-  <h1>Hello, {name}!</h1>
-  <p>
-    Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn
-    how to build Svelte apps.
-  </p>
-
   <div id="lower-third">
-    <img bind:this="{background}" id="background" src="" alt="" />
-    <div bind:this="{firstRow}" id="row-1" class="title" />
-    <div bind:this="{secondRow}" id="row-2" class="title" />
+    <img id="background" {src} alt="" />
+    <div bind:this={firstRow} id="row-1" class="title" />
+    <div bind:this={secondRow} id="row-2" class="title" />
   </div>
 </main>
 
 <style>
-  main {
-    text-align: center;
-    padding: 1em;
-    max-width: 240px;
-    margin: 0 auto;
-  }
-
-  h1 {
-    color: #ff3e00;
-    text-transform: uppercase;
-    font-size: 4em;
-    font-weight: 100;
-  }
-
-  @media (min-width: 640px) {
-    main {
-      max-width: none;
-    }
-  }
 </style>

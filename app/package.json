@@ -7,7 +7,7 @@
     "name": "Eesti Rahvusringhääling",
     "email": "err@err.ee"
   },
-  "main": "main.js",
+  "main": "dist/main.js",
   "private": true,
   "dependencies": {
     "casparcg-connection": "^5.1.0",
