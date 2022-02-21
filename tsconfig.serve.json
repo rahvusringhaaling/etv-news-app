@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "rootDir": "app/",
+    "rootDir": "app/src/",
     "outDir": "app/dist/",
     "sourceMap": true,
     "declaration": false,

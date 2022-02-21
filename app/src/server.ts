@@ -76,7 +76,7 @@ const connection: CasparCG = new CasparCG({
         )
         .then()
         .catch(error => logError(error));
-    }, 4000);
+    }, 2000);
   }
 });
 
@@ -148,7 +148,7 @@ io.on('connection', (socket) => {
     udp.send(Buffer.from(message), clockPort, clockIP);
   });
 
-  saveData(socket);
+  socket.on('client/data/save', (newData) => saveData(newData));
 });
 
 function logError(message) {
@@ -167,12 +167,10 @@ function loadServerData() {
   }
 }
 
-function saveData(socket) {
-  socket.on('client/data/save', (newData) => {
-    data = newData;
-    fs.writeFile(DATA_FILE_NAME, JSON.stringify(newData, null, 4), (error) => {
-      if (error) return logError('Error when saving file:\n' + error);
-      console.log(`Successfully saved data to file: ${Object.keys(newData)}`);
-    });
+function saveData(newData) {
+  data = newData;
+  fs.writeFile(DATA_FILE_NAME, JSON.stringify(newData, null, 4), (error) => {
+    if (error) return logError('Error when saving file:\n' + error);
+    console.log(`Successfully saved data to file: ${Object.keys(newData)}`);
   });
 }
