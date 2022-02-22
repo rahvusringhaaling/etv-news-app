@@ -2,7 +2,7 @@
 
 # Introduction
 
-Bootstrap and package your project with Angular 12 and Electron 13 (Typescript + SASS + Hot Reload) for creating Desktop applications.
+Bootstrap and package your project with Angular 13 and Electron 16 (Typescript + SASS + Hot Reload) for creating Desktop applications.
 
 Currently runs with:
 
