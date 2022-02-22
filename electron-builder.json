@@ -11,6 +11,7 @@
     "!package-lock.json"
   ],
   "extraResources": [
+    "app/dist",
     "svelte/public",
     {
       "from": "dist",

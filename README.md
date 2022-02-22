@@ -47,11 +47,18 @@ npm install -g @angular/cli
 *Install NodeJS dependencies with npm (used by Electron main process):*
 
 ``` bash
-cp app/
+cd app/
 npm install
 ```
 
 Why two package.json ? This project follow [Electron Builder two package.json structure](https://www.electron.build/tutorials/two-package-structure) in order to optimize final bundle and be still able to use Angular `ng add` feature.
+
+*Install Svelte dependencies with npm (used for CasparCG template):*
+
+``` bash
+cd svelte/
+npm install
+```
 
 ## To build for development
 

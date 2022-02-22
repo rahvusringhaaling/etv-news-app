@@ -58,8 +58,8 @@
   function scaleElement(element: HTMLElement, maxWidth: number) {
     const width = element.offsetWidth;
     const scale = width > maxWidth ? maxWidth / width : 1;
-    element.style.transform = "scale(" + scale + ")";
-    element.style.webkitTransform = "scale(" + scale + ")";
+    element.style.transform = `scale(${scale})`;
+    element.style.webkitTransform = `scale(${scale})`;
   }
 </script>
 
