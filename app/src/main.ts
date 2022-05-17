@@ -3,8 +3,7 @@ import {
   BrowserWindow,
   screen,
   ipcMain,
-  nativeTheme,
-  globalShortcut
+  nativeTheme
 } from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -24,10 +23,10 @@ if (!gotTheLock) {
 
 nativeTheme.themeSource = 'dark';
 let win: BrowserWindow = null;
-const args = process.argv.slice(1)
+const args = process.argv.slice(1);
 const serve = args.some(val => val === '--serve');
 
-ipcMain.on('get-server-port', (event, arg) => {
+ipcMain.on('get-server-port', event => {
   event.returnValue = port;
 })
 
@@ -53,8 +52,11 @@ function createWindow(): BrowserWindow {
     },
   });
   win.removeMenu();
-  globalShortcut.register("CommandOrControl+Shift+I", () => {
-    win.webContents.openDevTools();
+  win.webContents.on('before-input-event', (event, input) => {
+    if (!input.alt && input.control && input.shift && input.key.toLowerCase() === 'i') {
+      win.webContents.toggleDevTools();
+      event.preventDefault()
+    }
   });
 
   if (serve) {

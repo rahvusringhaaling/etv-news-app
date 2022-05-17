@@ -9,6 +9,11 @@ export class ApiService {
   private ipcRenderer: typeof ipcRenderer;
   private socket;
   private serverData: object;
+  private _port: number;
+
+  get port() {
+    return this._port;
+  }
 
   get isElectron(): boolean {
     return !!(window && window.process && window.process.type);
@@ -18,33 +23,44 @@ export class ApiService {
     if (this.isElectron) {
       this.ipcRenderer = window.require('electron').ipcRenderer;
 
-      const port = this.ipcRenderer.sendSync('get-server-port');
-      console.log(`WebSocket port: ${port}`);
-      this.socket = io(`ws://localhost:${port}`);
+      this._port = this.ipcRenderer.sendSync('get-server-port');
+      this.socket = io(`ws://localhost:${this._port}`);
     }
   }
 
   onError() {
-    this.socket.on('server/error', (message) => {
+    this.socket.on('server/error', (message: string) => {
       console.error('Server side error:');
       console.error(message);
     });
   }
 
-  isCasparConnected(callback: Function) {
-    this.socket.emit('client/caspar/is-connected', (value: boolean) => {
-      callback(value);
-    });
-  }
-
-  isTemplateConnected(callback: Function) {
-    this.socket.emit('client/template/is-connected', (value: boolean) => {
-      callback(value);
+  isCasparConnected() {
+    return new Promise<boolean>(resolve => {
+      this.socket.emit('client/caspar/is-connected', (value: boolean) => {
+        resolve(value);
+      });
     });
   }
 
   onTemplateHeartbeat(callback: Function) {
     this.socket.on('server/template/heartbeat', callback)
+  }
+
+  getCasparLocation() {
+    return new Promise<string>(resolve => {
+      this.socket.emit('client/caspar-media-location/get', (path: string) => {
+        resolve(path);
+      })
+    });
+  }
+
+  getLayers() {
+    return new Promise<object>(resolve => {
+      this.socket.emit('client/layers/get', (layers: object) => {
+        resolve(layers);
+      })
+    });
   }
 
   addTitle(data: { firstRow: string, secondRow: string }) {
@@ -63,19 +79,19 @@ export class ApiService {
     this.socket.emit('client/opener/remove');
   }
 
-  getServerData(callback: Function) {
-    if (this.serverData) {
-      console.log('%c CACHED DATA: ', 'background: #222; color: #bada55');
-      console.log(this.serverData);
-      callback(this.serverData);
-      return;
-    }
+  getServerData() {
+    return new Promise<object>(resolve => {
+      if (this.serverData) {
+        console.log('%c CACHED DATA: ', 'background: #222; color: #bada55', this.serverData);
+        resolve(this.serverData);
+        return;
+      }
 
-    this.socket.emit('client/data/get', (serverData) => {
-      console.log('%c SERVER DATA: ', 'background: #222; color: #bada55');
-      console.log(serverData);
-      this.serverData = serverData;
-      callback(serverData);
+      this.socket.emit('client/data/get', (serverData) => {
+        console.log('%c SERVER DATA: ', 'background: #222; color: #bada55', serverData);
+        this.serverData = serverData;
+        resolve(serverData);
+      });
     });
   }
 
@@ -83,9 +99,11 @@ export class ApiService {
     this.socket.emit('client/data/save', data);
   }
 
-  getImage(callback: Function) {
-    this.socket.emit('client/dialog/image', (uri: string) => {
-      callback(uri);
-    })
+  getImage() {
+    return new Promise<string>(resolve => {
+      this.socket.emit('client/dialog/image', (uri: string) => {
+        resolve(uri);
+      });
+    });
   }
 }

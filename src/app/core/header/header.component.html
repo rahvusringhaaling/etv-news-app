@@ -1,6 +1,6 @@
 <mat-toolbar id="toolbar" color="primary">
   <div>
-    <span>Portaalid 2022</span>
+    <span>Portaalid</span>
     <span id="last-edited">{{ lastEditedString }}</span>
   </div>
   <span class="toolbar-spacer"></span>
@@ -13,9 +13,9 @@
   <mat-tab label="Nimetiitrid">
     <app-title-layout></app-title-layout>
   </mat-tab>
-  <mat-tab label="Seaded">
-    <div *ngIf="showSettingsTab">
-      <app-settings-layout></app-settings-layout>
+  <mat-tab label="Info">
+    <div *ngIf="showInfoTab">
+      <app-info-layout></app-info-layout>
     </div>
   </mat-tab>
 </mat-tab-group>

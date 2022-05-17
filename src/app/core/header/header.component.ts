@@ -13,7 +13,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   lastEditedString: string = '';
   templateConnection = false;
   casparConnection = false;
-  showSettingsTab = false;
+  showInfoTab = false;
   private lastEdited: number = 0;
   private readonly SLEEP_INTERVAL = 3000;
   private lastTemplateHeartbeat = 0;
@@ -27,8 +27,8 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       this.updateTemplateConnection();
     });
 
-    setInterval(() => {
-      this.api.isCasparConnected((value: boolean) => this.casparConnection = value);
+    setInterval(async () => {
+      this.casparConnection = await this.api.isCasparConnected();
       this.updateTemplateConnection();
 
       if (!this.lastEdited) {
@@ -62,7 +62,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       //   this.showTitleTab = true;
       //   break;
       case 1:
-        this.showSettingsTab = true;
+        this.showInfoTab = true;
         break;
     }
   }

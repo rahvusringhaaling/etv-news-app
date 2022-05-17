@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { HeaderComponent } from './header.component';
 import { TitleTabModule } from '../../pages/title-tab/title-tab.module';
-import { SettingsTabModule } from '../../pages/settings-tab/settings-tab.module';
+import { InfoTabModule } from '../../pages/info-tab/info-tab.module';
 
 @NgModule({
   declarations: [HeaderComponent],
@@ -22,7 +22,7 @@ import { SettingsTabModule } from '../../pages/settings-tab/settings-tab.module'
     MatIconModule,
 
     TitleTabModule,
-    SettingsTabModule
+    InfoTabModule
   ],
   exports: [
     HeaderComponent

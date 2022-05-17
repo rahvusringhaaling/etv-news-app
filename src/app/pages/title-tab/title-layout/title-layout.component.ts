@@ -61,15 +61,15 @@ export class TitleLayoutComponent implements OnInit {
 
   constructor(private data: DataService, private api: ApiService) { }
 
-  ngOnInit(): void {
-    this.api.getServerData((data: object) => {
-      this.data.save(data);
-      if (data && data[this.DATA_ID]) {
-        this.loadData(data);
-      } else {
-        this.addRow();
-      }
-    });
+  async ngOnInit() {
+    const data = await this.api.getServerData();
+
+    this.data.save(data);
+    if (data && data[this.DATA_ID]) {
+      this.loadData(data);
+    } else {
+      this.addRow();
+    }
 
     this.data.currentData.subscribe((data: object) => {
       this.localData = data;

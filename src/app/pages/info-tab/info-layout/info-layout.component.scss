@@ -26,6 +26,7 @@ mat-panel-title {
 
 mat-expansion-panel {
   width: 100%;
+  height: 100%;
   overflow-x: inherit;
   background-color: #303134;
 }
@@ -55,6 +56,12 @@ mat-expansion-panel {
   margin-bottom: 15px;
 }
 
-#port-container div {
-  margin-bottom: 10px;
+h4 {
+  margin: 10px 0;
+}
+
+#info-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
