@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SettingsLayoutComponent } from './settings-layout.component';
+import { InfoLayoutComponent } from './info-layout.component';
 
 describe('SettingsLayoutComponent', () => {
-  let component: SettingsLayoutComponent;
-  let fixture: ComponentFixture<SettingsLayoutComponent>;
+  let component: InfoLayoutComponent;
+  let fixture: ComponentFixture<InfoLayoutComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SettingsLayoutComponent ]
+      declarations: [ InfoLayoutComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SettingsLayoutComponent);
+    fixture = TestBed.createComponent(InfoLayoutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SettingsLayoutComponent } from './settings-layout/settings-layout.component';
+import { InfoLayoutComponent } from './info-layout/info-layout.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
-    SettingsLayoutComponent
+    InfoLayoutComponent
   ],
   imports: [
     CommonModule,
@@ -18,7 +18,7 @@ import { MatInputModule } from '@angular/material/input';
     MatInputModule,
   ],
   exports: [
-    SettingsLayoutComponent
+    InfoLayoutComponent
   ]
 })
-export class SettingsTabModule { }
+export class InfoTabModule { }

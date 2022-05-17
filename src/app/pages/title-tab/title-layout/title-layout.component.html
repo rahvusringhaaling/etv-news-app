@@ -22,9 +22,17 @@
           <mat-icon class="toolbar-button-icon">paste</mat-icon>
           <span>Kleebi</span>
         </button>
+        <button mat-button class="toolbar-button right-spacer" [disabled]="!isSelected" (click)="getImage()">
+          <mat-icon class="toolbar-button-icon">image</mat-icon>
+          <span>Vali</span>
+        </button>
+        <button mat-button class="toolbar-button right-spacer" [disabled]="!isSelected" (click)="removeImage()">
+          <mat-icon class="toolbar-button-icon">image</mat-icon>
+          <span>Eemalda</span>
+        </button>
       </div>
 
-      <ag-grid-angular class="ag-theme-alpine-dark" spellcheck="false" [rowData]="rowData"
+      <ag-grid-angular class="ag-theme-alpine-dark" [style.height.px]="gridHeight" spellcheck="false" [rowData]="rowData"
         [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" [rowDragManaged]="true" [animateRows]="true"
         [suppressMoveWhenRowDragging]="true" [gridOptions]="gridOptions">
       </ag-grid-angular>
@@ -56,25 +64,88 @@
         </button>
       </mat-action-row>
     </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="isStripPanelExpanded" (opened)="onStripExpanded()" (afterCollapse)="onStripCollapsed()">
+      <mat-expansion-panel-header>
+        <mat-panel-title>Riba</mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div id="strip-input-container">
+        <label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label medium-textfield">
+          <span class="mdc-text-field__ripple"></span>
+          <input #speed_input class="mdc-text-field__input" type="number" placeholder="Kiirus" min="1" max="9999"
+            value="15" oninput="validity.valid||(value='');" (click)="validate()" (keyup)="validate()">
+          <span class="mdc-line-ripple"></span>
+        </label>
+
+        <label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label large-textfield">
+          <span class="mdc-text-field__ripple"></span>
+          <input #strip_input class="mdc-text-field__input" placeholder="Tekst">
+          <span class="mdc-line-ripple"></span>
+        </label>
+      </div>
+
+      <div class="buttons-container">
+        <button mat-raised-button color="primary" [disabled]="isStripOnAir" (click)="addStrip()">
+          Riba peale
+        </button>
+        <button mat-raised-button color="primary" [disabled]="!isStripOnAir" (click)="removeStrip()">
+          Riba maha
+        </button>
+      </div>
+    </mat-expansion-panel>
   </div>
 
   <div id="side-panel-container">
     <mat-expansion-panel [expanded]="true" class="side-panel">
       <mat-expansion-panel-header>
-        <mat-panel-title>Saatepea</mat-panel-title>
+        <mat-panel-title>Arhiiv</mat-panel-title>
       </mat-expansion-panel-header>
 
-      <mat-checkbox [(ngModel)]="removeLastFrame" color="primary">
-        Viimane kaader maha
-      </mat-checkbox>
-      <mat-action-row>
-        <button mat-raised-button color="primary" [disabled]="isOpenerOnAir" (click)="addOpener()">
-          Peale
+      <label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label large-textfield">
+        <span class="mdc-text-field__ripple"></span>
+        <input #archive_input class="mdc-text-field__input">
+        <span class="mdc-line-ripple"></span>
+      </label>
+
+      <div class="buttons-container">
+        <button mat-raised-button color="primary" [disabled]="isArchiveOnAir" (click)="addArchive()">
+          Arhiiv peale
         </button>
-        <button mat-raised-button color="primary" [disabled]="!isOpenerOnAir" (click)="removeOpener()">
-          Maha
+        <button mat-raised-button color="primary" [disabled]="!isArchiveOnAir" (click)="removeArchive()">
+          Arhiiv maha
         </button>
-      </mat-action-row>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="true" class="side-panel">
+      <mat-expansion-panel-header>
+        <mat-panel-title>Efekt 1</mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div class="buttons-container">
+        <button mat-raised-button color="primary" [disabled]="isEfectOnAir" (click)="addEfect()">
+          Efekt peale
+        </button>
+        <button mat-raised-button color="primary" [disabled]="!isEfectOnAir" (click)="removeEfect()">
+          Efekt maha
+        </button>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="true" class="side-panel">
+      <mat-expansion-panel-header>
+        <mat-panel-title>Efekt 16:9</mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div class="buttons-container">
+        <button mat-raised-button color="primary" [disabled]="isEfect16by9OnAir" (click)="addEfect16by9()">
+          Efekt peale
+        </button>
+        <button mat-raised-button color="primary" [disabled]="!isEfect16by9OnAir" (click)="removeEfect16by9()">
+          Efekt maha
+        </button>
+      </div>
     </mat-expansion-panel>
   </div>
 </div>

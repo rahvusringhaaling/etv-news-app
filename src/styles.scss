@@ -16,6 +16,14 @@
   ));
 }
 
+:root {
+  color-scheme: dark;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: #424242;
+}
+
 /* You can add global styles to this file, and also import other style files */
 html, body {
   margin: 0;
