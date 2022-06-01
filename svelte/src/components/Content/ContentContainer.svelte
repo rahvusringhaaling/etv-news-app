@@ -1,37 +1,58 @@
 <script lang="ts">
-import { onMount } from "svelte";
-
-  import Headlines from "./Headlines.svelte";
-
-  const headlines = [
-    "Kaugkütteühingu juht: ma ei usu, et inimesed tuleval talvel külma jäävad",
-    "Sutt ja Aas peavad uues kantsleris kokkuleppele jõudma",
-    "Prantsuse politoloog: Venemaa kaotus toob muutuse Euroopas ja kaugemalgi",
-    "Rootsi välisminister allkirjastas taotluse NATO-ga liitumiseks",
-  ];
+  import { onMount } from 'svelte';
+  import { gsap } from 'gsap';
+  import Headlines from './Headlines.svelte';
 
   let child: Headlines;
+  let bar: HTMLElement;
+  let i = 1;
 
-  onMount(() => {
-    child.setActive(1);
+  onMount(async () => {
+    gsap.fromTo(
+      bar,
+      { width: 530 },
+      { width: 1485, duration: 12, ease: 'none' }
+    );
+    child.setActive(0);
+
+    document.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        child.setActive(i);
+        i++;
+      }
+    });
   });
 </script>
 
 <main>
   <div class="container">
-    <Headlines headlines={headlines} bind:this={child} />
-    <div class="background" />
+    <div class="bar" bind:this={bar} />
+    <div class="bottom-container">
+      <Headlines bind:this={child} />
+      <div class="article" />
+    </div>
   </div>
 </main>
 
 <style>
   .container {
     display: flex;
+    flex-direction: column;
+    background-color: var(--background);
   }
 
-  .background {
-    background-color: #cbcbd5;
+  .bar {
+    background-color: var(--primary);
+    height: 7px;
+    width: 530px;
+  }
+
+  .bottom-container {
+    display: flex;
+  }
+
+  .article {
     width: 955px;
-    height: 912px;
+    height: 905px;
   }
 </style>

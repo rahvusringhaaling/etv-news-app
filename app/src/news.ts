@@ -3,10 +3,11 @@ import axios from 'axios';
 
 interface Feed {
   Portal: string;
-  FeedItems: Item[];
+  FeedItems: IFeedItem[];
 }
 
-interface Item {
+interface IFeedItem {
+  fancyUrl: string,
   HasAudio: boolean,
   HasVideo: boolean,
   HasGallery: boolean,
@@ -35,17 +36,72 @@ interface Item {
   ImageCaption: string,
 }
 
-export async function test() {
-  axios.get('https://services.err.ee/api/feeds/GetTVFeed?portal=uudised&minItems=7&maxItems=7&lasthours=24&stripHtml=false')
-    .then(({ data }) => {
-      console.log('');
-      console.log('');
-      for (const item of data[0]['FeedItems']) {
-        console.log(item['Header']);
-        console.log('');
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+interface IPortal {
+  name: string,
+  portal: string,
+  minItems: number,
+  maxItems: number,
+  primary: string,
+  text: string
+}
+
+const portals: IPortal[] = [
+  {
+    name: 'uudised',
+    portal: 'uudised',
+    minItems: 7,
+    maxItems: 7,
+    primary: '#2E3192',
+    text: '#EEEEEE'
+  },
+  {
+    name: 'kultuur',
+    portal: 'kultuur',
+    minItems: 3,
+    maxItems: 3,
+    primary: '#DAB230',
+    text: '#1E1E1E'
+  },
+  {
+    name: 'sport',
+    portal: 'sport',
+    minItems: 2,
+    maxItems: 5,
+    primary: '#BD2020',
+    text: '#EEEEEE'
+  },
+];
+
+export function getPortals() {
+  return portals;
+}
+
+export async function getFeeds() {
+  const output = {};
+
+  for (const feed of portals) {
+    const { portal, minItems, maxItems } = feed;
+    const params = {
+      portal, minItems, maxItems, lasthours: 24, stripHtml: false
+    }
+    const url = 'https://services.err.ee/api/feeds/GetTVFeed';
+    const { data } = await axios.get<Feed[]>(url, { params });
+
+    const items = data[0].FeedItems.map(item => ({
+      header: item.Header,
+      lead: item.Lead,
+      body: item.Body,
+      imageURL: item.ImageURL,
+      imageAuthor: item.ImageAuthor,
+      imageCaption: item.ImageCaption,
+      date: item.Date,
+      url: item.URL,
+      hasAudio: item.HasAudio,
+      hasVideo: item.HasVideo,
+      hasGallery: item.HasGallery
+    }))
+    output[portal] = items;
+  }
+
+  return output;
 }

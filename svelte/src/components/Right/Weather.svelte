@@ -2,7 +2,7 @@
 </script>
 
 <main>
-  <div></div>
+  <div />
 </main>
 
 <style>

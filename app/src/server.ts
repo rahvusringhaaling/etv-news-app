@@ -2,13 +2,10 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as http from 'http';
 import * as express from 'express';
-import * as dgram from 'dgram';
 import * as net from 'net';
 import { Server } from 'socket.io';
 import { CasparCG, Options } from 'casparcg-connection';
-import { test } from './news'
-
-// test();
+import { getPortals, getFeeds } from './news'
 
 const webApp: any = express();
 const server = http.createServer(webApp);
@@ -129,29 +126,20 @@ io.on('connection', (socket) => {
     callback(location);
   });
 
-  socket.on('client/title/add', titleData => {
-    console.log('client/title/add');
-
-    console.log(titleData);
-    
-    socket.broadcast.emit('server/title/add', titleData);
+  socket.on('portals/get', async (callback: Function) => {
+    callback(getPortals());
   });
 
-  socket.on('client/title/remove', () => {
-    console.log('client/title/remove');
-    
-    socket.broadcast.emit('server/title/remove');
+  socket.on('tv-feed/get', async (callback: Function) => {
+    callback(await getFeeds());
   });
 
-  saveData(socket);
-
-  socket.on('client/clock/send', (time: number) => {
-    const clockIP = '127.0.0.1';
-    const clockPort = 5555;
-
-    const udp = dgram.createSocket('udp4');
-    const message = '<andmed><kell>' + time + '</kell></andmed>';
-    udp.send(Buffer.from(message), clockPort, clockIP);
+  socket.on('client/data/save', (newData) => {
+    data = newData;
+    fs.writeFile(DATA_FILE_NAME, JSON.stringify(newData, null, 4), (error) => {
+      if (error) return logError('Error when saving file:\n' + error);
+      console.log(`Successfully saved data to file: ${Object.keys(newData)}`);
+    });
   });
 });
 
@@ -169,16 +157,6 @@ function loadServerData() {
   } catch (error) {
     console.log('\n\nData file is missing!');
   }
-}
-
-function saveData(socket) {
-  socket.on('client/data/save', (newData) => {
-    data = newData;
-    fs.writeFile(DATA_FILE_NAME, JSON.stringify(newData, null, 4), (error) => {
-      if (error) return logError('Error when saving file:\n' + error);
-      console.log(`Successfully saved data to file: ${Object.keys(newData)}`);
-    });
-  });
 }
 
 async function isPortReachable(port: number, host: string, timeout = 500) {

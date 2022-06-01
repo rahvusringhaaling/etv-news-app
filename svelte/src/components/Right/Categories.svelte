@@ -1,23 +1,29 @@
 <script lang="ts">
-  const items = [
-    "uudised",
-    "kultuur",
-    "sport",
-    "meelelahutus",
-    "teadus",
-    "ilm",
-  ].map((item) => ({
-    text: item,
-    active: false,
-  }));
+  import { onDestroy } from 'svelte';
 
-  items[2].active = true;
+  import { portals } from '../../stores/portals';
+
+  let categories = [];
+  let activeIndex = 0;
+
+  const unsubscribe = portals.subscribe((value) => {
+    categories = value.map((item, index) => ({
+      text: item.name,
+      active: activeIndex === index,
+    }));
+  });
+
+  export function setActive(index: number) {
+    activeIndex = index;
+  }
+
+  onDestroy(unsubscribe);
 </script>
 
 <main>
   <div class="container">
     <ul>
-      {#each items as item}
+      {#each categories as item}
         <li class:active={item.active}>{item.text}</li>
       {/each}
     </ul>
@@ -32,7 +38,7 @@
   }
 
   .active {
-    color: #2e3192;
+    color: var(--primary);
   }
 
   ul {
@@ -45,7 +51,7 @@
 
   li {
     color: #1d1d1d;
-    font-family: "AvenirNextLTPro";
+    font-family: 'AvenirNextLTPro';
     font-size: 40px;
   }
 </style>
