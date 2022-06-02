@@ -1,49 +1,7 @@
 
 import axios from 'axios';
-
-interface Feed {
-  Portal: string;
-  FeedItems: IFeedItem[];
-}
-
-interface IFeedItem {
-  fancyUrl: string,
-  HasAudio: boolean,
-  HasVideo: boolean,
-  HasGallery: boolean,
-  horizontalPhotos: [
-    {
-      captionEt: string,
-      captionEn: string,
-      captionRu: string,
-      authorEt: string,
-      authorEn: string,
-      authorRu: string,
-      photoUrlOriginal: string,
-      photoUrlBase: string
-    }
-  ],
-  verticalPhotos: [],
-  horizontalPoster: [],
-  heroImage: [],
-  Header: string,
-  Lead: string,
-  Body: string,
-  URL: string,
-  Date: string,
-  ImageURL: string,
-  ImageAuthor: string,
-  ImageCaption: string,
-}
-
-interface IPortal {
-  name: string,
-  portal: string,
-  minItems: number,
-  maxItems: number,
-  primary: string,
-  text: string
-}
+import { IFeed } from './domain/IFeed';
+import { IPortal } from './domain/IPortal';
 
 const portals: IPortal[] = [
   {
@@ -85,7 +43,7 @@ export async function getFeeds() {
       portal, minItems, maxItems, lasthours: 24, stripHtml: false
     }
     const url = 'https://services.err.ee/api/feeds/GetTVFeed';
-    const { data } = await axios.get<Feed[]>(url, { params });
+    const { data } = await axios.get<IFeed[]>(url, { params });
 
     const items = data[0].FeedItems.map(item => ({
       header: item.Header,
