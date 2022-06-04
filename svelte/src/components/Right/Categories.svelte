@@ -1,30 +1,45 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
-
+  import { gsap } from 'gsap';
+  import { current } from '../../stores/current';
   import { portals } from '../../stores/portals';
+  import { sleep } from '../../utils';
+  import { get } from 'svelte/store';
 
   let categories = [];
   let activeIndex = 0;
 
-  const unsubscribe = portals.subscribe((value) => {
-    categories = value.map((item, index) => ({
-      text: item.name,
-      active: activeIndex === index,
-    }));
-  });
+  const unsubscribe = current.subscribe(async (item) => {
+    if (item) {
+      activeIndex = get(portals).find((x) => x.name === item.portal.name).index;
+      categories = get(portals).map((item, index) => ({
+        text: item.name,
+        active: activeIndex === index
+      }));
 
-  export function setActive(index: number) {
-    activeIndex = index;
-  }
+      await sleep(0);
+      gsap.to('.categories-inactive', {
+        color: '#1d1d1d',
+        duration: 0.25
+      });
+
+      gsap.to('.categories-active', {
+        color: item.portal.primaryColor,
+        duration: 0.25
+      });
+    }
+  });
 
   onDestroy(unsubscribe);
 </script>
 
 <main>
   <div class="container">
-    <ul>
+    <ul class="categories-list">
       {#each categories as item}
-        <li class:active={item.active}>{item.text}</li>
+        <li class={item.active ? 'categories-active' : 'categories-inactive'}>
+          {item.text}
+        </li>
       {/each}
     </ul>
   </div>
@@ -37,10 +52,6 @@
     background-color: #dddddd;
   }
 
-  .active {
-    color: var(--primary);
-  }
-
   ul {
     display: flex;
     flex-direction: column;
@@ -50,7 +61,6 @@
   }
 
   li {
-    color: #1d1d1d;
     font-family: 'AvenirNextLTPro';
     font-size: 40px;
   }

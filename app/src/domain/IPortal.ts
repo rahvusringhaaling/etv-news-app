@@ -3,6 +3,6 @@ export interface IPortal {
   portal: string,
   minItems: number,
   maxItems: number,
-  primary: string,
-  text: string
+  primaryColor: string,
+  textColor: string
 }

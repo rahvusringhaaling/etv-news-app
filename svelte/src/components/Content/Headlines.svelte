@@ -1,12 +1,17 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
   import type { IArticle } from '../../domain/IArticle';
+  import { current } from '../../stores/current';
   import { feed } from '../../stores/feed';
+  import { sleep } from '../../utils';
 
   let activeIndex = 0;
   let lastFeedIndex = 0;
   let items = [];
   let height: number = 0;
+  let primaryColor = '';
+  let textColor = '';
+  let lastPortal;
 
   $: if (height > 830) {
     items = items.slice(0, -1);
@@ -15,29 +20,49 @@
   function setItems(newItems: IArticle[]) {
     items = newItems.map((article, index) => ({
       text: article.header,
-      active: activeIndex === index,
+      active: activeIndex === index
     }));
   }
 
-  const unsubscribe = feed.subscribe((value) => {
-    if (!value['uudised']) return;
-    setItems(value['uudised']);
+  const unsubscribe = current.subscribe(async (item) => {
+    if (item) {
+      await sleep(1000);
+      if (item.portal !== lastPortal) {
+        activeIndex = 0;
+        lastFeedIndex = 0;
+        items = [];
+      }
+      lastPortal = item.portal;
+
+      const index = items.length === 0 ? 0 : lastFeedIndex + 1;
+      setActive(index);
+      primaryColor = item.portal.primaryColor;
+      textColor = item.portal.textColor;
+    }
   });
 
-  export function setActive(index: number) {
-    if (Object.keys($feed).length === 0) {
-      activeIndex = index;
-      lastFeedIndex = index;
+  function setActive(index: number) {
+    const newItems = $feed[$current.portal.portal];
+    console.log(Date.now());
+
+    if (index === 0) {
+      setItems(newItems);
       return;
     }
 
-    const newItems = $feed['uudised'];
     const includesLastItem = items
       .map((x) => x.text)
       .includes(newItems[newItems.length - 1].header);
     if (includesLastItem) {
+      console.log('activeIndex', activeIndex);
+      console.log('lastFeedIndex', lastFeedIndex);
+
       activeIndex++;
-      setItems(newItems.slice(lastFeedIndex - 1));
+      if (lastFeedIndex === 0) {
+        setItems(newItems);
+      } else {
+        setItems(newItems.slice(lastFeedIndex - 1));
+      }
       return;
     }
 
@@ -51,7 +76,10 @@
 </script>
 
 <main>
-  <div class="container">
+  <div
+    class="container"
+    style="--primary-color: {primaryColor}; --text-color: {textColor};"
+  >
     <ul bind:clientHeight={height}>
       {#each items as item, i}
         <li
@@ -67,7 +95,7 @@
 
 <style>
   .container {
-    background-color: var(--primary);
+    background-color: var(--primary-color);
     width: 530px;
     height: 100%;
   }
@@ -88,7 +116,7 @@
 
   li {
     padding: 40px 35px 40px 145px;
-    color: var(--text);
+    color: var(--text-color);
     font-family: 'AvenirNextLTPro';
     font-size: 32px;
     white-space: normal;

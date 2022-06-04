@@ -1,8 +1,11 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
+  import { current } from '../stores/current';
+  import { gsap } from 'gsap';
 
   let time = '';
   let date = '';
+  let logoEnd: SVGElement;
 
   function setDate() {
     const now = new Date();
@@ -29,8 +32,15 @@
     return String(n).padStart(maxLength, '0');
   }
 
+  const unsubscribe = current.subscribe((item) => {
+    if (item) {
+      gsap.to(logoEnd, { fill: item.portal.primaryColor, duration: 0.25 });
+    }
+  });
+
   onDestroy(() => {
     clearInterval(interval);
+    unsubscribe();
   });
 </script>
 
@@ -49,6 +59,7 @@
         </svg>
         <svg
           id="logo-end"
+          bind:this={logoEnd}
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 52.522 19.932"
         >
@@ -100,7 +111,6 @@
 
   #logo-end {
     height: 20px;
-    fill: var(--primary);
   }
 
   .left div:last-child {

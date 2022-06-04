@@ -1,8 +1,10 @@
 export interface IPortal {
+  index: number;
   name: string;
   portal: string;
   minItems: number;
   maxItems: number;
-  primary: string;
-  text: string;
+  primaryColor: string;
+  textColor: string;
+  backgroundColor: string;
 }

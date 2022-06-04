@@ -9,25 +9,41 @@ const portals: IPortal[] = [
     portal: 'uudised',
     minItems: 7,
     maxItems: 7,
-    primary: '#2E3192',
-    text: '#EEEEEE'
+    primaryColor: '#2E3192',
+    textColor: '#EEEEEE'
   },
   {
     name: 'kultuur',
     portal: 'kultuur',
     minItems: 3,
     maxItems: 3,
-    primary: '#DAB230',
-    text: '#1E1E1E'
+    primaryColor: '#DAB230',
+    textColor: '#1E1E1E'
   },
   {
     name: 'sport',
     portal: 'sport',
     minItems: 2,
     maxItems: 5,
-    primary: '#BD2020',
-    text: '#EEEEEE'
+    primaryColor: '#BD2020',
+    textColor: '#EEEEEE'
   },
+  {
+    name: 'meelelahutus',
+    portal: 'menu',
+    minItems: 3,
+    maxItems: 3,
+    primaryColor: '#503084',
+    textColor: '#EEEEEE'
+  },
+  {
+    name: 'teadus',
+    portal: 'teadus',
+    minItems: 3,
+    maxItems: 3,
+    primaryColor: '#64A131',
+    textColor: '#EEEEEE'
+  }
 ];
 
 export function getPortals() {

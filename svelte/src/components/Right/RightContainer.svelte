@@ -1,19 +1,28 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-
+  import { onDestroy } from 'svelte';
+  import { gsap } from 'gsap';
+  import { current } from '../../stores/current';
   import Categories from './Categories.svelte';
   import Weather from './Weather.svelte';
 
-  let child: Categories;
+  let container: HTMLDivElement;
 
-  onMount(() => {
-    child.setActive(0);
+  const unsubscribe = current.subscribe(async (item) => {
+    if (item) {
+      gsap.to(container, {
+        backgroundColor: item.portal.backgroundColor,
+        duration: 0.2,
+        delay: 1.5
+      });
+    }
   });
+
+  onDestroy(unsubscribe);
 </script>
 
 <main>
-  <div class="container">
-    <Categories bind:this={child} />
+  <div class="container" bind:this={container}>
+    <Categories />
     <Weather />
   </div>
 </main>
@@ -25,6 +34,5 @@
     gap: 8px;
     width: 435px;
     height: 912px;
-    background-color: var(--background);
   }
 </style>

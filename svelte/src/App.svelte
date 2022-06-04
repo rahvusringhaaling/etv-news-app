@@ -1,24 +1,52 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   import Header from './components/Header.svelte';
   import Content from './components/Content/ContentContainer.svelte';
   import Right from './components/Right/RightContainer.svelte';
   import { Api } from './services/Api';
   import { portals } from './stores/portals';
   import { feed } from './stores/feed';
+  import { IScheduleItem, ScheduleType } from './domain/IScheduleItem';
+  import { schedule } from './stores/schedule';
+  import { current } from './stores/current';
 
   onMount(async () => {
     Api.sendHeartbeat();
     setInterval(Api.sendHeartbeat, 3000);
 
     feed.set(await Api.getTVFeed());
-    portals.set(await Api.getPortals());
+    const newPortals = (await Api.getPortals()).map((portal, i) => ({
+      ...portal,
+      backgroundColor: hexToRgba(portal.primaryColor),
+      index: i
+    }));
+    portals.set(newPortals);
 
-    setColors('#2E3192', '#EEEEEE');
-    // setColors('#DAB230', '#1E1E1E');
-    // setColors('#BD2020', '#EEEEEE');
-    // setColors('#503084', '#EEEEEE');
-    // setColors('#66A133', '#EEEEEE');
+    const newSchedule = $portals.flatMap((portal) =>
+      $feed[portal.portal].map((article) => ({
+        portal: portal,
+        type: ScheduleType.Text,
+        pageNumber: 1,
+        name: article.header,
+        article: article,
+        duration: 28
+      }))
+    );
+    schedule.set(newSchedule);
+
+    console.log($schedule);
+
+    document.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        current.next();
+      }
+    });
+  });
+
+  const unsubscribe = current.subscribe((item) => {
+    if (!item) return;
+    // const { primaryColor, textColor } = $portals[item.portal];
+    // setColors(primaryColor, textColor);
   });
 
   // #2E3192 => rgba(46, 49, 146, 0.1)
@@ -30,12 +58,14 @@
     return `rgba(${r}, ${g}, ${b}, 0.1)`;
   }
 
-  function setColors(primary: string, text: string) {
+  function setColors(primaryColor: string, textColor: string) {
     const root = document.querySelector(':root') as HTMLElement;
-    root.style.setProperty('--primary', primary);
-    root.style.setProperty('--background', hexToRgba(primary));
-    root.style.setProperty('--text', text);
+    root.style.setProperty('--primary-color', primaryColor);
+    root.style.setProperty('--background-color', hexToRgba(primaryColor));
+    root.style.setProperty('--text-color', textColor);
   }
+
+  onDestroy(unsubscribe);
 </script>
 
 <main>
