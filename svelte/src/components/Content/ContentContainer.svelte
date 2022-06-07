@@ -11,7 +11,6 @@
   let headline: HTMLElement;
   let primaryColor = '';
   let backgroundColor = '';
-  let showHeadline = true;
 
   onMount(async () => {
     gsap.fromTo(
@@ -23,8 +22,7 @@
 
   const unsubscribe = current.subscribe(async (item) => {
     if (item) {
-      showHeadline = item.type === ScheduleType.Headline;
-      if (showHeadline) {
+      if (item.type === ScheduleType.Headline) {
         gsap.fromTo(
           headline,
           { bottom: -912 },
@@ -47,18 +45,14 @@
     class="container"
     style="--primary-color: {primaryColor}; --background-color: {backgroundColor};"
   >
-    <!-- <div class:hidden={showHeadline}> -->
     <div class="bar" bind:this={bar} />
     <div class="bottom-container">
       <HeadlineList />
       <div class="article" />
     </div>
-    <!-- </div> -->
-    <!-- <div class:hidden={!showHeadline}> -->
     <div class="headline" bind:this={headline}>
       <Headline />
     </div>
-    <!-- </div> -->
   </div>
 </main>
 
@@ -90,10 +84,6 @@
   .article {
     width: 955px;
     height: 905px;
-  }
-
-  .hidden {
-    display: none !important;
   }
 
   .headline {
