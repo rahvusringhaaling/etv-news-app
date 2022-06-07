@@ -2,7 +2,7 @@ import type { IArticle } from "./IArticle";
 import type { IPortal } from "./IPortal";
 
 export enum ScheduleType {
-  Header = 'pealkiri',
+  Headline = 'pealkiri',
   Text = 'tekst'
 }
 

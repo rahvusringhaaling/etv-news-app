@@ -23,17 +23,25 @@
     portals.set(newPortals);
 
     const newSchedule = $portals.flatMap((portal) =>
-      $feed[portal.portal].map((article) => ({
-        portal: portal,
-        type: ScheduleType.Text,
-        pageNumber: 1,
-        name: article.header,
-        article: article,
-        duration: 28
-      }))
+      $feed[portal.portal].flatMap((article) => [
+        {
+          portal: portal,
+          type: ScheduleType.Headline,
+          pageNumber: 1,
+          name: article.header,
+          article: article,
+          duration: 28
+        },
+        {
+          portal: portal,
+          type: ScheduleType.Text,
+          name: article.header,
+          article: article,
+          duration: 28
+        }
+      ])
     );
     schedule.set(newSchedule);
-
     console.log($schedule);
 
     document.addEventListener('keypress', (e) => {

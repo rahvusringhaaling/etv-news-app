@@ -2,7 +2,7 @@
   import { onDestroy } from 'svelte';
   import { gsap } from 'gsap';
   import { current } from '../../stores/current';
-  import Categories from './Categories.svelte';
+  import CategoryList from './CategoryList.svelte';
   import Weather from './Weather.svelte';
 
   let container: HTMLDivElement;
@@ -22,7 +22,7 @@
 
 <main>
   <div class="container" bind:this={container}>
-    <Categories />
+    <CategoryList />
     <Weather />
   </div>
 </main>

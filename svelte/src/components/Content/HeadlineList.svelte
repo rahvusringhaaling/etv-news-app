@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
   import type { IArticle } from '../../domain/IArticle';
+  import { ScheduleType } from '../../domain/IScheduleItem';
   import { current } from '../../stores/current';
   import { feed } from '../../stores/feed';
   import { sleep } from '../../utils';
@@ -25,7 +26,7 @@
   }
 
   const unsubscribe = current.subscribe(async (item) => {
-    if (item) {
+    if (item && item.type === ScheduleType.Headline) {
       await sleep(1000);
       if (item.portal !== lastPortal) {
         activeIndex = 0;
@@ -35,31 +36,40 @@
       lastPortal = item.portal;
 
       const index = items.length === 0 ? 0 : lastFeedIndex + 1;
+
       setActive(index);
       primaryColor = item.portal.primaryColor;
       textColor = item.portal.textColor;
+
+      console.log(
+        '   lastFeedIndex',
+        $feed[$current.portal.portal][index].header.substring(0, 30)
+      );
+      console.log('   activeIndex', items[activeIndex].text.substring(0, 30));
     }
   });
 
   function setActive(index: number) {
     const newItems = $feed[$current.portal.portal];
-    console.log(Date.now());
 
     if (index === 0) {
       setItems(newItems);
       return;
     }
 
+    const includesFirstItem = items
+      .map((x) => x.text)
+      .includes(newItems[0].header);
     const includesLastItem = items
       .map((x) => x.text)
       .includes(newItems[newItems.length - 1].header);
-    if (includesLastItem) {
-      console.log('activeIndex', activeIndex);
-      console.log('lastFeedIndex', lastFeedIndex);
+    console.log('includesLastItem', includesLastItem);
 
+    if (includesLastItem) {
       activeIndex++;
-      if (lastFeedIndex === 0) {
+      if (includesFirstItem) {
         setItems(newItems);
+        lastFeedIndex = index;
       } else {
         setItems(newItems.slice(lastFeedIndex - 1));
       }

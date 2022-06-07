@@ -1,13 +1,17 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte';
   import { gsap } from 'gsap';
-  import Headlines from './Headlines.svelte';
+  import HeadlineList from './HeadlineList.svelte';
+  import Headline from './Headline.svelte';
   import { sleep } from '../../utils';
   import { current } from '../../stores/current';
+  import { ScheduleType } from '../../domain/IScheduleItem';
 
   let bar: HTMLElement;
+  let headline: HTMLElement;
   let primaryColor = '';
   let backgroundColor = '';
+  let showHeadline = true;
 
   onMount(async () => {
     gsap.fromTo(
@@ -19,6 +23,16 @@
 
   const unsubscribe = current.subscribe(async (item) => {
     if (item) {
+      showHeadline = item.type === ScheduleType.Headline;
+      if (showHeadline) {
+        gsap.fromTo(
+          headline,
+          { bottom: -912 },
+          { bottom: 0, duration: 0.75, delay: 0.25 }
+        );
+      } else {
+        gsap.fromTo(headline, { bottom: 0 }, { bottom: -912, duration: 0.75 });
+      }
       await sleep(1000);
       primaryColor = item.portal.primaryColor;
       backgroundColor = item.portal.backgroundColor;
@@ -33,11 +47,18 @@
     class="container"
     style="--primary-color: {primaryColor}; --background-color: {backgroundColor};"
   >
+    <!-- <div class:hidden={showHeadline}> -->
     <div class="bar" bind:this={bar} />
     <div class="bottom-container">
-      <Headlines />
+      <HeadlineList />
       <div class="article" />
     </div>
+    <!-- </div> -->
+    <!-- <div class:hidden={!showHeadline}> -->
+    <div class="headline" bind:this={headline}>
+      <Headline />
+    </div>
+    <!-- </div> -->
   </div>
 </main>
 
@@ -46,6 +67,14 @@
     display: flex;
     flex-direction: column;
     background-color: var(--background-color);
+    position: relative;
+    height: 912px;
+    max-height: 912px;
+  }
+
+  .container div:first-child {
+    display: flex;
+    flex-direction: column;
   }
 
   .bar {
@@ -61,5 +90,14 @@
   .article {
     width: 955px;
     height: 905px;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  .headline {
+    position: absolute;
+    bottom: -912px;
   }
 </style>
