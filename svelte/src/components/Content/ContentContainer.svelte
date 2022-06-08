@@ -6,30 +6,28 @@
   import { sleep } from '../../utils';
   import { current } from '../../stores/current';
   import { ScheduleType } from '../../domain/IScheduleItem';
+  import Article from './Article.svelte';
 
   let bar: HTMLElement;
   let headline: HTMLElement;
   let primaryColor = '';
   let backgroundColor = '';
 
-  onMount(async () => {
-    gsap.fromTo(
-      bar,
-      { width: 530 },
-      { width: 1485, duration: 12, ease: 'none' }
-    );
-  });
-
   const unsubscribe = current.subscribe(async (item) => {
     if (item) {
       if (item.type === ScheduleType.Headline) {
         gsap.fromTo(
           headline,
-          { bottom: -912 },
-          { bottom: 0, duration: 0.75, delay: 0.25 }
+          { bottom: -912, left: 0 },
+          { bottom: 0, left: 0, duration: 1, delay: 0.1 }
         );
-      } else {
-        gsap.fromTo(headline, { bottom: 0 }, { bottom: -912, duration: 0.75 });
+      } else if (item.type === ScheduleType.Text) {
+        gsap.fromTo(headline, { left: 0 }, { left: -1485, duration: 0.75 });
+        gsap.fromTo(
+          bar,
+          { width: 530 },
+          { width: 1485, duration: item.duration, ease: 'none' }
+        );
       }
       await sleep(1000);
       primaryColor = item.portal.primaryColor;
@@ -48,7 +46,7 @@
     <div class="bar" bind:this={bar} />
     <div class="bottom-container">
       <HeadlineList />
-      <div class="article" />
+      <Article />
     </div>
     <div class="headline" bind:this={headline}>
       <Headline />
@@ -79,11 +77,6 @@
 
   .bottom-container {
     display: flex;
-  }
-
-  .article {
-    width: 955px;
-    height: 905px;
   }
 
   .headline {

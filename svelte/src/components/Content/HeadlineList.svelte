@@ -40,12 +40,6 @@
       setActive(index);
       primaryColor = item.portal.primaryColor;
       textColor = item.portal.textColor;
-
-      console.log(
-        '   lastFeedIndex',
-        $feed[$current.portal.portal][index].header.substring(0, 30)
-      );
-      console.log('   activeIndex', items[activeIndex].text.substring(0, 30));
     }
   });
 
@@ -63,7 +57,6 @@
     const includesLastItem = items
       .map((x) => x.text)
       .includes(newItems[newItems.length - 1].header);
-    console.log('includesLastItem', includesLastItem);
 
     if (includesLastItem) {
       activeIndex++;

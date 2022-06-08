@@ -30,7 +30,7 @@
           pageNumber: 1,
           name: article.header,
           article: article,
-          duration: 28
+          duration: 9
         },
         {
           portal: portal,

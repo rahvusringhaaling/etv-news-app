@@ -12,7 +12,7 @@
       gsap.to(container, {
         backgroundColor: item.portal.backgroundColor,
         duration: 0.2,
-        delay: 1.5
+        delay: 1.1
       });
     }
   });

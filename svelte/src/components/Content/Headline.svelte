@@ -1,23 +1,38 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte';
+  import { gsap } from 'gsap';
   import { current } from '../../stores/current';
   import { ScheduleType } from '../../domain/IScheduleItem';
 
+  let caption: HTMLElement;
+  let container: HTMLElement;
   let primaryColor = '';
   let backgroundColor = '';
   let src = '';
-  let text = '';
+  let header = '';
+  let author = '';
 
   onMount(async () => {});
 
   const unsubscribe = current.subscribe(async (item) => {
     if (item && item.type === ScheduleType.Headline) {
-      console.log(item.article.header);
       src = item.article.imageURL;
-      text = item.article.header;
+      header = item.article.header;
+      author = item.article.imageAuthor;
 
       primaryColor = item.portal.primaryColor;
       backgroundColor = item.portal.backgroundColor;
+
+      gsap.fromTo(
+        caption,
+        { opacity: 0 },
+        { opacity: 0.75, duration: 0.3, delay: 1.45 }
+      );
+      gsap.fromTo(
+        container,
+        { bottom: -150 },
+        { bottom: 0, duration: 0.75, delay: 0.5 }
+      );
     }
   });
 
@@ -30,7 +45,10 @@
     style="--primary-color: {primaryColor}; --background-color: {backgroundColor};"
   >
     <img {src} alt="" />
-    <div class="header">{text}</div>
+    <div class="bottom-container" bind:this={container}>
+      <div class="caption" bind:this={caption}>Foto: {author}</div>
+      <div class="header">{header}</div>
+    </div>
   </div>
 </main>
 
@@ -43,18 +61,32 @@
     height: 912px;
   }
 
+  .bottom-container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .caption {
+    font-size: 30px;
+    font-family: 'AvenirNextLTPro';
+    padding-left: 145px;
+    padding-bottom: 20px;
+    text-shadow: 0px 0px 4px #000000a6;
+    opacity: 0;
+  }
+
   .header {
     display: flex;
     align-items: center;
-    position: absolute;
-    height: 200px;
     width: 100%;
     background-color: var(--primary-color);
     color: var(--text-color);
-    bottom: 0;
     font-family: 'AvenirNextLTPro';
-    font-size: 40px;
-    padding: 20px;
+    font-size: 55px;
+    padding: 43px 30px 105px 145px;
     white-space: break-spaces;
   }
 </style>
