@@ -29,7 +29,7 @@
           { width: 1485, duration: item.duration, ease: 'none' }
         );
       }
-      await sleep(1000);
+      await sleep(1100);
       primaryColor = item.portal.primaryColor;
       backgroundColor = item.portal.backgroundColor;
     }

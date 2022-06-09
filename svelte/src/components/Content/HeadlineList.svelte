@@ -27,7 +27,7 @@
 
   const unsubscribe = current.subscribe(async (item) => {
     if (item && item.type === ScheduleType.Headline) {
-      await sleep(1000);
+      await sleep(1100);
       if (item.portal !== lastPortal) {
         activeIndex = 0;
         lastFeedIndex = 0;
