@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onDestroy, onMount } from 'svelte';
+  import { onDestroy } from 'svelte';
   import { gsap } from 'gsap';
   import HeadlineList from './HeadlineList.svelte';
   import Headline from './Headline.svelte';

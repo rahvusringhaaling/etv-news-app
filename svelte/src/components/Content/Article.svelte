@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { onDestroy, onMount } from 'svelte';
+  import { onDestroy } from 'svelte';
+  import { gsap } from 'gsap';
   import { current } from '../../stores/current';
   import { ScheduleType } from '../../domain/IScheduleItem';
   import { sleep } from '../../utils';
@@ -7,9 +8,8 @@
   let lead = '';
   let body = '';
   let bodyContainer: HTMLElement;
+  let circle: SVGCircleElement;
   const maxHeight = 950;
-
-  onMount(async () => {});
 
   const unsubscribe = current.subscribe(async (item) => {
     if (item && item.type === ScheduleType.Headline) {
@@ -39,6 +39,8 @@
           last.firstChild.textContent = words.slice(0, i).join(' ');
         }
       }
+    } else {
+      gsap.fromTo(circle, { x: 0 }, { x: 40, duration: 1, delay: 1 });
     }
   });
 
@@ -51,9 +53,51 @@
     <p class="body" bind:this={bodyContainer}>{@html body}</p>
   </div>
   <div class="circle-container">
-    <div class="circle active" />
-    <div class="circle" />
-    <div class="circle" />
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      viewBox="0 0 100.5 21"
+    >
+      <defs
+        ><style>
+          .cls-1 {
+            fill: none;
+          }
+          .cls-2 {
+            fill: #aaaaaa;
+          }
+          .cls-3 {
+            clip-path: url(#clip-path);
+          }
+          .cls-4 {
+            fill: #373737;
+          }
+        </style>
+        <clipPath id="clip-path">
+          <path
+            class="cls-1"
+            d="M60.5,10.5a10,10,0,1,1-10-10A10,10,0,0,1,60.5,10.5Zm30-10a10,10,0,1,0,10,10A10,10,0,0,0,90.5.5Zm-80,0a10,10,0,1,0,10,10A10,10,0,0,0,10.5.5Z"
+          />
+        </clipPath>
+      </defs>
+      <path
+        id="BG_Circles"
+        data-name="BG Circles"
+        class="cls-2"
+        d="M60.5,10.5a10,10,0,1,1-10-10A10,10,0,0,1,60.5,10.5Zm30-10a10,10,0,1,0,10,10A10,10,0,0,0,90.5.5Zm-80,0a10,10,0,1,0,10,10A10,10,0,0,0,10.5.5Z"
+      />
+      <g id="Active_Circle" data-name="Active Circle">
+        <g class="cls-3">
+          <circle
+            bind:this={circle}
+            class="cls-4"
+            cx="10.5"
+            cy="10.5"
+            r="10.5"
+          />
+        </g>
+      </g>
+    </svg>
   </div>
 </main>
 
@@ -86,14 +130,7 @@
     gap: 20px;
   }
 
-  .circle {
-    width: 20px;
+  svg {
     height: 20px;
-    border-radius: 50%;
-    background-color: #aaaaaa;
-  }
-
-  .active {
-    background-color: #373737;
   }
 </style>
