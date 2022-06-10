@@ -13,7 +13,7 @@
 
   const unsubscribe = current.subscribe(async (item) => {
     if (item && item.type === ScheduleType.Headline) {
-      await sleep(1100);
+      await sleep(1000);
       lead = item.article.lead;
       body = item.article.body;
       await sleep(0);
@@ -40,6 +40,7 @@
         }
       }
     } else {
+      if (!circle) return;
       gsap.fromTo(circle, { x: 0 }, { x: 40, duration: 1, delay: 1 });
     }
   });

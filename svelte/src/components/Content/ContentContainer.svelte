@@ -19,7 +19,7 @@
         gsap.fromTo(
           headline,
           { bottom: -912, left: 0 },
-          { bottom: 0, left: 0, duration: 1, delay: 0.1 }
+          { bottom: 0, left: 0, duration: 1 }
         );
       } else if (item.type === ScheduleType.Text) {
         gsap.fromTo(headline, { left: 0 }, { left: -1485, duration: 0.75 });
@@ -29,7 +29,7 @@
           { width: 1485, duration: item.duration, ease: 'none' }
         );
       }
-      await sleep(1100);
+      await sleep(1000);
       primaryColor = item.portal.primaryColor;
       backgroundColor = item.portal.backgroundColor;
     }

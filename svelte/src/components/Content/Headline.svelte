@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { onDestroy, onMount } from 'svelte';
+  import { onDestroy } from 'svelte';
   import { gsap } from 'gsap';
-  import { current } from '../../stores/current';
+  import { current, next } from '../../stores/current';
   import { ScheduleType } from '../../domain/IScheduleItem';
 
   let caption: HTMLElement;
@@ -11,10 +11,9 @@
   let src = '';
   let header = '';
   let author = '';
+  let timeout: NodeJS.Timeout;
 
-  onMount(async () => {});
-
-  const unsubscribe = current.subscribe(async (item) => {
+  const unsubscribeCurrent = current.subscribe((item) => {
     if (item && item.type === ScheduleType.Headline) {
       src = item.article.imageURL;
       header = item.article.header;
@@ -26,17 +25,29 @@
       gsap.fromTo(
         caption,
         { opacity: 0 },
-        { opacity: 0.75, duration: 0.3, delay: 1.45 }
+        { opacity: 0.75, duration: 0.3, delay: 1.35 }
       );
       gsap.fromTo(
         container,
         { bottom: -150 },
-        { bottom: 0, duration: 0.75, delay: 0.5 }
+        { bottom: 0, duration: 0.75, delay: 0.4 }
       );
     }
   });
 
-  onDestroy(unsubscribe);
+  const unsubscribeNext = next.subscribe(async (item) => {
+    if (item && item.type === ScheduleType.Headline) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        src = item.article.imageURL;
+      }, 1000);
+    }
+  });
+
+  onDestroy(() => {
+    unsubscribeCurrent();
+    unsubscribeNext();
+  });
 </script>
 
 <main>
