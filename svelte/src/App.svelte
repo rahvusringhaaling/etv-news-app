@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { onDestroy, onMount } from 'svelte';
+  import { onMount } from 'svelte';
   import Header from './components/Header.svelte';
   import Content from './components/Content/ContentContainer.svelte';
   import Right from './components/Right/RightContainer.svelte';
   import { Api } from './services/Api';
   import { portals } from './stores/portals';
   import { feed } from './stores/feed';
-  import { IScheduleItem, ScheduleType } from './domain/IScheduleItem';
+  import { ScheduleType } from './domain/IScheduleItem';
   import { schedule } from './stores/schedule';
   import { current } from './stores/current';
 
@@ -51,12 +51,6 @@
     });
   });
 
-  const unsubscribe = current.subscribe((item) => {
-    if (!item) return;
-    // const { primaryColor, textColor } = $portals[item.portal];
-    // setColors(primaryColor, textColor);
-  });
-
   // #2E3192 => rgba(46, 49, 146, 0.1)
   function hexToRgba(hex: string) {
     const integer = parseInt(hex.substring(1), 16);
@@ -65,15 +59,6 @@
     const b = integer & 255;
     return `rgba(${r}, ${g}, ${b}, 0.1)`;
   }
-
-  function setColors(primaryColor: string, textColor: string) {
-    const root = document.querySelector(':root') as HTMLElement;
-    root.style.setProperty('--primary-color', primaryColor);
-    root.style.setProperty('--background-color', hexToRgba(primaryColor));
-    root.style.setProperty('--text-color', textColor);
-  }
-
-  onDestroy(unsubscribe);
 </script>
 
 <main>
