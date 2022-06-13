@@ -1,18 +1,20 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
   import type { IArticle } from '../../domain/IArticle';
+  import type { IPortal } from '../../domain/IPortal';
   import { ScheduleType } from '../../domain/IScheduleItem';
+  import type { ISideBarItem } from '../../domain/ISideBarItem';
   import { current } from '../../stores/current';
   import { feed } from '../../stores/feed';
   import { sleep } from '../../utils';
 
   let activeIndex = 0;
   let lastFeedIndex = 0;
-  let items = [];
+  let items: ISideBarItem[] = [];
   let height: number = 0;
   let primaryColor = '';
   let textColor = '';
-  let lastPortal;
+  let lastPortal: IPortal;
 
   $: if (height > 830) {
     items = items.slice(0, -1);

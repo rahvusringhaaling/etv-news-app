@@ -5,13 +5,16 @@
   import { portals } from '../../stores/portals';
   import { sleep } from '../../utils';
   import { get } from 'svelte/store';
+  import type { ICategoryItem } from '../../domain/ICategoryItem';
 
-  let categories = [];
+  let categories: ICategoryItem[] = [];
   let activeIndex = 0;
 
   const unsubscribe = current.subscribe(async (item) => {
     if (item) {
-      activeIndex = get(portals).find((x) => x.name === item.portal.name).index;
+      activeIndex = get(portals).find(
+        (x) => x.name === item.portal.name
+      )!.index;
       categories = get(portals).map((item, index) => ({
         text: item.name,
         active: activeIndex === index

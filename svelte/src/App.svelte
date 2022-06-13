@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import Header from './components/Header.svelte';
-  import Content from './components/Content/ContentContainer.svelte';
+  import ArticleContainer from './components/Content/ArticleContainer.svelte';
   import Right from './components/Right/RightContainer.svelte';
   import { Api } from './services/Api';
   import { portals } from './stores/portals';
@@ -65,7 +65,7 @@
   <div class="root-container" style="">
     <Header />
     <div class="bottom-container">
-      <Content />
+      <ArticleContainer />
       <Right />
     </div>
   </div>

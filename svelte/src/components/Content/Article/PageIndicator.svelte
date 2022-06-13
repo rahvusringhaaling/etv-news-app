@@ -1,9 +1,9 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte';
   import { gsap } from 'gsap';
-  import { current } from '../../stores/current';
-  import { ScheduleType } from '../../domain/IScheduleItem';
-  import { sleep } from '../../utils';
+  import { current } from '../../../stores/current';
+  import { ScheduleType } from '../../../domain/IScheduleItem';
+  import { sleep } from '../../../utils';
 
   export let totalPages: number;
   const curves = [

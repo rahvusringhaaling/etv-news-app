@@ -1,10 +1,9 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
-  import { current } from '../../stores/current';
-  import { ScheduleType } from '../../domain/IScheduleItem';
-  import { sleep } from '../../utils';
-  import PageIndicator from './PageIndicator.svelte';
-  import type { IArticleNodes } from '../../domain/IArticleNodes';
+  import { current } from '../../../stores/current';
+  import { ScheduleType } from '../../../domain/IScheduleItem';
+  import { sleep } from '../../../utils';
+  import type { IArticleNodes } from '../../../domain/IArticleNodes';
 
   let lead = '';
   let body = '';
@@ -61,12 +60,10 @@
   const unsubscribe = current.subscribe(async (item) => {
     if (item && item.type === ScheduleType.Headline) {
       await sleep(1000);
-      if (articleNodes.usedElements.length === 0) {
-        lead = item.article!.lead;
-        body = item.article!.body;
-        await sleep(0);
-        addBodyChildren();
-      }
+      lead = item.article!.lead;
+      body = item.article!.body;
+      await sleep(0);
+      addBodyChildren();
     }
   });
 
@@ -77,9 +74,6 @@
   <div class="text-container">
     <p class="lead">{@html lead}</p>
     <p class="body" bind:this={bodyContainer}>{@html body}</p>
-  </div>
-  <div class="indicator-container">
-    <PageIndicator totalPages={4} />
   </div>
 </main>
 
@@ -101,14 +95,5 @@
   .body :global(*),
   .lead :global(*) {
     white-space: break-spaces;
-  }
-
-  .indicator-container {
-    display: flex;
-    justify-content: center;
-    width: 955px;
-    position: absolute;
-    bottom: 50px;
-    gap: 20px;
   }
 </style>

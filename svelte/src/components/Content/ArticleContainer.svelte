@@ -1,12 +1,12 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
   import { gsap } from 'gsap';
-  import HeadlineList from './HeadlineList.svelte';
+  import SideBar from './SideBar.svelte';
   import Headline from './Headline.svelte';
   import { sleep } from '../../utils';
   import { current } from '../../stores/current';
   import { ScheduleType } from '../../domain/IScheduleItem';
-  import Article from './Article.svelte';
+  import Article from './Article/Article.svelte';
 
   let bar: HTMLElement;
   let headline: HTMLElement;
@@ -45,7 +45,7 @@
   >
     <div class="bar" bind:this={bar} />
     <div class="bottom-container">
-      <HeadlineList />
+      <SideBar />
       <Article />
     </div>
     <div class="headline" bind:this={headline}>

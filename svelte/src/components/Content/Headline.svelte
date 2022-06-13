@@ -15,9 +15,9 @@
 
   const unsubscribeCurrent = current.subscribe((item) => {
     if (item && item.type === ScheduleType.Headline) {
-      src = item.article.imageURL;
-      header = item.article.header;
-      author = item.article.imageAuthor;
+      src = item.article!.imageURL;
+      header = item.article!.header;
+      author = item.article!.imageAuthor;
 
       primaryColor = item.portal.primaryColor;
       backgroundColor = item.portal.backgroundColor;
@@ -39,7 +39,7 @@
     if (item && item.type === ScheduleType.Headline) {
       clearTimeout(timeout);
       timeout = setTimeout(() => {
-        src = item.article.imageURL;
+        src = item.article!.imageURL;
       }, 1000);
     }
   });
