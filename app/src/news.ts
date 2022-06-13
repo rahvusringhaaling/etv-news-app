@@ -56,7 +56,7 @@ export async function getFeeds() {
   for (const feed of portals) {
     const { portal, minItems, maxItems } = feed;
     const params = {
-      portal, minItems, maxItems, lasthours: 24, stripHtml: false
+      portal, minItems, maxItems, lasthours: 24
     }
     const url = 'https://services.err.ee/api/feeds/GetTVFeed';
     const { data } = await axios.get<IFeed[]>(url, { params });

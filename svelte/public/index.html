@@ -33,10 +33,10 @@
 			console.log('update() ' + data);
 		}
 
-		window.onerror = function (message) {
-			console.error('error ' + message);
-			console.error(lineno);
-			console.error(colno);
+		window.onerror = function (message, source, lineno, colno, error) {
+			// console.error('error ' + message);
+			// console.error(lineno);
+			// console.error(colno);
 		}
 	</script>
 	<script defer

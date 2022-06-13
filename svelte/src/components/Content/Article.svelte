@@ -10,32 +10,47 @@
   let bodyContainer: HTMLElement;
   const maxHeight = 950;
 
+  function getInnermostChild(element: ChildNode): ChildNode {
+    return element.hasChildNodes() &&
+      element.firstChild?.nodeType !== Node.TEXT_NODE
+      ? getInnermostChild(element.firstChild!)
+      : element;
+  }
+
   const unsubscribe = current.subscribe(async (item) => {
     if (item && item.type === ScheduleType.Headline) {
       await sleep(1000);
       lead = item.article!.lead;
       body = item.article!.body;
       await sleep(0);
-      const children = bodyContainer.children;
 
-      for (const element of [...children].reverse()) {
-        const { y } = element.getBoundingClientRect();
+      const newChildren = [...bodyContainer.childNodes].map((element) =>
+        element.nodeType === Node.TEXT_NODE
+          ? document.createElement('br')
+          : element
+      ) as HTMLElement[];
+      bodyContainer.replaceChildren();
+
+      for (const candidate of newChildren) {
+        bodyContainer.appendChild(candidate);
+
+        const { y } = candidate.getBoundingClientRect();
         if (y > maxHeight) {
-          element.remove();
+          candidate.remove();
+          break;
         }
-      }
 
-      const last = children[children.length - 1];
-      if (last.firstChild && last.firstChild.nodeType === Node.TEXT_NODE) {
-        const words = last.firstChild.textContent!.split(' ');
-        console.log(words);
-
-        for (let i = words.length; i >= 0; i--) {
-          const { y, height } = last.getBoundingClientRect();
-          if (y + height <= maxHeight) {
-            break;
+        const child = getInnermostChild(candidate);
+        if (child.firstChild?.nodeType === Node.TEXT_NODE) {
+          const words = child.textContent!.split(' ');
+          // console.log(words);
+          for (let i = words.length; i >= 0; i--) {
+            const { y, height } = candidate.getBoundingClientRect();
+            if (y + height <= maxHeight) {
+              break;
+            }
+            child.textContent = words.slice(0, i).join(' ');
           }
-          last.firstChild.textContent = words.slice(0, i).join(' ');
         }
       }
     }
