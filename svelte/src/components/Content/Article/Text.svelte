@@ -1,12 +1,13 @@
 <script lang="ts">
-  import { onDestroy } from 'svelte';
+  import { onMount } from 'svelte';
   import { current } from '../../../stores/current';
-  import { ScheduleType } from '../../../domain/IScheduleItem';
   import { sleep } from '../../../utils';
   import type { IArticleNodes } from '../../../domain/IArticleNodes';
+  import { text } from 'stream/consumers';
 
   let lead = '';
   let body = '';
+  let textContainer: HTMLElement;
   let bodyContainer: HTMLElement;
   const maxHeight = 950;
   export let articleNodes: IArticleNodes = {
@@ -57,21 +58,32 @@
     }
   }
 
-  const unsubscribe = current.subscribe(async (item) => {
-    if (item && item.type === ScheduleType.Headline) {
+  onMount(async () => {
+    if (articleNodes.availableElements.length === 0) {
       await sleep(1000);
-      lead = item.article!.lead;
-      body = item.article!.body;
+      lead = $current.article!.lead;
+      body = $current.article!.body;
       await sleep(0);
       addBodyChildren();
     }
   });
 
-  onDestroy(unsubscribe);
+  export function moveLeft(from: number, to: number) {
+    gsap.fromTo(
+      textContainer,
+      {
+        left: from
+      },
+      {
+        left: to,
+        duration: 1
+      }
+    );
+  }
 </script>
 
 <main>
-  <div class="text-container">
+  <div class="text-container" bind:this={textContainer}>
     <p class="lead">{@html lead}</p>
     <p class="body" bind:this={bodyContainer}>{@html body}</p>
   </div>
@@ -85,6 +97,9 @@
     font-family: 'AvenirNextLTPro';
     font-size: 40px;
     padding: 40px 40px 0 95px;
+    position: absolute;
+    left: 0;
+    top: 0;
   }
 
   .lead :global(p) {
