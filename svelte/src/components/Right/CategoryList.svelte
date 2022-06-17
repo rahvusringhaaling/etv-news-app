@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onDestroy } from 'svelte';
+  import { onDestroy, tick } from 'svelte';
   import { gsap } from 'gsap';
   import { current } from '../../stores/current';
   import { portals } from '../../stores/portals';
@@ -20,7 +20,7 @@
         active: activeIndex === index
       }));
 
-      await sleep(0);
+      await tick();
       gsap.to('.categories-inactive', {
         color: '#1d1d1d',
         duration: 0.25

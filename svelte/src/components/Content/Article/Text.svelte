@@ -1,9 +1,8 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
+  import { gsap } from 'gsap';
   import { current } from '../../../stores/current';
-  import { sleep } from '../../../utils';
   import type { IArticleNodes } from '../../../domain/IArticleNodes';
-  import { text } from 'stream/consumers';
 
   let lead = '';
   let body = '';
@@ -22,7 +21,7 @@
       : element;
   }
 
-  function addBodyChildren() {
+  function createEmpty() {
     const newChildren = [...bodyContainer.childNodes].map((element) =>
       element.nodeType === Node.TEXT_NODE
         ? document.createElement('br')
@@ -31,7 +30,13 @@
     articleNodes.availableElements = [...newChildren];
     bodyContainer.replaceChildren();
 
-    for (const candidate of newChildren) {
+    addBodyChildren(newChildren);
+  }
+
+  function addBodyChildren(newChildren: HTMLElement[]) {
+    for (const [i, candidate] of newChildren.entries()) {
+      if (i === 0 && candidate.nodeName === 'BR') continue;
+
       bodyContainer.appendChild(candidate);
 
       const { y } = candidate.getBoundingClientRect();
@@ -46,7 +51,6 @@
       const child = getInnermostChild(candidate);
       if (child.firstChild?.nodeType === Node.TEXT_NODE) {
         const words = child.textContent!.split(' ');
-        // console.log(words);
         for (let i = words.length; i >= 0; i--) {
           const { y, height } = candidate.getBoundingClientRect();
           if (y + height <= maxHeight) {
@@ -60,13 +64,21 @@
 
   onMount(async () => {
     if (articleNodes.availableElements.length === 0) {
-      await sleep(1000);
+      textContainer.style.left = '0';
       lead = $current.article!.lead;
       body = $current.article!.body;
-      await sleep(0);
-      addBodyChildren();
+      await tick();
+      createEmpty();
+    } else {
+      addBodyChildren([...articleNodes.availableElements]);
     }
+
+    await tick();
   });
+
+  export function getArticleNodes() {
+    return articleNodes;
+  }
 
   export function moveLeft(from: number, to: number) {
     gsap.fromTo(
@@ -76,7 +88,7 @@
       },
       {
         left: to,
-        duration: 1
+        duration: 0.75
       }
     );
   }
@@ -98,13 +110,15 @@
     font-size: 40px;
     padding: 40px 40px 0 95px;
     position: absolute;
-    left: 0;
+    left: -1000px;
     top: 0;
+    display: flex;
+    flex-direction: column;
   }
 
   .lead :global(p) {
     font-weight: 600;
-    padding-bottom: 10px;
+    padding-bottom: 30px;
   }
 
   .body :global(*),

@@ -1,33 +1,62 @@
 <script lang="ts">
-  import { onDestroy } from 'svelte';
-  import { gsap } from 'gsap';
-  import { current } from '../../../stores/current';
+  import { onDestroy, tick } from 'svelte';
+  import { current, previous } from '../../../stores/current';
   import { ScheduleType } from '../../../domain/IScheduleItem';
   import Text from './Text.svelte';
   import PageIndicator from './PageIndicator.svelte';
+  import type { IArticlePage } from '../../../domain/IArticlePage';
+  import { sleep } from '../../../utils';
 
   const unsubscribe = current.subscribe(async (item) => {
-    if (item && item.type === ScheduleType.Headline) {
+    await tick();
+    if (
+      item &&
+      $previous &&
+      item.type === ScheduleType.Text &&
+      $previous.type === ScheduleType.Headline
+    ) {
+      createPages();
+      indicator.setActive(0, 0);
     }
   });
 
-  let list: any[] = [
-    {
-      left: 0,
-      component: Text
-    },
-    {
-      left: 955,
-      component: Text
+  let indicator: PageIndicator;
+  const pageCount = 3;
+  let pageIndex = 0;
+  let pages: IArticlePage[] = [];
+
+  function createPages() {
+    pages = [];
+    pageIndex = 0;
+    indicator.setActive(pageIndex);
+    addPage(0);
+  }
+
+  function addPage(index: number) {
+    let articleNodes = null;
+    if (index > 0) {
+      articleNodes = pages[0].component!.getArticleNodes();
     }
-  ];
 
-  function handleKeydown(e: any) {
+    pages = [
+      ...pages,
+      {
+        left: 955 * index,
+        component: null,
+        articleNodes
+      }
+    ];
+  }
+
+  async function handleKeydown(e: any) {
     if (e.key === 'ArrowRight') {
-      for (const item of list) {
-        console.log(item.component);
-
-        item.component.moveLeft(0, -955);
+      addPage(1);
+      await tick();
+      pageIndex++;
+      indicator.setActive(pageIndex);
+      for (const item of pages) {
+        item.component!.moveLeft(item.left, item.left - 955);
+        item.left -= 955;
       }
     }
   }
@@ -39,12 +68,16 @@
 
 <main>
   <div class="text-container">
-    {#each list as item (item)}
-      <svelte:component this={item.component} />
+    {#each pages as item (item)}
+      {#if item.articleNodes === null}
+        <Text bind:this={item.component} />
+      {:else}
+        <Text bind:this={item.component} articleNodes={item.articleNodes} />
+      {/if}
     {/each}
   </div>
   <div class="indicator-container">
-    <PageIndicator totalPages={4} />
+    <PageIndicator {pageCount} bind:this={indicator} />
   </div>
 </main>
 

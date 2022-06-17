@@ -17,7 +17,9 @@
     if (item && item.type === ScheduleType.Headline) {
       src = item.article!.imageURL;
       header = item.article!.header;
-      author = item.article!.imageAuthor;
+      author = item.article!.imageAuthor
+        ? `Foto: ${item.article!.imageAuthor}`
+        : '';
 
       primaryColor = item.portal.primaryColor;
       backgroundColor = item.portal.backgroundColor;
@@ -57,7 +59,7 @@
   >
     <img {src} alt="" />
     <div class="bottom-container" bind:this={container}>
-      <div class="caption" bind:this={caption}>Foto: {author}</div>
+      <div class="caption" bind:this={caption}>{author}</div>
       <div class="header">{header}</div>
     </div>
   </div>
