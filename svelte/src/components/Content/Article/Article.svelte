@@ -5,7 +5,6 @@
   import Text from './Text.svelte';
   import PageIndicator from './PageIndicator.svelte';
   import type { IArticlePage } from '../../../domain/IArticlePage';
-  import { sleep } from '../../../utils';
 
   const unsubscribe = current.subscribe(async (item) => {
     await tick();

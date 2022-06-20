@@ -37,26 +37,36 @@
     for (const [i, candidate] of newChildren.entries()) {
       if (i === 0 && candidate.nodeName === 'BR') continue;
 
-      bodyContainer.appendChild(candidate);
+      const copy = (candidate as any).cloneNode(true);
+      bodyContainer.appendChild(copy);
 
-      const { y } = candidate.getBoundingClientRect();
+      const { y, height } = copy.getBoundingClientRect();
       if (y > maxHeight) {
-        candidate.remove();
+        copy.remove();
         break;
       }
 
-      articleNodes.availableElements.shift();
-      articleNodes.usedElements.push(candidate);
+      articleNodes.usedElements.push(copy);
+      if (y + height <= maxHeight) {
+        articleNodes.availableElements.shift();
+        continue;
+      }
 
-      const child = getInnermostChild(candidate);
+      const child = getInnermostChild(copy);
       if (child.firstChild?.nodeType === Node.TEXT_NODE) {
         const words = child.textContent!.split(' ');
+        let sliceIndex = 0;
         for (let i = words.length; i >= 0; i--) {
-          const { y, height } = candidate.getBoundingClientRect();
+          const { y, height } = copy.getBoundingClientRect();
           if (y + height <= maxHeight) {
             break;
           }
           child.textContent = words.slice(0, i).join(' ');
+          sliceIndex = i;
+        }
+
+        if (sliceIndex !== 0) {
+          candidate.textContent = words.slice(sliceIndex).join(' ');
         }
       }
     }
