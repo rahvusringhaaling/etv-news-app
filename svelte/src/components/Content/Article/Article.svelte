@@ -20,7 +20,7 @@
   });
 
   let indicator: PageIndicator;
-  const pageCount = 3;
+  const pageCount = 5;
   let pageIndex = 0;
   let pages: IArticlePage[] = [];
 

@@ -35,7 +35,10 @@
 
   function addBodyChildren(newChildren: HTMLElement[]) {
     for (const [i, candidate] of newChildren.entries()) {
-      if (i === 0 && candidate.nodeName === 'BR') continue;
+      if (i === 0 && candidate.nodeName === 'BR') {
+        articleNodes.availableElements.shift();
+        continue;
+      }
 
       const copy = (candidate as any).cloneNode(true);
       bodyContainer.appendChild(copy);
@@ -73,6 +76,7 @@
   }
 
   onMount(async () => {
+    const t = Date.now();
     if (articleNodes.availableElements.length === 0) {
       textContainer.style.left = '0';
       lead = $current.article!.lead;
@@ -84,6 +88,7 @@
     }
 
     await tick();
+    console.log('End, took in seconds:', (Date.now() - t) / 1000);
   });
 
   export function getArticleNodes() {
