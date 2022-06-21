@@ -69,7 +69,8 @@
         }
 
         if (sliceIndex !== 0) {
-          candidate.textContent = words.slice(sliceIndex).join(' ');
+          const candidateChild = getInnermostChild(candidate);
+          candidateChild.textContent = words.slice(sliceIndex).join(' ');
         }
       }
     }
