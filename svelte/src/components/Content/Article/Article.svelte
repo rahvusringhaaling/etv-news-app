@@ -28,19 +28,19 @@
     pages = [];
     pageIndex = 0;
     indicator.setActive(pageIndex);
-    addPage(0);
+    addPage(true);
   }
 
-  function addPage(index: number) {
+  function addPage(isFirst: boolean) {
     let articleNodes = null;
-    if (index > 0) {
-      articleNodes = pages[0].component!.getArticleNodes();
+    if (!isFirst) {
+      articleNodes = pages[pages.length - 1].component!.getArticleNodes();
     }
 
     pages = [
       ...pages,
       {
-        left: 955 * index,
+        left: 955 * (isFirst ? 0 : 1),
         component: null,
         articleNodes
       }
@@ -49,7 +49,7 @@
 
   async function handleKeydown(e: any) {
     if (e.key === 'ArrowRight') {
-      addPage(1);
+      addPage(false);
       await tick();
       pageIndex++;
       indicator.setActive(pageIndex);
