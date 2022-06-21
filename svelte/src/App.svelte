@@ -6,9 +6,14 @@
   import { Api } from './services/Api';
   import { portals } from './stores/portals';
   import { feed } from './stores/feed';
-  import { ScheduleType } from './domain/IScheduleItem';
   import { schedule } from './stores/schedule';
   import { current } from './stores/current';
+  import ScheduleBuilder from './components/Content/Builder/ScheduleBuilder.svelte';
+  import { sleep } from './utils';
+  import type { IScheduleItem } from './domain/IScheduleItem';
+
+  let articles: any[] = [];
+  let rawSchedule: IScheduleItem[][];
 
   onMount(async () => {
     Api.sendHeartbeat();
@@ -22,25 +27,17 @@
     }));
     portals.set(newPortals);
 
-    const newSchedule = $portals.flatMap((portal) =>
-      $feed[portal.portal].flatMap((article) => [
-        {
-          portal: portal,
-          type: ScheduleType.Headline,
-          pageNumber: 1,
-          name: article.header,
-          article: article,
-          duration: 9
-        },
-        {
-          portal: portal,
-          type: ScheduleType.Text,
-          name: article.header,
-          article: article,
-          duration: 28
-        }
-      ])
+    articles = $portals.flatMap((portal) =>
+      $feed[portal.portal].flatMap((article) => ({ article, portal }))
     );
+    rawSchedule = Array(articles.length)
+      .fill(null)
+      .map((_) => []);
+
+    await sleep(0);
+    articles = [];
+    const newSchedule = rawSchedule.flat();
+
     schedule.set(newSchedule);
     console.log($schedule);
 
@@ -69,6 +66,13 @@
       <Right />
     </div>
   </div>
+  {#if articles.length > 0}
+    <!-- <ScheduleBuilder input={articles[0]} bind:output={cache[0]} /> -->
+
+    {#each articles as article, i}
+      <ScheduleBuilder input={article} bind:output={rawSchedule[i]} />
+    {/each}
+  {/if}
 </main>
 
 <style>

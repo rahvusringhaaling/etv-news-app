@@ -1,18 +1,21 @@
 <script lang="ts">
-  import { onMount, tick } from 'svelte';
+  import { onDestroy, onMount, tick } from 'svelte';
+  import { createEventDispatcher } from 'svelte';
   import { gsap } from 'gsap';
-  import { current } from '../../../stores/current';
   import type { IArticleNodes } from '../../../domain/IArticleNodes';
+  import type { IArticle } from '../../../domain/IArticle';
 
   let lead = '';
   let body = '';
   let textContainer: HTMLElement;
   let bodyContainer: HTMLElement;
   const maxHeight = 950;
+  export let article: IArticle | undefined;
   export let articleNodes: IArticleNodes = {
     usedElements: [],
     availableElements: []
   };
+  const dispatch = createEventDispatcher();
 
   function getInnermostChild(element: ChildNode): ChildNode {
     return element.hasChildNodes() &&
@@ -77,19 +80,18 @@
   }
 
   onMount(async () => {
-    const t = Date.now();
     if (articleNodes.availableElements.length === 0) {
       textContainer.style.left = '0';
-      lead = $current.article!.lead;
-      body = $current.article!.body;
+      lead = article!.lead;
+      body = article!.body;
       await tick();
       createEmpty();
     } else {
       addBodyChildren([...articleNodes.availableElements]);
     }
 
-    await tick();
-    console.log('End, took in seconds:', (Date.now() - t) / 1000);
+    const isLast = articleNodes.availableElements.length === 0;
+    dispatch('textrender', { isLast });
   });
 
   export function getArticleNodes() {

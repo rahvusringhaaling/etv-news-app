@@ -18,11 +18,11 @@
   let active = 0;
   let circle: SVGCircleElement;
 
-  onMount(async () => {
+  $: {
     d = curves.slice(0, pageCount).join('');
     const width = 20 * pageCount + 20 * (pageCount - 1);
     viewBox = `0 0 ${width}.5 21`;
-  });
+  }
 
   export function setActive(index: number, duration = 0.75) {
     active = Math.min(index, pageCount - 1);

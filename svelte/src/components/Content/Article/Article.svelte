@@ -6,30 +6,30 @@
   import PageIndicator from './PageIndicator.svelte';
   import type { IArticlePage } from '../../../domain/IArticlePage';
 
-  const unsubscribe = current.subscribe(async (item) => {
-    await tick();
-    if (
-      item &&
-      $previous &&
-      item.type === ScheduleType.Text &&
-      $previous.type === ScheduleType.Headline
-    ) {
-      createPages();
-      indicator.setActive(0, 0);
+  let indicator: PageIndicator;
+  let pageCount = 1;
+  let pages: IArticlePage[] = [];
+
+  const unsubscribeCurrent = current.subscribe(async (item) => {
+    if (item?.type === ScheduleType.Text && item.pageNumber! > 1) {
+      addPage(false);
+      await tick();
+      indicator.setActive(item.pageNumber! - 1);
+      for (const item of pages) {
+        item.component!.moveLeft(item.left, item.left - 955);
+        item.left -= 955;
+      }
     }
   });
 
-  let indicator: PageIndicator;
-  const pageCount = 5;
-  let pageIndex = 0;
-  let pages: IArticlePage[] = [];
-
-  function createPages() {
-    pages = [];
-    pageIndex = 0;
-    indicator.setActive(pageIndex);
-    addPage(true);
-  }
+  const unsubscribePrevious = previous.subscribe(async (item) => {
+    if (item?.type === ScheduleType.Headline) {
+      pages = [];
+      addPage(true);
+      pageCount = item.pageCount!;
+      indicator.setActive(0, 0);
+    }
+  });
 
   function addPage(isFirst: boolean) {
     let articleNodes = null;
@@ -47,36 +47,28 @@
     ];
   }
 
-  async function handleKeydown(e: any) {
-    if (e.key === 'ArrowRight') {
-      addPage(false);
-      await tick();
-      pageIndex++;
-      indicator.setActive(pageIndex);
-      for (const item of pages) {
-        item.component!.moveLeft(item.left, item.left - 955);
-        item.left -= 955;
-      }
-    }
-  }
-
-  onDestroy(unsubscribe);
+  onDestroy(() => {
+    unsubscribeCurrent();
+    unsubscribePrevious();
+  });
 </script>
-
-<svelte:window on:keydown={handleKeydown} />
 
 <main>
   <div class="text-container">
     {#each pages as item (item)}
       {#if item.articleNodes === null}
-        <Text bind:this={item.component} />
+        <Text bind:this={item.component} article={$current.article} />
       {:else}
-        <Text bind:this={item.component} articleNodes={item.articleNodes} />
+        <Text
+          bind:this={item.component}
+          article={$current.article}
+          articleNodes={item.articleNodes}
+        />
       {/if}
     {/each}
   </div>
   <div class="indicator-container">
-    <PageIndicator {pageCount} bind:this={indicator} />
+    <PageIndicator bind:pageCount bind:this={indicator} />
   </div>
 </main>
 

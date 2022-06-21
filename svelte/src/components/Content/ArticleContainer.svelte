@@ -4,7 +4,7 @@
   import SideBar from './SideBar.svelte';
   import Headline from './Headline.svelte';
   import { sleep } from '../../utils';
-  import { current } from '../../stores/current';
+  import { current, previous } from '../../stores/current';
   import { ScheduleType } from '../../domain/IScheduleItem';
   import Article from './Article/Article.svelte';
 
@@ -13,29 +13,36 @@
   let primaryColor = '';
   let backgroundColor = '';
 
-  const unsubscribe = current.subscribe(async (item) => {
-    if (item) {
-      if (item.type === ScheduleType.Headline) {
-        gsap.fromTo(
-          headline,
-          { bottom: -912, left: 0 },
-          { bottom: 0, left: 0, duration: 1 }
-        );
-      } else if (item.type === ScheduleType.Text) {
-        gsap.fromTo(headline, { left: 0 }, { left: -1485, duration: 0.75 });
-        gsap.fromTo(
-          bar,
-          { width: 530 },
-          { width: 1485, duration: item.duration, ease: 'none' }
-        );
-      }
-      await sleep(1000);
-      primaryColor = item.portal.primaryColor;
-      backgroundColor = item.portal.backgroundColor;
+  const unsubscribeCurrent = current.subscribe(async (item) => {
+    if (!item) return;
+
+    if (item.type === ScheduleType.Headline) {
+      gsap.fromTo(
+        headline,
+        { bottom: -912, left: 0 },
+        { bottom: 0, left: 0, duration: 1 }
+      );
+    }
+    await sleep(1000);
+    primaryColor = item.portal.primaryColor;
+    backgroundColor = item.portal.backgroundColor;
+  });
+
+  const unsubscribePrevious = previous.subscribe(async (item) => {
+    if (item && item.type === ScheduleType.Headline) {
+      gsap.fromTo(headline, { left: 0 }, { left: -1485, duration: 0.75 });
+      gsap.fromTo(
+        bar,
+        { width: 530 },
+        { width: 1485, duration: item.duration, ease: 'none' }
+      );
     }
   });
 
-  onDestroy(unsubscribe);
+  onDestroy(() => {
+    unsubscribeCurrent();
+    unsubscribePrevious();
+  });
 </script>
 
 <main>
