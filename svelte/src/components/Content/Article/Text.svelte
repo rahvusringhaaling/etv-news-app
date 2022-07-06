@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onDestroy, onMount, tick } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import { createEventDispatcher } from 'svelte';
   import { gsap } from 'gsap';
   import type { IArticleNodes } from '../../../domain/IArticleNodes';

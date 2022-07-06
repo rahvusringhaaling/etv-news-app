@@ -3,7 +3,6 @@
   import { gsap } from 'gsap';
   import { current } from '../../stores/current';
   import { portals } from '../../stores/portals';
-  import { sleep } from '../../utils';
   import { get } from 'svelte/store';
   import type { ICategoryItem } from '../../domain/ICategoryItem';
 

@@ -47,6 +47,26 @@ export class ApiService {
     this.socket.on('server/template/heartbeat', callback)
   }
 
+  onTemplateSchedule(callback: Function) {
+    this.socket.on('server/schedule/post', callback)
+  }
+
+  requestTemplateSchedule() {
+    this.socket.emit('client/schedule/get');
+  }
+
+  onTemplateCurrent(callback: Function) {
+    this.socket.on('server/current/post', callback)
+  }
+
+  requestTemplateCurrent() {
+    this.socket.emit('client/current/get');
+  }
+
+  sendScheduleNext() {
+    this.socket.emit('client/schedule/next');
+  }
+
   getCasparLocation() {
     return new Promise<string>(resolve => {
       this.socket.emit('client/caspar-media-location/get', (path: string) => {
@@ -69,14 +89,6 @@ export class ApiService {
 
   removeTitle() {
     this.socket.emit('client/title/remove');
-  }
-
-  addOpener(removeLastFrame: boolean) {
-    this.socket.emit('client/opener/add', removeLastFrame);
-  }
-
-  removeOpener() {
-    this.socket.emit('client/opener/remove');
   }
 
   getServerData() {

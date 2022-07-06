@@ -1,0 +1,42 @@
+<div id="control-root-container">
+  <div id="control-container">
+    <mat-expansion-panel [expanded]="true"
+      id="control-panel">
+      <mat-expansion-panel-header>
+        <mat-panel-title>Juhtimine</mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <ag-grid-angular class="ag-theme-alpine-dark"
+        [style.height.px]="gridHeight"
+        spellcheck="false"
+        [rowData]="rowData"
+        [columnDefs]="columnDefs"
+        [defaultColDef]="defaultColDef"
+        [rowDragManaged]="true"
+        [animateRows]="true"
+        [suppressMoveWhenRowDragging]="true"
+        [gridOptions]="gridOptions">
+      </ag-grid-angular>
+
+      <mat-action-row>
+        <button mat-raised-button
+          color="primary"
+          *ngIf="!isOnAir"
+          (click)="start()">
+          Käivita
+        </button>
+        <button mat-raised-button
+          color="primary"
+          *ngIf="isOnAir"
+          (click)="stop()">
+          Peata
+        </button>
+        <button mat-raised-button
+          color="primary"
+          (click)="next()">
+          Järgmine
+        </button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </div>
+</div>

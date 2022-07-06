@@ -1,27 +1,52 @@
 import { io } from 'socket.io-client';
+import { get } from 'svelte/store';
 import type { IFeed } from '../domain/IFeed';
 import type { IPortal } from '../domain/IPortal';
+import { current, index } from '../stores/current';
+import { schedule } from '../stores/schedule';
 
 export class Api {
-  private static socket = io(`ws://localhost:${window.location.port}`);
+  private socket = io(`ws://localhost:${window.location.port}`);
 
-  static getPortals() {
+  constructor() {
+    this.socket.on('server/schedule/get', () => {
+      this.socket.emit('template/schedule/post', get(schedule));
+    });
+
+    this.socket.on('server/current/get', () => {
+      this.socket.emit('template/current/post', get(index));
+    });
+
+    this.socket.on('server/schedule/next', () => {
+      current.next();
+    });
+
+    index.subscribe(index => {
+      this.socket.emit('template/current/post', index);
+    });
+  }
+
+  getPortals() {
     return new Promise<IPortal[]>(resolve => {
-      Api.socket.emit('portals/get', (portals: IPortal[]) => {
+      this.socket.emit('template/portals/get', (portals: IPortal[]) => {
         resolve(portals);
       });
     });
   }
 
-  static getTVFeed() {
+  getTVFeed() {
     return new Promise<IFeed>(resolve => {
-      Api.socket.emit('tv-feed/get', (feed: IFeed) => {
+      this.socket.emit('template/tv-feed/get', (feed: IFeed) => {
         resolve(feed);
       });
     });
   }
 
-  static sendHeartbeat() {
-    Api.socket.emit('template/template/heartbeat', Date.now());
+  sendSchedule() {
+    this.socket.emit('template/schedule/post', get(schedule));
+  }
+
+  sendHeartbeat() {
+    this.socket.emit('template/template/heartbeat', Date.now());
   }
 }

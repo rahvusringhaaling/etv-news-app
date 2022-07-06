@@ -63,6 +63,7 @@ const io = new Server(server, {
 });
 
 let casparInfo;
+let templateID: string;
 const connection: CasparCG = new CasparCG({
   autoConnect: true,
   autoReconnect: true,
@@ -104,6 +105,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('template/template/heartbeat', (time: number) => {
+    templateID = socket.id;
     socket.broadcast.emit('server/template/heartbeat', time);
   });
 
@@ -126,12 +128,32 @@ io.on('connection', (socket) => {
     callback(location);
   });
 
-  socket.on('portals/get', async (callback: Function) => {
+  socket.on('template/portals/get', async (callback: Function) => {
     callback(getPortals());
   });
 
-  socket.on('tv-feed/get', async (callback: Function) => {
+  socket.on('template/tv-feed/get', async (callback: Function) => {
     callback(await getFeeds());
+  });
+
+  socket.on('client/schedule/get', () => {
+    io.to(templateID).emit('server/schedule/get');
+  });
+
+  socket.on('template/schedule/post', schedule => {
+    socket.broadcast.emit('server/schedule/post', schedule);
+  });
+
+  socket.on('client/current/get', () => {
+    io.to(templateID).emit('server/current/get');
+  });
+
+  socket.on('template/current/post', (current: number) => {
+    socket.broadcast.emit('server/current/post', current);
+  });
+
+  socket.on('client/schedule/next', () => {
+    socket.broadcast.emit('server/schedule/next');
   });
 
   socket.on('client/data/save', (newData) => {

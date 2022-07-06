@@ -6,6 +6,12 @@ const currentStore = derived([schedule, indexStore], ([$schedule, $index]) => $s
 const previousStore = derived([schedule, indexStore], ([$schedule, $index]) => $schedule[$index - 1] || null);
 const nextStore = derived([schedule, indexStore], ([$schedule, $index]) => $schedule[$index + 1] || null);
 
+function createIndex() {
+  return {
+    subscribe: indexStore.subscribe
+  };
+}
+
 function createCurrent() {
   return {
     subscribe: currentStore.subscribe,
@@ -26,6 +32,7 @@ function createNext() {
   }
 }
 
+export const index = createIndex();
 export const previous = createPrevious();
 export const current = createCurrent();
 export const next = createNext();

@@ -1,17 +1,21 @@
-<mat-toolbar id="toolbar" color="primary">
+<mat-toolbar id="toolbar"
+  color="primary">
   <div>
     <span>Portaalid</span>
     <span id="last-edited">{{ lastEditedString }}</span>
   </div>
   <span class="toolbar-spacer"></span>
   <span class="status-text">CasparCG</span>
-  <span id="status" [ngStyle]="{'background-color': casparConnection ? 'rgb(0, 255, 0)' : 'rgb(255, 0, 0)'}"></span>
+  <span id="status"
+    [ngStyle]="{'background-color': casparConnection ? 'rgb(0, 255, 0)' : 'rgb(255, 0, 0)'}"></span>
   <span class="status-text">Mall</span>
-  <span id="status" [ngStyle]="{'background-color': templateConnection ? 'rgb(0, 255, 0)' : 'rgb(255, 0, 0)'}"></span>
+  <span id="status"
+    [ngStyle]="{'background-color': templateConnection ? 'rgb(0, 255, 0)' : 'rgb(255, 0, 0)'}"></span>
 </mat-toolbar>
-<mat-tab-group animationDuration="0ms" (selectedIndexChange)="tabChange($event)">
-  <mat-tab label="Nimetiitrid">
-    <app-title-layout></app-title-layout>
+<mat-tab-group animationDuration="0ms"
+  (selectedIndexChange)="tabChange($event)">
+  <mat-tab label="Juhtimine">
+    <app-control-layout></app-control-layout>
   </mat-tab>
   <mat-tab label="Info">
     <div *ngIf="showInfoTab">

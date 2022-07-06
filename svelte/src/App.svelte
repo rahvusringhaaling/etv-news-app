@@ -14,13 +14,15 @@
 
   let articles: any[] = [];
   let rawSchedule: IScheduleItem[][];
+  let api = new Api();
+  let timeout: NodeJS.Timeout;
 
   onMount(async () => {
-    Api.sendHeartbeat();
-    setInterval(Api.sendHeartbeat, 3000);
+    api.sendHeartbeat();
+    setInterval(() => api.sendHeartbeat(), 3000);
 
-    feed.set(await Api.getTVFeed());
-    const newPortals = (await Api.getPortals()).map((portal, i) => ({
+    feed.set(await api.getTVFeed());
+    const newPortals = (await api.getPortals()).map((portal, i) => ({
       ...portal,
       backgroundColor: hexToRgba(portal.primaryColor),
       index: i
@@ -39,12 +41,20 @@
     const newSchedule = rawSchedule.flat();
 
     schedule.set(newSchedule);
+    api.sendSchedule();
     console.log($schedule);
 
     document.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') {
         current.next();
       }
+    });
+
+    current.subscribe((item) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        current.next();
+      }, item.duration * 1000);
     });
   });
 
