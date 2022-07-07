@@ -39,10 +39,7 @@
 
   const unsubscribeNext = next.subscribe(async (item) => {
     if (item && item.type === ScheduleType.Headline) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        src = item.article!.imageURL;
-      }, 1000);
+      src = item.article!.imageURL;
     }
   });
 
