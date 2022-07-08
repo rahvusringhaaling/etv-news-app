@@ -63,16 +63,22 @@ export class ControlLayoutComponent implements OnInit {
         duration: item.duration
       }));
       this.cd.detectChanges();
-      this.gridApi.getDisplayedRowAtIndex(0).setSelected(true);
+      const row = this.gridApi.getDisplayedRowAtIndex(0);
+      if (row) {
+        row.setSelected(true);
+      }
     });
 
     this.api.requestTemplateCurrent();
     this.api.onTemplateCurrent((current: number) => {
       this.gridApi.deselectAll();
       const maxValidIndex = current + 3 >= this.scheduleLength ? current : current + 3;
-      this.gridApi.ensureIndexVisible(current);
-      this.gridApi.ensureIndexVisible(maxValidIndex);
-      this.gridApi.getDisplayedRowAtIndex(current).setSelected(true);
+      const row = this.gridApi.getDisplayedRowAtIndex(current);
+      if (row) {
+        this.gridApi.ensureIndexVisible(current);
+        this.gridApi.ensureIndexVisible(maxValidIndex);
+        row.setSelected(true);
+      }
     });
 
     this.nextSubject

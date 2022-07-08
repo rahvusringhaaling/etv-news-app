@@ -11,7 +11,6 @@
   let src = '';
   let header = '';
   let author = '';
-  let timeout: NodeJS.Timeout;
 
   const unsubscribeCurrent = current.subscribe((item) => {
     if (item && item.type === ScheduleType.Headline) {

@@ -117,6 +117,7 @@
     <p class="lead">{@html lead}</p>
     <p class="body" bind:this={bodyContainer}>{@html body}</p>
   </div>
+  <!-- <p>Loe seda uudist edasi portaalist ERR.ee</p> -->
 </main>
 
 <style>
@@ -132,6 +133,9 @@
     top: 0;
     display: flex;
     flex-direction: column;
+
+    /* mask-image: linear-gradient(to top, transparent 15%, black 40%);
+    -webkit-mask-image: linear-gradient(to top, transparent 15%, black 40%); */
   }
 
   .lead :global(p) {

@@ -37,7 +37,11 @@
 
   const unsubscribePrevious = previous.subscribe(async (item) => {
     if (item && item.type === ScheduleType.Headline) {
-      gsap.fromTo(headline, { left: 0 }, { left: -1485, duration: 0.75 });
+      gsap.fromTo(
+        headline,
+        { left: 0, bottom: 0 },
+        { left: -1485, bottom: 0, duration: 0.75 }
+      );
     }
   });
 

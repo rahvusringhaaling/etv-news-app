@@ -2,13 +2,13 @@ import { io } from 'socket.io-client';
 import { get } from 'svelte/store';
 import type { IFeed } from '../domain/IFeed';
 import type { IPortal } from '../domain/IPortal';
-import { current, index } from '../stores/current';
+import { index } from '../stores/current';
 import { schedule } from '../stores/schedule';
 
 export class Api {
   private socket = io(`ws://localhost:${window.location.port}`);
 
-  constructor() {
+  constructor(next: Function) {
     this.socket.on('server/schedule/get', () => {
       this.socket.emit('template/schedule/post', get(schedule));
     });
@@ -18,7 +18,7 @@ export class Api {
     });
 
     this.socket.on('server/schedule/next', () => {
-      current.next();
+      next();
     });
 
     index.subscribe(index => {

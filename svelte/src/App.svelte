@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   import Header from './components/Header.svelte';
   import ArticleContainer from './components/Content/ArticleContainer.svelte';
   import Right from './components/Right/RightContainer.svelte';
@@ -7,20 +7,24 @@
   import { portals } from './stores/portals';
   import { feed } from './stores/feed';
   import { schedule } from './stores/schedule';
-  import { current } from './stores/current';
+  import { current, index } from './stores/current';
   import ScheduleBuilder from './components/Content/Builder/ScheduleBuilder.svelte';
   import { sleep } from './utils';
   import type { IScheduleItem } from './domain/IScheduleItem';
 
   let articles: any[] = [];
   let rawSchedule: IScheduleItem[][];
-  let api = new Api();
+  let api = new Api(() => next());
   let timeout: NodeJS.Timeout;
 
-  onMount(async () => {
+  onMount(() => {
     api.sendHeartbeat();
     setInterval(() => api.sendHeartbeat(), 3000);
 
+    initialize();
+  });
+
+  async function initialize() {
     feed.set(await api.getTVFeed());
     const newPortals = (await api.getPortals()).map((portal, i) => ({
       ...portal,
@@ -40,23 +44,32 @@
     articles = [];
     const newSchedule = rawSchedule.flat();
 
+    current.set(0);
     schedule.set(newSchedule);
     api.sendSchedule();
     console.log($schedule);
+  }
 
-    document.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        current.next();
-      }
-    });
+  const unsubscribe = current.subscribe((item) => {
+    if (!item) return;
 
-    current.subscribe((item) => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        current.next();
-      }, item.duration * 1000);
-    });
+    clearTimeout(timeout);
+    timeout = setTimeout(() => next(), item.duration * 1000);
   });
+
+  function handleKeyDown(e: KeyboardEvent) {
+    if (e.key === 'Enter') {
+      next();
+    }
+  }
+
+  function next() {
+    if ($index === $schedule.length - 1) {
+      initialize();
+    } else {
+      current.next();
+    }
+  }
 
   // #2E3192 => rgba(46, 49, 146, 0.1)
   function hexToRgba(hex: string) {
@@ -66,7 +79,11 @@
     const b = integer & 255;
     return `rgba(${r}, ${g}, ${b}, 0.1)`;
   }
+
+  onDestroy(unsubscribe);
 </script>
+
+<svelte:window on:keypress={handleKeyDown} />
 
 <main>
   <div class="root-container" style="">
@@ -77,8 +94,6 @@
     </div>
   </div>
   {#if articles.length > 0}
-    <!-- <ScheduleBuilder input={articles[0]} bind:output={cache[0]} /> -->
-
     {#each articles as article, i}
       <ScheduleBuilder input={article} bind:output={rawSchedule[i]} />
     {/each}
