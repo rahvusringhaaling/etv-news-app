@@ -51,11 +51,10 @@
   });
 </script>
 
-<main>
-  <div
-    class="container"
-    style="--primary-color: {primaryColor}; --background-color: {backgroundColor};"
-  >
+<main
+  style="--primary-color: {primaryColor}; --background-color: {backgroundColor};"
+>
+  <div class="container">
     <div class="bar" bind:this={bar} />
     <div class="bottom-container">
       <SideBar />

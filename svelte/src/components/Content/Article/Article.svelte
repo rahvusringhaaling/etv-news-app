@@ -12,7 +12,8 @@
 
   const unsubscribeCurrent = current.subscribe(async (item) => {
     if (item?.type === ScheduleType.Text && item.pageNumber! > 1) {
-      addPage(false);
+      const showMore = item.pageNumber === item.pageCount && item.overflow!;
+      addPage(false, showMore, item.portal.primaryColor);
       await tick();
       indicator.setActive(item.pageNumber! - 1);
       for (const item of pages) {
@@ -31,7 +32,11 @@
     }
   });
 
-  function addPage(isFirst: boolean) {
+  function addPage(
+    isFirst: boolean,
+    showMore: boolean = false,
+    primaryColor = ''
+  ) {
     let articleNodes = null;
     if (!isFirst) {
       articleNodes = pages[pages.length - 1].component!.getArticleNodes();
@@ -42,7 +47,9 @@
       {
         left: 955 * (isFirst ? 0 : 1),
         component: null,
-        articleNodes
+        articleNodes,
+        showMore,
+        primaryColor
       }
     ];
   }
@@ -57,12 +64,19 @@
   <div class="text-container">
     {#each pages as item (item)}
       {#if item.articleNodes === null}
-        <Text bind:this={item.component} article={$current.article} />
+        <Text
+          bind:this={item.component}
+          article={$current.article}
+          showMore={item.showMore}
+          primaryColor={item.primaryColor}
+        />
       {:else}
         <Text
           bind:this={item.component}
           article={$current.article}
           articleNodes={item.articleNodes}
+          showMore={item.showMore}
+          primaryColor={item.primaryColor}
         />
       {/if}
     {/each}

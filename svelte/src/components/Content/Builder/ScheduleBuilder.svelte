@@ -49,7 +49,9 @@
           name: article.header,
           article: article,
           duration: 28,
-          pageNumber: i
+          pageNumber: i,
+          pageCount: pages.length,
+          overflow: !isLast
         });
       }
     }

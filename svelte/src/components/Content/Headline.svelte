@@ -48,11 +48,10 @@
   });
 </script>
 
-<main>
-  <div
-    class="container"
-    style="--primary-color: {primaryColor}; --background-color: {backgroundColor};"
-  >
+<main
+  style="--primary-color: {primaryColor}; --background-color: {backgroundColor};"
+>
+  <div class="container">
     <img {src} alt="" />
     <div class="bottom-container" bind:this={container}>
       <div class="caption" bind:this={caption}>{author}</div>

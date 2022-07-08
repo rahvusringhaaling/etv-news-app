@@ -80,11 +80,8 @@
   onDestroy(unsubscribe);
 </script>
 
-<main>
-  <div
-    class="container"
-    style="--primary-color: {primaryColor}; --text-color: {textColor};"
-  >
+<main style="--primary-color: {primaryColor}; --text-color: {textColor};">
+  <div class="container">
     <ul bind:clientHeight={height}>
       {#each items as item, i}
         <li

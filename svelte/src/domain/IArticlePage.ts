@@ -5,4 +5,6 @@ export interface IArticlePage {
   left: number;
   component: Text | null;
   articleNodes: IArticleNodes | null;
+  showMore: boolean;
+  primaryColor: string;
 }

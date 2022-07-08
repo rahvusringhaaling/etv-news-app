@@ -15,6 +15,8 @@
     usedElements: [],
     availableElements: []
   };
+  export let primaryColor = '';
+  export let showMore = false;
   const dispatch = createEventDispatcher();
 
   function getInnermostChild(element: ChildNode): ChildNode {
@@ -112,12 +114,21 @@
   }
 </script>
 
-<main>
+<main style="--primary-color: {primaryColor}">
   <div class="text-container" bind:this={textContainer}>
-    <p class="lead">{@html lead}</p>
-    <p class="body" bind:this={bodyContainer}>{@html body}</p>
+    <span class:mask={showMore}>
+      <p class="lead">{@html lead}</p>
+      <p class="body" bind:this={bodyContainer}>{@html body}</p>
+    </span>
+    {#if showMore}
+      <div class="more">
+        <p>Loe seda uudist edasi portaalist ERR.ee</p>
+        <svg viewBox="0 0 13 16">
+          <path d="M13,8L0,0V16L13,8Z" />
+        </svg>
+      </div>
+    {/if}
   </div>
-  <!-- <p>Loe seda uudist edasi portaalist ERR.ee</p> -->
 </main>
 
 <style>
@@ -133,9 +144,11 @@
     top: 0;
     display: flex;
     flex-direction: column;
+  }
 
-    /* mask-image: linear-gradient(to top, transparent 15%, black 40%);
-    -webkit-mask-image: linear-gradient(to top, transparent 15%, black 40%); */
+  .mask {
+    mask-image: linear-gradient(to top, transparent 19%, black 40%);
+    -webkit-mask-image: linear-gradient(to top, transparent 19%, black 40%);
   }
 
   .lead :global(p) {
@@ -146,5 +159,25 @@
   .body :global(*),
   .lead :global(*) {
     white-space: break-spaces;
+  }
+
+  svg {
+    width: 14px;
+  }
+
+  path {
+    fill: var(--primary-color);
+    fill-rule: evenodd;
+  }
+
+  .more {
+    display: flex;
+    gap: 17px;
+    font-family: 'AvenirNextLTPro';
+    font-size: 37px;
+    color: var(--primary-color);
+    position: absolute;
+    bottom: 118px;
+    right: 64px;
   }
 </style>
