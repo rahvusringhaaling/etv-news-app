@@ -146,6 +146,11 @@
     flex-direction: column;
   }
 
+  .text-container > span {
+    display: flex;
+    flex-direction: column;
+  }
+
   .mask {
     mask-image: linear-gradient(to top, transparent 19%, black 40%);
     -webkit-mask-image: linear-gradient(to top, transparent 19%, black 40%);

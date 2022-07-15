@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
   import { gsap } from 'gsap';
-  import { current, next } from '../../stores/current';
+  import { previous, current, next } from '../../stores/current';
   import { ScheduleType } from '../../domain/IScheduleItem';
 
   let caption: HTMLElement;
@@ -37,7 +37,11 @@
   });
 
   const unsubscribeNext = next.subscribe(async (item) => {
-    if (item && item.type === ScheduleType.Headline) {
+    if (
+      item &&
+      item.type === ScheduleType.Headline &&
+      $previous?.type !== ScheduleType.Headline
+    ) {
       src = item.article!.imageURL;
     }
   });
