@@ -140,7 +140,6 @@ io.on('connection', (socket) => {
   });
 
   socket.on('template/weather-observations/get', async (callback: Function) => {
-    console.log('received template/weather-observations/get')
     try {
       callback(await getObservations());
     } catch (error) {

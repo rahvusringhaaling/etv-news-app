@@ -1,10 +1,19 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+  import { Api } from '../../services/Api';
+
+  onMount(async () => {
+    console.log(await Api.instance.getWeatherObservations());
+  });
 </script>
 
 <main>
   <div id="container">
     <p>Tallinn-Harku</p>
-    <img src="/assets/icons/pilv_paike.png" alt="" />
+    <div>
+      <img src="/assets/icons/pilv_paike.png" alt="" />
+      <p>7,8°C</p>
+    </div>
   </div>
 </main>
 
@@ -18,6 +27,17 @@
     background-color: #dddddd;
     padding-left: 70px;
     padding-top: 45px;
+  }
+
+  #container > div {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  #container > div > p {
+    padding-left: 8px;
+    font-weight: bold;
   }
 
   p {

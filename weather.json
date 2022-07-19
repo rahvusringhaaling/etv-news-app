@@ -1,0 +1,177 @@
+{
+    "?xml": "",
+    "forecasts": {
+        "forecast": [
+            {
+                "night": {
+                    "phenomenon": "Few clouds",
+                    "tempmin": 9,
+                    "tempmax": 17,
+                    "text": "Vähese ja vahelduva pilvisusega ilm. Ida-Eestis võib kohati hoovihma sadada. Puhub valdavalt loodetuul 3-10, puhanguti 13, põhjarannikul kuni 15 m/s. Õhutemperatuur on 9..14, rannikul kuni 17°C.",
+                    "place": [
+                        {
+                            "name": "Harku",
+                            "phenomenon": "Few clouds",
+                            "tempmin": 14
+                        },
+                        {
+                            "name": "Jõhvi",
+                            "phenomenon": "Light shower",
+                            "tempmin": 14
+                        },
+                        {
+                            "name": "Tartu",
+                            "phenomenon": "Variable clouds",
+                            "tempmin": 11
+                        },
+                        {
+                            "name": "Pärnu",
+                            "phenomenon": "Clear",
+                            "tempmin": 12
+                        },
+                        {
+                            "name": "Kuressaare",
+                            "phenomenon": "Clear",
+                            "tempmin": 14
+                        },
+                        {
+                            "name": "Türi",
+                            "phenomenon": "Variable clouds",
+                            "tempmin": 10
+                        }
+                    ],
+                    "wind": [
+                        {
+                            "name": "Kuusiku",
+                            "direction": "Northwest wind",
+                            "speedmin": 3,
+                            "speedmax": 7,
+                            "gust": ""
+                        },
+                        {
+                            "name": "Väike-Maarja",
+                            "direction": "Northwest wind",
+                            "speedmin": 3,
+                            "speedmax": 8,
+                            "gust": ""
+                        },
+                        {
+                            "name": "Võrtsjärv",
+                            "direction": "Northwest wind",
+                            "speedmin": 3,
+                            "speedmax": 8,
+                            "gust": ""
+                        }
+                    ],
+                    "sea": "Ilmaprognoos Läänemere kohta 24 tunniks 13:00 UTC 19.07 kuni 13:00 UTC 20.07.2022.\n\nSünoptiline ülevaade: madalrõhuala edelaserv, öösel tugevneb kõrgrõhuhari.\n\nHoiatusi ei ole.\n\nLäänemere põhjaosa: valdavalt loodetuul 4-9, puhanguti kuni 13, õhtul nõrgeneb, öösel muutlik tuul 2-7 m/s, päeval enamasti lõunakaare tuul 4-10 m/s. Peamiselt sajuta. Nähtavus hea. \n\nSoome laht: lääne- ja loodetuul 4-9, puhanguti kuni 13 m/s, öösel loodetuul 5-10, puhanguti kuni 15 m/s, hommikuks nõrgeneb veidi, päeval tugevneb taas 5-10, puhanguti kuni 15 m/s. Täna ja öö hakul kohati hoovihm, võimalik äike, homme päeval sajuta. Nähtavus mõõdukast heani. \n\nLiivi lahe põhjaosa, Väinameri: läänekaare 3-9 m/s, öösel tugevneb loodetuul 6-10, puhanguti kuni 13 m/s, hommikuks nõrgeneb veidi, päeval läänekaare tuul 3-9, Liivi lahel puhanguti kuni 12 m/s. Täna kohati hoovihm, homme sajuta. Nähtavus mõõdukast heani.",
+                    "peipsi": "Loodetuul 4-10, puhanguti kuni 14 m/s. Laine kõrgus 0,8-1,4 m.  Aeg-ajalt võib hoovihma sadada. Nähtavus enamasti hea. Õhutemperatuur on 13..15°C."
+                },
+                "day": {
+                    "phenomenon": "Few clouds",
+                    "tempmin": 18,
+                    "tempmax": 24,
+                    "text": "Vähese ja vahelduva pilvisusega olulise sajuta ilm. Puhub loodetuul, saartel ka läänekaare tuul 3-10, puhanguti 13, põhjarannikul kuni 15 m/s, õhtuks nõrgeneb. Õhutemperatuur on 18..24°C.",
+                    "place": [
+                        {
+                            "name": "Harku",
+                            "phenomenon": "Few clouds",
+                            "tempmax": 21
+                        },
+                        {
+                            "name": "Jõhvi",
+                            "phenomenon": "Few clouds",
+                            "tempmax": 21
+                        },
+                        {
+                            "name": "Tartu",
+                            "phenomenon": "Few clouds",
+                            "tempmax": 22
+                        },
+                        {
+                            "name": "Pärnu",
+                            "phenomenon": "Few clouds",
+                            "tempmax": 23
+                        },
+                        {
+                            "name": "Kuressaare",
+                            "phenomenon": "Variable clouds",
+                            "tempmax": 24
+                        },
+                        {
+                            "name": "Türi",
+                            "phenomenon": "Clear",
+                            "tempmax": 22
+                        }
+                    ],
+                    "wind": [
+                        {
+                            "name": "Kuusiku",
+                            "direction": "Northwest wind",
+                            "speedmin": 4,
+                            "speedmax": 7,
+                            "gust": 10
+                        },
+                        {
+                            "name": "Väike-Maarja",
+                            "direction": "Northwest wind",
+                            "speedmin": 4,
+                            "speedmax": 8,
+                            "gust": 12
+                        },
+                        {
+                            "name": "Võrtsjärv",
+                            "direction": "Northwest wind",
+                            "speedmin": 4,
+                            "speedmax": 7,
+                            "gust": 11
+                        }
+                    ],
+                    "sea": "",
+                    "peipsi": "Loodetuul 6-10, puhanguti kuni 14 m/s. Laine kõrgus 0,8-1,4 m. Sajuta. Nähtavus hea. Õhutemperatuur on 19..21°C"
+                }
+            },
+            {
+                "night": {
+                    "phenomenon": "Few clouds",
+                    "tempmin": 9,
+                    "tempmax": 17,
+                    "text": "Vähese pilvisusega sajuta ilm. Mandril puhub loodetuul, saartel lõunakaare tuul 2-7, põhjarannikul puhanguti kuni 12 m/s. Õhutemperatuur on 9..14, rannikul kuni 17°C."
+                },
+                "day": {
+                    "phenomenon": "Clear",
+                    "tempmin": 21,
+                    "tempmax": 28,
+                    "text": "Selge ja vähese pilvisusega sajuta ilm. Puhub muutliku suunaga tuul 1-7 m/s. Õhutemperatuur on 23..28, rannikul kohati 21°C."
+                }
+            },
+            {
+                "night": {
+                    "phenomenon": "Clear",
+                    "tempmin": 11,
+                    "tempmax": 17,
+                    "text": "Selge ja vähese pilvisusega sajuta ilm. Puhub lõunakaare tuul 1-6 m/s. Õhutemperatuur on 11..17°C."
+                },
+                "day": {
+                    "phenomenon": "Few clouds",
+                    "tempmin": 21,
+                    "tempmax": 30,
+                    "text": "Selge ja vähese pilvisusega ilm. Pärastlõunal saartel ja mandri lääneservas pilvi rohkem ning mitmel pool sajab hoovihma, on äikest. Puhub muutliku suunaga tuul 1-7 m/s. Õhutemperatuur on 25..30, rannikul kohati 21°C."
+                }
+            },
+            {
+                "night": {
+                    "phenomenon": "Moderate shower",
+                    "tempmin": 13,
+                    "tempmax": 18,
+                    "text": "Lääne-Eestis pilvisus tiheneb. Mitmel pool sajab hoovihma, on äikeseoht. Ida-Eestis on vähese pilvisusega sajuta ilm. Puhub valdavalt lõunakaare tuul 1-7 m/s. Õhutemperatuur on 13..18°C."
+                },
+                "day": {
+                    "phenomenon": "Moderate shower",
+                    "tempmin": 19,
+                    "tempmax": 27,
+                    "text": ""
+                }
+            }
+        ]
+    }
+}
