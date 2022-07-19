@@ -4,7 +4,7 @@
 <main>
   <div id="container">
     <p>Tallinn-Harku</p>
-    <div id="bg" />
+    <img src="/assets/icons/pilv_paike.png" alt="" />
   </div>
 </main>
 
@@ -26,9 +26,8 @@
     color: #1d1d1d;
   }
 
-  #bg {
-    width: 200px;
-    height: 200px;
-    background-color: #00000055;
+  img {
+    width: 150px;
+    height: 150px;
   }
 </style>

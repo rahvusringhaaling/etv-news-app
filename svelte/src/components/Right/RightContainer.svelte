@@ -3,7 +3,6 @@
   import { gsap } from 'gsap';
   import { current } from '../../stores/current';
   import CategoryList from './CategoryList.svelte';
-  import QrCode from './QrCode.svelte';
   import Weather from './Weather.svelte';
 
   let container: HTMLDivElement;

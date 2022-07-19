@@ -6,6 +6,9 @@ import * as net from 'net';
 import { Server } from 'socket.io';
 import { CasparCG, Options } from 'casparcg-connection';
 import { getPortals, getFeeds } from './news'
+import { getWeather } from './weather';
+
+getWeather();
 
 const webApp: any = express();
 const server = http.createServer(webApp);
