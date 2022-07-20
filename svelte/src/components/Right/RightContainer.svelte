@@ -21,24 +21,34 @@
 
   const unsubscribeCurrent = current.subscribe(async (item) => {
     if (item) {
-      console.log('current', item);
       gsap.to(container, {
         backgroundColor: item.portal.backgroundColor,
         duration: 0.2,
         delay: 1.1
       });
 
+      const type =
+        item.overflow && item.pageCount === item.pageNumber
+          ? ComponentType.QrCode
+          : ComponentType.Weather;
       if (pages.length === 0) {
-        addPage(true, item.portal.primaryColor, item.article?.url);
+        addPage(true, type, item.portal.primaryColor, item.article?.url);
       } else {
-        addPage(false, item.portal.primaryColor, item.article?.url);
+        addPage(false, type, item.portal.primaryColor, item.article?.url);
         await tick();
         movePages();
       }
 
       clearInterval(interval);
+      if (type === ComponentType.QrCode) return;
+
       interval = setInterval(async () => {
-        addPage(false, item.portal.primaryColor, item.article?.url);
+        addPage(
+          false,
+          ComponentType.Weather,
+          item.portal.primaryColor,
+          item.article?.url
+        );
         await tick();
         movePages();
       }, 7000);
@@ -52,7 +62,12 @@
     }
   );
 
-  async function addPage(isFirst: boolean, primaryColor: string, url?: string) {
+  async function addPage(
+    isFirst: boolean,
+    type: ComponentType,
+    primaryColor: string,
+    url?: string
+  ) {
     observationIndex = (observationIndex + 1) % filtered.length;
 
     pages = [
@@ -63,7 +78,7 @@
         primaryColor,
         url,
         observation: filtered[observationIndex],
-        type: ComponentType.Weather
+        type
       }
     ];
   }
