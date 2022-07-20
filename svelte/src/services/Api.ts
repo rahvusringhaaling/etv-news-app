@@ -9,11 +9,8 @@ import { schedule } from '../stores/schedule';
 
 export class Api {
   private socket = io(`ws://localhost:${window.location.port}`);
-  public static instance: Api;
 
   constructor(next: Function) {
-    Api.instance = this;
-
     this.socket.on('server/schedule/get', () => {
       this.socket.emit('template/schedule/post', get(schedule));
     });
@@ -48,7 +45,6 @@ export class Api {
   }
 
   getWeatherObservations() {
-    console.log('template/weather-observations/get')
     return new Promise<IObservationItem[] | null>((resolve) => {
       this.socket.emit(
         'template/weather-observations/get',
@@ -60,7 +56,6 @@ export class Api {
   }
 
   getWeatherForecast() {
-    console.log('template/weather-forecast/get')
     return new Promise<IForecastItem[] | null>(resolve => {
       this.socket.emit(
         'template/weather-forecast/get',

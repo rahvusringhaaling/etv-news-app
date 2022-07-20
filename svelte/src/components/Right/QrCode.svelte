@@ -1,46 +1,58 @@
 <script lang="ts">
   import QRCode from 'qrcode';
-  import { onDestroy } from 'svelte';
-  import { current } from '../../stores/current';
+  import { gsap } from 'gsap';
+  import { onMount } from 'svelte';
 
-  let primaryColor = '';
+  export let primaryColor: string;
+  export let url: string | undefined;
   let canvas: HTMLCanvasElement;
+  let container: HTMLElement;
 
-  const unsubscribe = current.subscribe(async (item) => {
-    if (item && item.article) {
-      primaryColor = item.portal.primaryColor;
+  onMount(() => {
+    if (!url) return;
 
-      const options = {
-        margin: 0,
-        width: 232,
-        color: {
-          dark: '#282828',
-          light: '#00000000'
-        }
-      };
+    const options = {
+      margin: 0,
+      width: 232,
+      color: {
+        dark: '#282828',
+        light: '#00000000'
+      }
+    };
 
-      QRCode.toCanvas(canvas, getShorterUrl(item.article.url), options);
-    }
+    QRCode.toCanvas(canvas, getShorterUrl(url), options);
   });
 
   function getShorterUrl(fullUrl: string) {
     return fullUrl.split('/').slice(0, 4).join('/');
   }
 
-  onDestroy(unsubscribe);
+  export function moveLeft(from: number, to: number) {
+    gsap.fromTo(
+      container,
+      {
+        left: from
+      },
+      {
+        left: to,
+        duration: 0.75
+      }
+    );
+  }
 </script>
 
 <main style="--primary-color: {primaryColor};">
-  <div id="code-container">
+  <div id="container" bind:this={container}>
     <p>Loe edasi:</p>
     <canvas bind:this={canvas} />
   </div>
 </main>
 
 <style>
-  #code-container {
+  #container {
     display: flex;
     flex-direction: column;
+    position: absolute;
     gap: 40px;
     width: 435px;
     height: 479px;

@@ -11,6 +11,7 @@
   import ScheduleBuilder from './components/Content/Builder/ScheduleBuilder.svelte';
   import { sleep } from './utils';
   import type { IScheduleItem } from './domain/IScheduleItem';
+  import { observations } from './stores/weather';
 
   let articles: any[] = [];
   let rawSchedule: IScheduleItem[][];
@@ -25,6 +26,11 @@
   });
 
   async function initialize() {
+    const observationsData = await api.getWeatherObservations();
+    if (observationsData) {
+      observations.set(observationsData);
+    }
+
     feed.set(await api.getTVFeed());
     const newPortals = (await api.getPortals()).map((portal, i) => ({
       ...portal,
