@@ -1,26 +1,21 @@
 <script lang="ts">
-  import { onDestroy } from 'svelte';
+  import { onMount } from 'svelte';
   import type { IObservationItem } from '../../domain/IObservationItem';
-  import { observations } from '../../stores/weather';
   import { gsap } from 'gsap';
 
+  export let observation: IObservationItem;
   let name = '';
   let temperature = 0;
   let icon = 'paike';
   let container: HTMLElement;
 
-  const unsubscribe = observations.subscribe(
-    (observations: IObservationItem[]) => {
-      if (observations.length === 0) return;
-
-      const item = observations.filter((item) => item.icon)[0];
-      if (item && item.icon) {
-        name = item.name;
-        temperature = item.airTemperature;
-        icon = item.icon;
-      }
+  onMount(() => {
+    if (observation && observation.icon) {
+      name = observation.name;
+      temperature = observation.airTemperature;
+      icon = observation.icon;
     }
-  );
+  });
 
   export function moveLeft(from: number, to: number) {
     gsap.fromTo(
@@ -34,8 +29,6 @@
       }
     );
   }
-
-  onDestroy(unsubscribe);
 </script>
 
 <main>

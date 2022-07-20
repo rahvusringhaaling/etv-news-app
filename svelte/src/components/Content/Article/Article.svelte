@@ -43,7 +43,7 @@
     }
 
     pages = [
-      ...pages,
+      ...pages.slice(pages.length - 1),
       {
         left: 955 * (isFirst ? 0 : 1),
         component: null,

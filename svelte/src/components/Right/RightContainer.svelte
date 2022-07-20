@@ -5,51 +5,80 @@
   import CategoryList from './CategoryList.svelte';
   import QrCode from './QrCode.svelte';
   import Weather from './Weather.svelte';
+  import { observations } from '../../stores/weather';
+  import type { IObservationItem } from '../../domain/IObservationItem';
 
   let container: HTMLDivElement;
   let pages: any[] = [];
+  let interval: NodeJS.Timeout;
+  let observationIndex = 0;
+  let filtered: IObservationItem[] = [];
 
-  const unsubscribe = current.subscribe(async (item) => {
+  enum ComponentType {
+    QrCode,
+    Weather
+  }
+
+  const unsubscribeCurrent = current.subscribe(async (item) => {
     if (item) {
+      console.log('current', item);
       gsap.to(container, {
         backgroundColor: item.portal.backgroundColor,
         duration: 0.2,
         delay: 1.1
       });
 
-      addPage(true, item.portal.primaryColor, item.article?.url);
-
-      let i = 0;
-      const x = setInterval(async () => {
+      if (pages.length === 0) {
+        addPage(true, item.portal.primaryColor, item.article?.url);
+      } else {
         addPage(false, item.portal.primaryColor, item.article?.url);
         await tick();
+        movePages();
+      }
 
-        for (const item of pages) {
-          item.component!.moveLeft(item.left, item.left - 435);
-          item.left -= 435;
-        }
-
-        i++;
-        if (i === 3) {
-          clearInterval(x);
-        }
-      }, 1500);
+      clearInterval(interval);
+      interval = setInterval(async () => {
+        addPage(false, item.portal.primaryColor, item.article?.url);
+        await tick();
+        movePages();
+      }, 7000);
     }
   });
 
+  const unsubscribeObservations = observations.subscribe(
+    (observations: IObservationItem[]) => {
+      if (observations.length === 0) return;
+      filtered = observations.filter((item) => item.icon);
+    }
+  );
+
   async function addPage(isFirst: boolean, primaryColor: string, url?: string) {
+    observationIndex = (observationIndex + 1) % filtered.length;
+
     pages = [
-      ...pages,
+      ...pages.slice(pages.length - 1),
       {
         left: 435 * (isFirst ? 0 : 1),
         component: null,
         primaryColor,
-        url
+        url,
+        observation: filtered[observationIndex],
+        type: ComponentType.Weather
       }
     ];
   }
 
-  onDestroy(unsubscribe);
+  function movePages() {
+    for (const item of pages) {
+      item.component!.moveLeft(item.left, item.left - 435);
+      item.left -= 435;
+    }
+  }
+
+  onDestroy(() => {
+    unsubscribeCurrent();
+    unsubscribeObservations();
+  });
 </script>
 
 <main>
@@ -57,12 +86,15 @@
     <CategoryList />
     <div class="bottom-container">
       {#each pages as item (item)}
-        <!-- <QrCode
-          bind:this={item.component}
-          primaryColor={item.primaryColor}
-          url={item.url}
-        /> -->
-        <Weather bind:this={item.component} />
+        {#if item.type === ComponentType.QrCode}
+          <QrCode
+            bind:this={item.component}
+            primaryColor={item.primaryColor}
+            url={item.url}
+          />
+        {:else if item.type === ComponentType.Weather}
+          <Weather bind:this={item.component} observation={item.observation} />
+        {/if}
       {/each}
     </div>
   </div>
