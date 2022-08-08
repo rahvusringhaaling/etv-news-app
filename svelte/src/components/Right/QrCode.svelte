@@ -3,8 +3,9 @@
   import { gsap } from 'gsap';
   import { onMount } from 'svelte';
 
-  export let primaryColor: string;
   export let url: string | undefined;
+  export let text: string;
+  export let primaryColor: string;
   let canvas: HTMLCanvasElement;
   let container: HTMLElement;
 
@@ -43,7 +44,7 @@
 
 <main style="--primary-color: {primaryColor};">
   <div id="container" bind:this={container}>
-    <p>Loe edasi:</p>
+    <p>{text}</p>
     <canvas bind:this={canvas} />
   </div>
 </main>

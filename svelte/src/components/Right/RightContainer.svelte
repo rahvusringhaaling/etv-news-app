@@ -18,6 +18,8 @@
     QrCode,
     Weather
   }
+  let lastText = '';
+  let lastName = '';
 
   const unsubscribeCurrent = current.subscribe(async (item) => {
     if (item) {
@@ -27,14 +29,32 @@
         delay: 1.1
       });
 
-      const type =
-        item.overflow && item.pageCount === item.pageNumber
-          ? ComponentType.QrCode
-          : ComponentType.Weather;
+      let type = ComponentType.Weather;
+      let text = '';
+
+      if (item.article?.hasAudio) {
+        type = ComponentType.QrCode;
+        text = 'Kuula klippi:';
+      } else if (item.article?.hasGallery) {
+        type = ComponentType.QrCode;
+        text = 'Vaata galeriid:';
+      } else if (item.article?.hasVideo) {
+        type = ComponentType.QrCode;
+        text = 'Vaata videot:';
+      } else if (item.overflow && item.pageCount === item.pageNumber) {
+        type = ComponentType.QrCode;
+        text = 'Loe edasi:';
+      }
+      if (text.length > 0 && text === lastText && item.name === lastName) {
+        return;
+      }
+      lastText = text;
+      lastName = item.name;
+
       if (pages.length === 0) {
-        addPage(true, type, item.portal.primaryColor, item.article?.url);
+        addPage(true, type, item.portal.primaryColor, item.article?.url, text);
       } else {
-        addPage(false, type, item.portal.primaryColor, item.article?.url);
+        addPage(false, type, item.portal.primaryColor, item.article?.url, text);
         await tick();
         movePages();
       }
@@ -66,7 +86,8 @@
     isFirst: boolean,
     type: ComponentType,
     primaryColor: string,
-    url?: string
+    url?: string,
+    text?: string
   ) {
     observationIndex = (observationIndex + 1) % filtered.length;
 
@@ -75,8 +96,9 @@
       {
         left: 435 * (isFirst ? 0 : 1),
         component: null,
-        primaryColor,
         url,
+        text,
+        primaryColor,
         observation: filtered[observationIndex],
         type
       }
@@ -104,8 +126,9 @@
         {#if item.type === ComponentType.QrCode}
           <QrCode
             bind:this={item.component}
-            primaryColor={item.primaryColor}
             url={item.url}
+            text={item.text}
+            primaryColor={item.primaryColor}
           />
         {:else if item.type === ComponentType.Weather}
           <Weather bind:this={item.component} observation={item.observation} />

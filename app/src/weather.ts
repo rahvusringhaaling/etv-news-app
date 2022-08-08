@@ -85,7 +85,7 @@ export async function getObservations(): Promise<IObservationItem[] | null> {
   const icons = getIcons();
 
   return stations
-    .filter((station) => locations.has(station.name))
+    // .filter((station) => locations.has(station.name))
     .map((station) =>
       station.phenomenon.length > 0
         ?
