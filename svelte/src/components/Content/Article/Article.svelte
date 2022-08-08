@@ -37,9 +37,13 @@
     showMore: boolean = false,
     primaryColor = ''
   ) {
-    let articleNodes = null;
+    let leadArticleNodes = null;
+    let bodyArticleNodes = null;
     if (!isFirst) {
-      articleNodes = pages[pages.length - 1].component!.getArticleNodes();
+      leadArticleNodes =
+        pages[pages.length - 1].component!.getLeadArticleNodes();
+      bodyArticleNodes =
+        pages[pages.length - 1].component!.getBodyArticleNodes();
     }
 
     pages = [
@@ -47,7 +51,8 @@
       {
         left: 955 * (isFirst ? 0 : 1),
         component: null,
-        articleNodes,
+        leadArticleNodes,
+        bodyArticleNodes,
         showMore,
         primaryColor
       }
@@ -63,7 +68,7 @@
 <main>
   <div class="text-container">
     {#each pages as item (item)}
-      {#if item.articleNodes === null}
+      {#if item.bodyArticleNodes === null || item.leadArticleNodes === null}
         <Text
           bind:this={item.component}
           article={$current.article}
@@ -74,7 +79,8 @@
         <Text
           bind:this={item.component}
           article={$current.article}
-          articleNodes={item.articleNodes}
+          leadArticleNodes={item.leadArticleNodes}
+          bodyArticleNodes={item.bodyArticleNodes}
           showMore={item.showMore}
           primaryColor={item.primaryColor}
         />

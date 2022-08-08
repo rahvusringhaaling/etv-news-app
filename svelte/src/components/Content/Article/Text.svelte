@@ -8,10 +8,15 @@
   let lead = '';
   let body = '';
   let textContainer: HTMLElement;
+  let leadContainer: HTMLElement;
   let bodyContainer: HTMLElement;
   const maxHeight = 950;
   export let article: IArticle | undefined;
-  export let articleNodes: IArticleNodes = {
+  export let leadArticleNodes: IArticleNodes = {
+    usedElements: [],
+    availableElements: []
+  };
+  export let bodyArticleNodes: IArticleNodes = {
     usedElements: [],
     availableElements: []
   };
@@ -26,19 +31,23 @@
       : element;
   }
 
-  function createEmpty() {
-    const newChildren = [...bodyContainer.childNodes].map((element) =>
+  function createEmpty(articleNodes: IArticleNodes, container: HTMLElement) {
+    const newChildren = [...container.childNodes].map((element) =>
       element.nodeType === Node.TEXT_NODE
         ? document.createElement('br')
         : element
     ) as HTMLElement[];
     articleNodes.availableElements = [...newChildren];
-    bodyContainer.replaceChildren();
+    container.replaceChildren();
 
-    addBodyChildren(newChildren);
+    addContainerChildren(newChildren, articleNodes, container);
   }
 
-  function addBodyChildren(newChildren: HTMLElement[]) {
+  function addContainerChildren(
+    newChildren: HTMLElement[],
+    articleNodes: IArticleNodes,
+    container: HTMLElement
+  ) {
     for (const [i, candidate] of newChildren.entries()) {
       if (i === 0 && candidate.nodeName === 'BR') {
         articleNodes.availableElements.shift();
@@ -46,7 +55,7 @@
       }
 
       const copy = (candidate as any).cloneNode(true);
-      bodyContainer.appendChild(copy);
+      container.appendChild(copy);
 
       const { y, height } = copy.getBoundingClientRect();
       if (y > maxHeight) {
@@ -82,22 +91,36 @@
   }
 
   onMount(async () => {
-    if (articleNodes.availableElements.length === 0) {
+    if (bodyArticleNodes.availableElements.length === 0) {
       textContainer.style.left = '0';
       lead = article!.lead;
       body = article!.body;
       await tick();
-      createEmpty();
+      createEmpty(leadArticleNodes, leadContainer);
+      createEmpty(bodyArticleNodes, bodyContainer);
     } else {
-      addBodyChildren([...articleNodes.availableElements]);
+      addContainerChildren(
+        [...leadArticleNodes.availableElements],
+        leadArticleNodes,
+        leadContainer
+      );
+      addContainerChildren(
+        [...bodyArticleNodes.availableElements],
+        bodyArticleNodes,
+        bodyContainer
+      );
     }
 
-    const isLast = articleNodes.availableElements.length === 0;
+    const isLast = bodyArticleNodes.availableElements.length === 0;
     dispatch('textrender', { isLast });
   });
 
-  export function getArticleNodes() {
-    return articleNodes;
+  export function getLeadArticleNodes() {
+    return leadArticleNodes;
+  }
+
+  export function getBodyArticleNodes() {
+    return bodyArticleNodes;
   }
 
   export function moveLeft(from: number, to: number) {
@@ -117,7 +140,7 @@
 <main style="--primary-color: {primaryColor}">
   <div class="text-container" bind:this={textContainer}>
     <span class:mask={showMore}>
-      <p class="lead">{@html lead}</p>
+      <p class="lead" bind:this={leadContainer}>{@html lead}</p>
       <p class="body" bind:this={bodyContainer}>{@html body}</p>
     </span>
     {#if showMore}
