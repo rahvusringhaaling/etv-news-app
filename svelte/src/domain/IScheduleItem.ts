@@ -7,6 +7,7 @@ export enum ScheduleType {
 }
 
 export interface IScheduleItem {
+  index: number;
   portal: IPortal;
   type: ScheduleType;
   pageNumber?: number;

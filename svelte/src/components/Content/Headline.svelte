@@ -101,4 +101,8 @@
     padding: 43px 30px 105px 145px;
     white-space: break-spaces;
   }
+
+  img {
+    width: 1485px;
+  }
 </style>

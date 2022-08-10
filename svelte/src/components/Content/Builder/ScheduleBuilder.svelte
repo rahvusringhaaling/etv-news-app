@@ -34,11 +34,14 @@
   }
 
   async function handleEvent(event: any) {
-    const { isLast } = event.detail;
+    const { isLast, isTooLong } = event.detail;
+    if (isTooLong) return;
+
     if (!isLast && pages.length < 4) {
       addPage(false);
     } else {
       output.push({
+        index: 0,
         portal: portal,
         type: ScheduleType.Headline,
         name: article.header,
@@ -49,6 +52,7 @@
 
       for (let i = 1; i <= pages.length; i++) {
         output.push({
+          index: 0,
           portal: portal,
           type: ScheduleType.Text,
           name: article.header,
@@ -96,7 +100,7 @@
 
   .root-container {
     position: absolute;
-    top: 1080;
+    top: 174px;
     left: 0;
     visibility: hidden;
   }

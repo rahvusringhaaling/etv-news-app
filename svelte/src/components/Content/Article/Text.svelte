@@ -90,6 +90,19 @@
     }
   }
 
+  function trimWhitespaceAtArticleEnd() {
+    while (true) {
+      const lastChild = bodyContainer.lastElementChild;
+      if (lastChild?.tagName === 'BR') {
+        bodyContainer.removeChild(lastChild);
+      } else if (lastChild?.innerHTML.length === 0) {
+        bodyContainer.removeChild(lastChild);
+      } else {
+        return;
+      }
+    }
+  }
+
   onMount(async () => {
     if (bodyArticleNodes.availableElements.length === 0) {
       textContainer.style.left = '0';
@@ -110,9 +123,22 @@
         bodyContainer
       );
     }
+    trimWhitespaceAtArticleEnd();
+
+    await tick();
+    const { height: heightLead } = leadContainer.getBoundingClientRect();
+    const { height: heightBody } = bodyContainer.getBoundingClientRect();
+    const isTooLong = heightLead + heightBody > 770;
+    if (isTooLong) {
+      console.warn(
+        `Did not fit! ${heightLead} + ${heightBody} = ${
+          heightLead + heightBody
+        } (limit 770px) \n ${article?.header}`
+      );
+    }
 
     const isLast = bodyArticleNodes.availableElements.length === 0;
-    dispatch('textrender', { isLast });
+    dispatch('textrender', { isLast, isTooLong });
   });
 
   export function getLeadArticleNodes() {

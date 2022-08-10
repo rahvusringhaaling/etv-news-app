@@ -48,10 +48,20 @@
 
     await sleep(0);
     articles = [];
-    const newSchedule = rawSchedule.flat();
+    const newSchedule = rawSchedule
+      .flat()
+      .map((item, index) => ({ ...item, index }));
 
     current.set(0);
     schedule.set(newSchedule);
+
+    const scheduleSet = new Set($schedule.map((item) => item.name));
+    for (const portal in $feed) {
+      $feed[portal] = $feed[portal].filter((item) =>
+        scheduleSet.has(item.header)
+      );
+    }
+
     api.sendSchedule();
     console.log($schedule);
   }

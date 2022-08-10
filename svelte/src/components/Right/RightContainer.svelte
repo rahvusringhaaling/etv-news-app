@@ -7,6 +7,7 @@
   import Weather from './Weather.svelte';
   import { observations } from '../../stores/weather';
   import type { IObservationItem } from '../../domain/IObservationItem';
+  import type { IScheduleItem } from '../../domain/IScheduleItem';
 
   let container: HTMLDivElement;
   let pages: any[] = [];
@@ -20,9 +21,15 @@
   }
   let lastText = '';
   let lastName = '';
+  let lastItemIndex = 0;
 
   const unsubscribeCurrent = current.subscribe(async (item) => {
     if (item) {
+      if (item.index < lastItemIndex) {
+        lastItemIndex = item.index;
+        return;
+      }
+
       gsap.to(container, {
         backgroundColor: item.portal.backgroundColor,
         duration: 0.2,
@@ -31,6 +38,7 @@
 
       let type = ComponentType.Weather;
       let text = '';
+      lastItemIndex = item.index;
 
       if (item.article?.hasAudio) {
         type = ComponentType.QrCode;

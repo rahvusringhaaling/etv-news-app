@@ -4,14 +4,14 @@ import { IFeed } from './domain/IFeed';
 import { IPortal } from './domain/IPortal';
 
 const portals: IPortal[] = [
-  {
-    name: 'uudised',
-    portal: 'uudised',
-    minItems: 7,
-    maxItems: 7,
-    primaryColor: '#2E3192',
-    textColor: '#EEEEEE'
-  },
+  // {
+  //   name: 'uudised',
+  //   portal: 'uudised',
+  //   minItems: 7,
+  //   maxItems: 7,
+  //   primaryColor: '#2E3192',
+  //   textColor: '#EEEEEE'
+  // },
   {
     name: 'kultuur',
     portal: 'kultuur',
@@ -20,22 +20,22 @@ const portals: IPortal[] = [
     primaryColor: '#DAB230',
     textColor: '#1E1E1E'
   },
-  {
-    name: 'sport',
-    portal: 'sport',
-    minItems: 2,
-    maxItems: 5,
-    primaryColor: '#BD2020',
-    textColor: '#EEEEEE'
-  },
-  {
-    name: 'meelelahutus',
-    portal: 'menu',
-    minItems: 3,
-    maxItems: 3,
-    primaryColor: '#503084',
-    textColor: '#EEEEEE'
-  },
+  // {
+  //   name: 'sport',
+  //   portal: 'sport',
+  //   minItems: 2,
+  //   maxItems: 5,
+  //   primaryColor: '#BD2020',
+  //   textColor: '#EEEEEE'
+  // },
+  // {
+  //   name: 'meelelahutus',
+  //   portal: 'menu',
+  //   minItems: 3,
+  //   maxItems: 3,
+  //   primaryColor: '#503084',
+  //   textColor: '#EEEEEE'
+  // },
   {
     name: 'teadus',
     portal: 'teadus',
