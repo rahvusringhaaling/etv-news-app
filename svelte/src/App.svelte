@@ -11,7 +11,7 @@
   import ScheduleBuilder from './components/Content/Builder/ScheduleBuilder.svelte';
   import { sleep } from './utils';
   import { IScheduleItem, ScheduleType } from './domain/IScheduleItem';
-  import { observations, observationsMap } from './stores/weather';
+  import { forecast, observations, observationsMap } from './stores/weather';
 
   let articles: any[] = [];
   let rawSchedule: IScheduleItem[][];
@@ -33,6 +33,10 @@
     const observationsMapData = await api.getWeatherObservationsMap();
     if (observationsMapData) {
       observationsMap.set(observationsMapData);
+    }
+    const forecastData = await api.getWeatherForecast();
+    if (forecastData) {
+      forecast.set(forecastData);
     }
 
     feed.set(await api.getTVFeed());
@@ -64,7 +68,7 @@
       portal: weather!,
       type: ScheduleType.WeatherObservation,
       name: `Faktiline ilm kell ${new Date().getHours()}:00`,
-      duration: 30
+      duration: 300000
     });
     current.set(0);
     schedule.set(newSchedule);

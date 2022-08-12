@@ -8,6 +8,7 @@
   import { ScheduleType } from '../../domain/IScheduleItem';
   import Article from './Article/Article.svelte';
   import WeatherMap from './WeatherMap/WeatherMap.svelte';
+  import WeatherForecast from './WeatherForecast/WeatherForecast.svelte';
 
   let weatherMap: HTMLElement;
   let bar: HTMLElement;
@@ -77,6 +78,9 @@
     </div>
     <div class="overlay" bind:this={headline}>
       <Headline />
+    </div>
+    <div class="overlay weather">
+      <WeatherForecast />
     </div>
   </div>
 </main>

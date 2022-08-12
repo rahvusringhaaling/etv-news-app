@@ -1,4 +1,5 @@
 export interface IForecastItem {
+  date: string,
   night: {
     phenomenon: string;
     icon?: string;

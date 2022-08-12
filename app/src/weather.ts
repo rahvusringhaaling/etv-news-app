@@ -22,7 +22,7 @@ const locations = new Map([
   ['Lääne-Nigula', [506, 315]],
   ['Väike-Maarja', [944, 266]],
 ])
-const parser = new XMLParser();
+const parser = new XMLParser({ ignoreAttributes: false });
 
 function getIcons(isNight: boolean | null = null) {
   if (isNight === null) {
@@ -82,9 +82,6 @@ export async function getObservations(): Promise<IObservationsTimestamp | null> 
   const { data } = await axios.get<string>(url);
 
   const weather: IWeatherObservations = parser.parse(data);
-  const regex = /<observations timestamp="(\d+)">/
-  const match = data.match(regex);
-  const timestamp = match ? parseInt(match[1]) : null;
 
   if (!weather?.observations?.station) return null;
   const { station: stations } = weather.observations;
@@ -110,7 +107,7 @@ export async function getObservations(): Promise<IObservationsTimestamp | null> 
         }
     });
 
-  return { timestamp, observations }
+  return { timestamp: weather.observations['@_timestamp'], observations }
 }
 
 export async function getObservationsMap(): Promise<IObservationsMap | null> {
@@ -142,6 +139,7 @@ export async function getForecast(): Promise<IForecastItem[] | null> {
   const nightIcons = getIcons(true);
 
   return forecast.map((item) => ({
+    date: item['@_date'],
     night: {
       phenomenon: item.night.phenomenon,
       icon: nightIcons[item.night.phenomenon.toLocaleLowerCase()],
