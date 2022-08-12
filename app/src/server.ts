@@ -6,7 +6,7 @@ import * as net from 'net';
 import { Server } from 'socket.io';
 import { CasparCG, Options } from 'casparcg-connection';
 import { getPortals, getFeeds } from './news'
-import { getObservations, getForecast } from './weather';
+import { getObservations, getForecast, getObservationsMap } from './weather';
 
 getForecast()
 
@@ -101,8 +101,6 @@ export function clearLayers() {
 }
 
 io.on('connection', (socket) => {
-  console.log('A user connected');
-
   socket.on('client/caspar/is-connected', (callback: Function) => {
     callback(connection.connected);
   });
@@ -141,7 +139,22 @@ io.on('connection', (socket) => {
 
   socket.on('template/weather-observations/get', async (callback: Function) => {
     try {
-      callback(await getObservations());
+      const result = await getObservations();
+      if (!result) {
+        callback(null)
+        return;
+      };
+
+      const { observations } = result;
+      callback(observations);
+    } catch (error) {
+      callback(null);
+    }
+  });
+
+  socket.on('template/weather-observations-map/get', async (callback: Function) => {
+    try {
+      callback(await getObservationsMap());
     } catch (error) {
       callback(null);
     }

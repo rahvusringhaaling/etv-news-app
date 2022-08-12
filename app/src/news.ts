@@ -28,26 +28,35 @@ const portals: IPortal[] = [
   //   primaryColor: '#BD2020',
   //   textColor: '#EEEEEE'
   // },
-  // {
-  //   name: 'meelelahutus',
-  //   portal: 'menu',
-  //   minItems: 3,
-  //   maxItems: 3,
-  //   primaryColor: '#503084',
-  //   textColor: '#EEEEEE'
-  // },
   {
-    name: 'teadus',
-    portal: 'teadus',
+    name: 'meelelahutus',
+    portal: 'menu',
     minItems: 3,
     maxItems: 3,
-    primaryColor: '#64A131',
+    primaryColor: '#503084',
     textColor: '#EEEEEE'
-  }
+  },
+  // {
+  //   name: 'teadus',
+  //   portal: 'teadus',
+  //   minItems: 3,
+  //   maxItems: 3,
+  //   primaryColor: '#64A131',
+  //   textColor: '#EEEEEE'
+  // },
 ];
 
-export function getPortals() {
-  return portals;
+const weatherPortal = {
+  name: 'ilm',
+  portal: 'ilm',
+  minItems: 6,
+  maxItems: 6,
+  primaryColor: '#29ABE2',
+  textColor: '#EEEEEE'
+}
+
+export function getPortals(): IPortal[] {
+  return [...portals, weatherPortal];
 }
 
 export async function getFeeds() {

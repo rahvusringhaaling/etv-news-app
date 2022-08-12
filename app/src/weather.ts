@@ -1,24 +1,28 @@
 import axios from 'axios';
 import { XMLParser } from 'fast-xml-parser';
+import { IFilteredObservationItem } from './domain/IFilteredObservationItem';
 import { IForecastItem } from './domain/IForecastItem';
 import { IObservationItem } from './domain/IObservationItem';
+import { IObservationsMap } from './domain/IObservationsMap';
+import { IObservationsTimestamp } from './domain/IObservationsTimestamp';
 import { IWeatherForecast } from './domain/IWeatherForecast';
 import { IWeatherObservations } from './domain/IWeatherObservations';
 
-const locations = new Set([
-  'Tallinn-Harku',
-  'Jõhvi',
-  'Jõgeva',
-  'Tartu-Tõravere',
-  'Võru',
-  'Valga',
-  'Türi',
-  'Pärnu-Sauga',
-  'Sõrve',
-  'Ristna',
-  'Lääne-Nigula',
-  'Väike-Maarja'
-]);
+const locations = new Map([
+  ['Tallinn-Harku', [655, 172]],
+  ['Jõhvi', [1164, 180]],
+  ['Jõgeva', [1085, 390]],
+  ['Tartu-Tõravere', [999, 528]],
+  ['Võru', [1180, 681]],
+  ['Valga', [852, 699]],
+  ['Türi', [787, 360]],
+  ['Pärnu-Sauga', [634, 494]],
+  ['Sõrve', [200, 649]],
+  ['Ristna', [201, 331]],
+  ['Lääne-Nigula', [506, 315]],
+  ['Väike-Maarja', [944, 266]],
+])
+const parser = new XMLParser();
 
 function getIcons(isNight: boolean | null = null) {
   if (isNight === null) {
@@ -72,35 +76,58 @@ function getIcons(isNight: boolean | null = null) {
     'thunderstorm': 'pilv_aike_vihm'
   }
 }
-const parser = new XMLParser();
 
-export async function getObservations(): Promise<IObservationItem[] | null> {
+export async function getObservations(): Promise<IObservationsTimestamp | null> {
   const url = 'https://www.ilmateenistus.ee/ilma_andmed/xml/observations.php';
   const { data } = await axios.get<string>(url);
 
   const weather: IWeatherObservations = parser.parse(data);
+  const regex = /<observations timestamp="(\d+)">/
+  const match = data.match(regex);
+  const timestamp = match ? parseInt(match[1]) : null;
+
   if (!weather?.observations?.station) return null;
   const { station: stations } = weather.observations;
 
   const icons = getIcons();
-
-  return stations
-    // .filter((station) => locations.has(station.name))
-    .map((station) =>
-      station.phenomenon.length > 0
+  const observations = stations
+    .map((station) => {
+      const temp = typeof station.airtemperature === 'number'
+        ? station.airtemperature
+        : null;
+      return station.phenomenon.length > 0
         ?
         {
           name: station.name,
           phenomenon: station.phenomenon,
           icon: icons[station.phenomenon.toLocaleLowerCase()],
-          airTemperature: station.airtemperature
+          airTemperature: temp
         }
         :
         {
           name: station.name,
-          airTemperature: station.airtemperature
+          airTemperature: temp
         }
-    );
+    });
+
+  return { timestamp, observations }
+}
+
+export async function getObservationsMap(): Promise<IObservationsMap | null> {
+  const result = await getObservations();
+  if (!result) return null;
+  const { timestamp, observations } = result;
+
+  const observationsFiltered = observations
+    .filter(
+      (station) => station.airTemperature && locations.has(station.name)
+    )
+    .map(station => {
+      const [x, y] = locations.get(station.name)!
+      return { ...station, x, y };
+    });
+
+  return { timestamp, observations: observationsFiltered }
 }
 
 export async function getForecast(): Promise<IForecastItem[] | null> {

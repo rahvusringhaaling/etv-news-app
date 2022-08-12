@@ -10,7 +10,7 @@
   let container: HTMLElement;
 
   onMount(() => {
-    if (observation && observation.icon) {
+    if (observation && observation.icon && observation.airTemperature) {
       name = observation.name;
       temperature = observation.airTemperature;
       icon = observation.icon;
@@ -37,7 +37,7 @@
       <p>{name}</p>
       <div>
         <img src="/assets/icons/{icon}.png" alt="" />
-        <p>{temperature}°C</p>
+        <p>{temperature.toLocaleString('et-ET')}°C</p>
       </div>
     {/if}
   </div>

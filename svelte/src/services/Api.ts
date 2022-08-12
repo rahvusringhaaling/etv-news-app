@@ -6,6 +6,8 @@ import type { IForecastItem } from '../domain/IForecastItem';
 import type { IPortal } from '../domain/IPortal';
 import { index } from '../stores/current';
 import { schedule } from '../stores/schedule';
+import type { IFilteredObservationItem } from '../domain/IFilteredObservationItem';
+import type { IObservationsMap } from '../domain/IObservationsMap';
 
 export class Api {
   private socket = io(`ws://localhost:${window.location.port}`);
@@ -49,6 +51,17 @@ export class Api {
       this.socket.emit(
         'template/weather-observations/get',
         (observations: IObservationItem[] | null) => {
+          resolve(observations);
+        }
+      );
+    });
+  }
+
+  getWeatherObservationsMap() {
+    return new Promise<IObservationsMap | null>((resolve) => {
+      this.socket.emit(
+        'template/weather-observations-map/get',
+        (observations: IObservationsMap | null) => {
           resolve(observations);
         }
       );

@@ -7,7 +7,7 @@
   import Weather from './Weather.svelte';
   import { observations } from '../../stores/weather';
   import type { IObservationItem } from '../../domain/IObservationItem';
-  import type { IScheduleItem } from '../../domain/IScheduleItem';
+  import { IScheduleItem, ScheduleType } from '../../domain/IScheduleItem';
 
   let container: HTMLDivElement;
   let pages: any[] = [];
@@ -36,11 +36,16 @@
         delay: 1.1
       });
 
+      let url = item.article?.url;
       let type = ComponentType.Weather;
       let text = '';
       lastItemIndex = item.index;
 
-      if (item.article?.hasAudio) {
+      if (item.portal.name === 'ilm') {
+        url = 'ilm.err.ee';
+        type = ComponentType.QrCode;
+        text = url;
+      } else if (item.article?.hasAudio) {
         type = ComponentType.QrCode;
         text = 'Kuula klippi:';
       } else if (item.article?.hasGallery) {
@@ -60,15 +65,17 @@
       lastName = item.name;
 
       if (pages.length === 0) {
-        addPage(true, type, item.portal.primaryColor, item.article?.url, text);
+        addPage(true, type, item.portal.primaryColor, url, text);
       } else {
-        addPage(false, type, item.portal.primaryColor, item.article?.url, text);
+        addPage(false, type, item.portal.primaryColor, url, text);
         await tick();
         movePages();
       }
 
       clearInterval(interval);
-      if (type === ComponentType.QrCode) return;
+      if (type === ComponentType.QrCode || item.type !== ScheduleType.Text) {
+        return;
+      }
 
       interval = setInterval(async () => {
         addPage(

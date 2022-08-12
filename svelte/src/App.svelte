@@ -10,8 +10,8 @@
   import { current, index } from './stores/current';
   import ScheduleBuilder from './components/Content/Builder/ScheduleBuilder.svelte';
   import { sleep } from './utils';
-  import type { IScheduleItem } from './domain/IScheduleItem';
-  import { observations } from './stores/weather';
+  import { IScheduleItem, ScheduleType } from './domain/IScheduleItem';
+  import { observations, observationsMap } from './stores/weather';
 
   let articles: any[] = [];
   let rawSchedule: IScheduleItem[][];
@@ -30,6 +30,10 @@
     if (observationsData) {
       observations.set(observationsData);
     }
+    const observationsMapData = await api.getWeatherObservationsMap();
+    if (observationsMapData) {
+      observationsMap.set(observationsMapData);
+    }
 
     feed.set(await api.getTVFeed());
     const newPortals = (await api.getPortals()).map((portal, i) => ({
@@ -39,9 +43,11 @@
     }));
     portals.set(newPortals);
 
-    articles = $portals.flatMap((portal) =>
-      $feed[portal.portal].flatMap((article) => ({ article, portal }))
-    );
+    articles = $portals
+      .filter((portal) => portal.name !== 'ilm')
+      .flatMap((portal) =>
+        $feed[portal.portal].flatMap((article) => ({ article, portal }))
+      );
     rawSchedule = Array(articles.length)
       .fill(null)
       .map((_) => []);
@@ -52,6 +58,14 @@
       .flat()
       .map((item, index) => ({ ...item, index }));
 
+    const weather = $portals.find((portal) => portal.name === 'ilm');
+    newSchedule.unshift({
+      index: 0,
+      portal: weather!,
+      type: ScheduleType.WeatherObservation,
+      name: `Faktiline ilm kell ${new Date().getHours()}:00`,
+      duration: 30
+    });
     current.set(0);
     schedule.set(newSchedule);
 
