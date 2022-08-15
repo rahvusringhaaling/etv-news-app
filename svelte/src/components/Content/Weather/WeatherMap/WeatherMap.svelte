@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { IFilteredObservationItem } from '../../../domain/IFilteredObservationItem';
-  import { observationsMap } from '../../../stores/weather';
+  import type { IFilteredObservationItem } from '../../../../domain/IFilteredObservationItem';
+  import { observationsMap } from '../../../../stores/weather';
   import Svg from './Svg.svelte';
 
   let time = '';
@@ -33,7 +33,7 @@
     {#each items as { x, y, airTemperature, icon }}
       <div class="location" style:left="{x}px" style:top="{y}px">
         {#if icon}
-          <img src="/assets/icons/pilv_paike.png" alt="" />
+          <img src="/assets/icons/black/pilv_paike.png" alt="" />
         {/if}
         <span>{airTemperature?.toLocaleString('et-ET')}°C</span>
       </div>

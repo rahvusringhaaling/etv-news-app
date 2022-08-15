@@ -29,8 +29,8 @@ export class ControlLayoutComponent implements OnInit {
   }
 
   columnDefs: ColDef[] = [
-    { field: 'portal', headerName: 'Portaal', maxWidth: 150 },
-    { field: 'type', headerName: 'Tüüp', maxWidth: 150 },
+    { field: 'portal', headerName: 'Portaal', maxWidth: 151 },
+    { field: 'type', headerName: 'Tüüp', maxWidth: 151 },
     { field: 'page', headerName: 'LK', maxWidth: 80 },
     { field: 'name', headerName: 'Nimetus' },
     { field: 'duration', headerName: 'Kestus', maxWidth: 80 }

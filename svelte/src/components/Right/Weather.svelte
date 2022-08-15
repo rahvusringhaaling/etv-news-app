@@ -36,7 +36,7 @@
     {#if name.length > 0}
       <p>{name}</p>
       <div>
-        <img src="/assets/icons/{icon}.png" alt="" />
+        <img src="/assets/icons/black/{icon}.png" alt="" />
         <p>{temperature.toLocaleString('et-ET')}°C</p>
       </div>
     {/if}

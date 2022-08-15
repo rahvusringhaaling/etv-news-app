@@ -2,6 +2,7 @@
   import { onDestroy } from 'svelte';
   import { current } from '../stores/current';
   import { gsap } from 'gsap';
+  import { getMonthName, getWeekDay } from '../utils';
 
   let time = '';
   let date = '';
@@ -14,8 +15,8 @@
     const minutes = now.getMinutes();
 
     const dayNumber = now.getDate();
-    const dayName = now.toLocaleDateString('et', { weekday: 'long' });
-    const monthName = now.toLocaleString('et', { month: 'long' });
+    const dayName = getWeekDay(now);
+    const monthName = getMonthName(now);
 
     time = getFormattedTime(hours, minutes);
     date = `${dayName}, ${dayNumber}. ${monthName}`;

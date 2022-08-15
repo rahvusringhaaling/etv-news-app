@@ -1,9 +1,6 @@
 <script lang="ts">
   import { forecast } from '../../../stores/weather';
-
-  forecast.subscribe((data) => {
-    console.log('forecast', data);
-  });
+  import { getWeekDay } from '../../../utils';
 </script>
 
 <main>
@@ -15,13 +12,13 @@
       <div id="grid">
         {#each $forecast as { date }}
           <div class="header primary ">
-            {new Date(date).toLocaleDateString('et', { weekday: 'long' })}
+            {getWeekDay(new Date(date))}
           </div>
         {/each}
 
         {#each $forecast as item}
           <div class="row bg">
-            <img src="/assets/icons/{item.night.icon}.png" alt="" />
+            <img src="/assets/icons/white/{item.night.icon}.png" alt="" />
             <span>
               {item.night.tempMin}..{item.night.tempMax}°C
             </span>
@@ -30,7 +27,7 @@
 
         {#each $forecast as item}
           <div class="row">
-            <img src="/assets/icons/{item.day.icon}.png" alt="" />
+            <img src="/assets/icons/black/{item.day.icon}.png" alt="" />
             <span class="primary">
               {item.day.tempMin}..{item.day.tempMax}°C
             </span>

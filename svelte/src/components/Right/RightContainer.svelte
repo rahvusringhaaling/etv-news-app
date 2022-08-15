@@ -7,7 +7,7 @@
   import Weather from './Weather.svelte';
   import { observations } from '../../stores/weather';
   import type { IObservationItem } from '../../domain/IObservationItem';
-  import { IScheduleItem, ScheduleType } from '../../domain/IScheduleItem';
+  import { ScheduleType } from '../../domain/IScheduleItem';
 
   let container: HTMLDivElement;
   let pages: any[] = [];
@@ -58,7 +58,10 @@
         type = ComponentType.QrCode;
         text = 'Loe edasi:';
       }
-      if (text.length > 0 && text === lastText && item.name === lastName) {
+      if (
+        (text.length > 0 && text === lastText && item.name === lastName) ||
+        (item.portal.name === 'ilm' && text === lastText)
+      ) {
         return;
       }
       lastText = text;

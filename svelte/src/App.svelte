@@ -9,7 +9,7 @@
   import { schedule } from './stores/schedule';
   import { current, index } from './stores/current';
   import ScheduleBuilder from './components/Content/Builder/ScheduleBuilder.svelte';
-  import { sleep } from './utils';
+  import { getWeekDay, hexToRgba, sleep } from './utils';
   import { IScheduleItem, ScheduleType } from './domain/IScheduleItem';
   import { forecast, observations, observationsMap } from './stores/weather';
 
@@ -58,18 +58,41 @@
 
     await sleep(0);
     articles = [];
-    const newSchedule = rawSchedule
+    let newSchedule = rawSchedule
       .flat()
-      .map((item, index) => ({ ...item, index }));
+      .map((item, index) => ({ ...item, index: index + 6 }));
 
     const weather = $portals.find((portal) => portal.name === 'ilm');
-    newSchedule.unshift({
-      index: 0,
-      portal: weather!,
-      type: ScheduleType.WeatherObservation,
-      name: `Faktiline ilm kell ${new Date().getHours()}:00`,
-      duration: 300000
-    });
+    const weatherSchedule: IScheduleItem[] = [
+      {
+        index: 0,
+        portal: weather!,
+        type: ScheduleType.WeatherObservation,
+        name: `Faktiline ilm kell ${new Date().getHours()}:00`,
+        duration: 30
+      },
+      {
+        index: 1,
+        portal: weather!,
+        type: ScheduleType.WeatherForecast,
+        name: `Nelja päeva prognoos`,
+        duration: 30
+      }
+    ];
+
+    for (let i = 0; i < 4; i++) {
+      weatherSchedule.push({
+        index: i + 2,
+        portal: weather!,
+        type: ScheduleType.WeatherForecastDay,
+        name: `Detailne prognoos - ${getWeekDay(new Date($forecast[i].date))}`,
+        forecast: $forecast[i],
+        duration: 30
+      });
+    }
+
+    newSchedule = [...weatherSchedule, ...newSchedule];
+
     current.set(0);
     schedule.set(newSchedule);
 
@@ -103,15 +126,6 @@
     } else {
       current.next();
     }
-  }
-
-  // #2E3192 => rgba(46, 49, 146, 0.1)
-  function hexToRgba(hex: string) {
-    const integer = parseInt(hex.substring(1), 16);
-    const r = (integer >> 16) & 255;
-    const g = (integer >> 8) & 255;
-    const b = integer & 255;
-    return `rgba(${r}, ${g}, ${b}, 0.1)`;
   }
 
   onDestroy(unsubscribe);
