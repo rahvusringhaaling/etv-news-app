@@ -1,0 +1,110 @@
+.mdc-text-field {
+  background-color: #393a3e;
+}
+
+.mdc-text-field__input {
+  color: white !important;
+  caret-color: white !important;
+}
+
+.mdc-text-field__input::placeholder {
+  color: #a4a4a4 !important;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+mat-panel-title {
+  font-weight: bold;
+}
+
+mat-expansion-panel {
+  width: 100%;
+  height: 100%;
+  overflow-x: inherit;
+  background-color: #303134;
+}
+
+mat-action-row {
+  gap: 8px;
+  justify-content: flex-start;
+}
+
+.mat-action-row button.mat-button-base, .mat-action-row button.mat-mdc-button-base {
+  margin-left: 0 !important;
+}
+
+.small-textfield {
+  height: 36px;
+  width: 75px;
+  margin: 0 5px;
+}
+
+.medium-textfield {
+  height: 36px;
+  width: 450px;
+}
+
+.large-textfield {
+  width: 100%;
+  height: 36px;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+h4 {
+  margin: 10px 0;
+}
+
+.toolbar {
+  width: calc(100% - 2px);
+  height: 48px;
+  border: solid 1px;
+  border-bottom: 0;
+  border-color: #68686e;
+  background-color: #393a3e;
+
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+
+.toolbar.blocks {
+  border-bottom: solid 1px;
+  border-color: #68686e;
+  margin-bottom: 20px;
+}
+
+.toolbar-button-icon {
+  font-size: 16pt;
+  margin-right: 2px;
+}
+
+.toolbar-button {
+  height: 36px;
+}
+
+.options-container {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+}
+
+.option {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 20px;
+}
+
+ag-grid-angular {
+  margin-bottom: 8px;
+}

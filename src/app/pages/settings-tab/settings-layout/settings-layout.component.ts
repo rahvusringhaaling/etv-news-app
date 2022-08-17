@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../core/services/api/api.service';
 
 @Component({
-  selector: 'app-info-layout',
-  templateUrl: './info-layout.component.html',
-  styleUrls: ['./info-layout.component.scss']
+  selector: 'app-settings-layout',
+  templateUrl: './settings-layout.component.html',
+  styleUrls: ['./settings-layout.component.scss']
 })
-export class InfoLayoutComponent implements OnInit {
+export class SettingsLayoutComponent implements OnInit {
   public port: number;
   public casparPath: string;
 

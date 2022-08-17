@@ -13,7 +13,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   lastEditedString: string = '';
   templateConnection = false;
   casparConnection = false;
-  showInfoTab = false;
+  showSettingsTab = false;
   private lastEdited: number = 0;
   private readonly SLEEP_INTERVAL = 3000;
   private lastTemplateHeartbeat = 0;
@@ -44,7 +44,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const labels: HTMLElement = document.querySelector('.mat-tab-labels');
+    const labels: HTMLElement = document.querySelector('.mat-tab-labels')!;
     labels.style.height = '40px';
     labels.style.alignItems = 'center';
     labels.style.userSelect = 'none';
@@ -62,7 +62,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       //   this.showTitleTab = true;
       //   break;
       case 1:
-        this.showInfoTab = true;
+        this.showSettingsTab = true;
         break;
     }
   }

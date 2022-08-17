@@ -1,0 +1,85 @@
+<mat-expansion-panel [expanded]="true"
+  id="title-panel">
+  <mat-expansion-panel-header>
+    <mat-panel-title>Ilm</mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <div class="options-container">
+    <div class="option">
+      <div>Ilmaprognoos:</div>
+      <div class="input-container">
+        <mat-checkbox [(ngModel)]="showObservations"
+          color="accent">
+          Näita ilmaprognoosi
+        </mat-checkbox>
+
+        <label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label large-textfield">
+          <span class="mdc-text-field__ripple"></span>
+          <input [(ngModel)]="observationsURL"
+            class="mdc-text-field__input"
+            placeholder="www.ilmateenistus.ee">
+          <span class="mdc-line-ripple"></span>
+        </label>
+      </div>
+    </div>
+    <div class="option">
+      <div>Ilmateade:</div>
+      <div class="input-container">
+        <mat-checkbox [(ngModel)]="showForecast"
+          color="accent">
+          Näita ilmavaatlust
+        </mat-checkbox>
+
+        <label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label large-textfield">
+          <span class="mdc-text-field__ripple"></span>
+          <input [(ngModel)]="forecastURL"
+            class="mdc-text-field__input"
+            placeholder="www.ilmateenistus.ee">
+          <span class="mdc-line-ripple"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <button mat-button
+      class="toolbar-button"
+      (click)="addRow()">
+      <mat-icon class="toolbar-button-icon">add</mat-icon>
+      <span>Lisa</span>
+    </button>
+    <button mat-button
+      class="toolbar-button"
+      [disabled]="!isSelected"
+      (click)="removeRow()">
+      <mat-icon class="toolbar-button-icon">delete</mat-icon>
+      <span>Kustuta</span>
+    </button>
+    <button mat-button
+      class="toolbar-button"
+      [disabled]="!isSelected"
+      (click)="copyRow()">
+      <mat-icon class="toolbar-button-icon">copy</mat-icon>
+      <span>Kopeeri</span>
+    </button>
+    <button mat-button
+      class="toolbar-button right-spacer"
+      [disabled]="!copiedRows"
+      (click)="pasteRow()">
+      <mat-icon class="toolbar-button-icon">paste</mat-icon>
+      <span>Kleebi</span>
+    </button>
+  </div>
+
+  <ag-grid-angular class="ag-theme-alpine-dark"
+    spellcheck="false"
+    [rowData]="rowData"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [rowDragManaged]="true"
+    [animateRows]="true"
+    [suppressMoveWhenRowDragging]="true"
+    [domLayout]="'autoHeight'"
+    [gridOptions]="gridOptions">
+  </ag-grid-angular>
+</mat-expansion-panel>

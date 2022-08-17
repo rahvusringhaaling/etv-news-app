@@ -7,7 +7,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { HeaderComponent } from './header.component';
-import { InfoTabModule } from '../../pages/info-tab/info-tab.module';
+import { SettingsTabModule } from '../../pages/settings-tab/settings-tab.module';
 import { ControlTabModule } from '../../pages/control-tab/control-tab.module';
 
 @NgModule({
@@ -22,7 +22,7 @@ import { ControlTabModule } from '../../pages/control-tab/control-tab.module';
     MatIconModule,
 
     ControlTabModule,
-    InfoTabModule
+    SettingsTabModule
   ],
   exports: [
     HeaderComponent

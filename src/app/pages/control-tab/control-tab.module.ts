@@ -24,7 +24,7 @@ import { ControlLayoutComponent } from './control-layout/control-layout.componen
     MatButtonModule,
     MatExpansionModule,
     MatCheckboxModule,
-    AgGridModule.withComponents([]),
+    AgGridModule,
     SelectEditorModule,
     MatIconModule,
     MatFormFieldModule,

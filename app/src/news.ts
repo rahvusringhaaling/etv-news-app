@@ -1,17 +1,17 @@
 
-import axios from 'axios';
-import { IFeed } from './domain/IFeed';
+import fetch from 'node-fetch';
+import { URLSearchParams } from 'url';
 import { IPortal } from './domain/IPortal';
 
 const portals: IPortal[] = [
-  // {
-  //   name: 'uudised',
-  //   portal: 'uudised',
-  //   minItems: 7,
-  //   maxItems: 7,
-  //   primaryColor: '#2E3192',
-  //   textColor: '#EEEEEE'
-  // },
+  {
+    name: 'uudised',
+    portal: 'uudised',
+    minItems: 7,
+    maxItems: 7,
+    primaryColor: '#2E3192',
+    textColor: '#EEEEEE'
+  },
   {
     name: 'kultuur',
     portal: 'kultuur',
@@ -20,14 +20,14 @@ const portals: IPortal[] = [
     primaryColor: '#DAB230',
     textColor: '#1E1E1E'
   },
-  // {
-  //   name: 'sport',
-  //   portal: 'sport',
-  //   minItems: 2,
-  //   maxItems: 5,
-  //   primaryColor: '#BD2020',
-  //   textColor: '#EEEEEE'
-  // },
+  {
+    name: 'sport',
+    portal: 'sport',
+    minItems: 2,
+    maxItems: 5,
+    primaryColor: '#BD2020',
+    textColor: '#EEEEEE'
+  },
   {
     name: 'meelelahutus',
     portal: 'menu',
@@ -36,14 +36,14 @@ const portals: IPortal[] = [
     primaryColor: '#503084',
     textColor: '#EEEEEE'
   },
-  // {
-  //   name: 'teadus',
-  //   portal: 'teadus',
-  //   minItems: 3,
-  //   maxItems: 3,
-  //   primaryColor: '#64A131',
-  //   textColor: '#EEEEEE'
-  // },
+  {
+    name: 'teadus',
+    portal: 'teadus',
+    minItems: 3,
+    maxItems: 3,
+    primaryColor: '#64A131',
+    textColor: '#EEEEEE'
+  },
 ];
 
 const weatherPortal = {
@@ -65,10 +65,15 @@ export async function getFeeds() {
   for (const feed of portals) {
     const { portal, minItems, maxItems } = feed;
     const params = {
-      portal, minItems, maxItems, lasthours: 24
+      portal,
+      minItems: minItems.toString(),
+      maxItems: maxItems.toString(),
+      lasthours: '24'
     }
-    const url = 'https://services.err.ee/api/feeds/GetTVFeed';
-    const { data } = await axios.get<IFeed[]>(url, { params });
+    const url = 'https://services.err.ee/api/feeds/GetTVFeed?'
+      + new URLSearchParams(params);
+    const response = await fetch(url);
+    const data = await response.json();
 
     const items = data[0].FeedItems.map(item => ({
       header: item.Header,

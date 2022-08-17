@@ -1,8 +1,6 @@
-import axios from 'axios';
 import { XMLParser } from 'fast-xml-parser';
-import { IFilteredObservationItem } from './domain/IFilteredObservationItem';
+import fetch from 'node-fetch';
 import { IForecastItem } from './domain/IForecastItem';
-import { IObservationItem } from './domain/IObservationItem';
 import { IObservationsMap } from './domain/IObservationsMap';
 import { IObservationsTimestamp } from './domain/IObservationsTimestamp';
 import { IWeatherForecast } from './domain/IWeatherForecast';
@@ -79,7 +77,8 @@ function getIcons(isNight: boolean | null = null) {
 
 export async function getObservations(): Promise<IObservationsTimestamp | null> {
   const url = 'https://www.ilmateenistus.ee/ilma_andmed/xml/observations.php';
-  const { data } = await axios.get<string>(url);
+  const response = await fetch(url);
+  const data = await response.text();
 
   const weather: IWeatherObservations = parser.parse(data);
 
@@ -129,7 +128,8 @@ export async function getObservationsMap(): Promise<IObservationsMap | null> {
 
 export async function getForecast(): Promise<IForecastItem[] | null> {
   const url = 'https://www.ilmateenistus.ee/ilma_andmed/xml/forecast.php';
-  const { data } = await axios.get<string>(url);
+  const response = await fetch(url);
+  const data = await response.text();
 
   const weather: IWeatherForecast = parser.parse(data);
   if (!weather.forecasts?.forecast) return null;

@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { ApiService } from '../../../core/services/api/api.service';
 import { DataService } from '../../../core/services/data/data.service';
-import { ColDef, GridReadyEvent, RowNode } from 'ag-grid-community';
+import { ColDef, GridOptions, GridReadyEvent, RowNode } from 'ag-grid-community';
 import { SelectEditorComponent } from '../../../shared/components/select-editor/select-editor.component';
 import { AG_GRID_LOCALE_EE } from '../../../../assets/locale.ee';
 import { Subject } from 'rxjs';
@@ -20,7 +20,7 @@ export class ControlLayoutComponent implements OnInit {
   private scheduleLength = 0;
   private DATA_ID = "controlTable";
   private gridApi;
-  gridOptions = {
+  gridOptions: GridOptions = {
     components: {
       selectEditor: SelectEditorComponent
     },

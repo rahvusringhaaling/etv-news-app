@@ -31,10 +31,20 @@ mat-expansion-panel {
   background-color: #303134;
 }
 
+mat-action-row {
+  gap: 8px;
+  justify-content: flex-start;
+}
+
+.mat-action-row button.mat-button-base, .mat-action-row button.mat-mdc-button-base {
+  margin-left: 0 !important;
+}
+
 #settings-root-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 10px;
   padding: 10px;
   height: 100%;
 }
@@ -64,4 +74,32 @@ h4 {
   display: flex;
   flex-direction: column;
   gap: 15px;
+}
+
+.toolbar {
+  width: calc(100% - 2px);
+  height: 48px;
+  border: solid 1px;
+  border-bottom: 0;
+  border-color: #68686e;
+  background-color: #393a3e;
+
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+
+.toolbar-button-icon {
+  font-size: 16pt;
+  margin-right: 2px;
+}
+
+.toolbar-button {
+  height: 36px;
+}
+
+.component {
+  width: 100%;
 }
