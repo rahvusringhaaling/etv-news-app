@@ -15,8 +15,13 @@
 
   let articles: any[] = [];
   let rawSchedule: IScheduleItem[][];
-  let api = new Api(() => next());
+  let api = new Api(
+    () => next(),
+    () => initialize(),
+    () => getInitTime()
+  );
   let timeout: NodeJS.Timeout;
+  let initTime = 0;
 
   onMount(() => {
     api.sendHeartbeat();
@@ -26,18 +31,27 @@
   });
 
   async function initialize() {
+    const t = Date.now();
     const observationsData = await api.getWeatherObservations();
     if (observationsData) {
       observations.set(observationsData);
     }
+
+    console.log('observations', Date.now() - t);
+
     const observationsMapData = await api.getWeatherObservationsMap();
     if (observationsMapData) {
       observationsMap.set(observationsMapData);
     }
+
+    console.log('observationsMap', Date.now() - t);
+
     const forecastData = await api.getWeatherForecast();
     if (forecastData) {
       forecast.set(forecastData);
     }
+
+    console.log('forecast', Date.now() - t);
 
     feed.set(await api.getTVFeed());
     const newPortals = (await api.getPortals()).map((portal, i) => ({
@@ -103,6 +117,8 @@
       );
     }
 
+    console.log('done', Date.now() - t);
+    initTime = Date.now();
     api.sendSchedule();
     console.log($schedule);
   }
@@ -126,6 +142,10 @@
     } else {
       current.next();
     }
+  }
+
+  function getInitTime(): number {
+    return initTime;
   }
 
   onDestroy(unsubscribe);

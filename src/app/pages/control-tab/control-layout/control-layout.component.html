@@ -6,6 +6,16 @@
         <mat-panel-title>Juhtimine</mat-panel-title>
       </mat-expansion-panel-header>
 
+      <div id="import-container">
+        <button mat-raised-button
+          color="secondary"
+          (click)="import()">
+          Impordi
+        </button>
+        <span>{{ importTimeString }}</span>
+      </div>
+
+
       <ag-grid-angular class="ag-theme-alpine-dark"
         [style.height.px]="gridHeight"
         spellcheck="false"

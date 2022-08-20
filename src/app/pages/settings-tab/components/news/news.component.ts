@@ -25,7 +25,6 @@ export class NewsComponent implements OnInit {
     localeText: AG_GRID_LOCALE_EE,
     onGridReady: (event: GridReadyEvent) => this.onGridReady(event),
     onSelectionChanged: () => {
-      this.saveData();
       this.isSelected = this.gridApi.getSelectedRows().length > 0;
     },
     onCellValueChanged: () => this.saveData()
@@ -86,8 +85,9 @@ export class NewsComponent implements OnInit {
   }
 
   saveData() {
-    const data = this.getTableData();
-    const fullData = { rows: [...data] };
+    const rows = [...this.getTableData()];
+    rows.forEach(item => delete item['id'])
+    const fullData = { rows };
     this.data.saveObject(this.dataID, fullData);
   }
 

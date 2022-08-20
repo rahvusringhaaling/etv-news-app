@@ -188,6 +188,18 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('server/schedule/next');
   });
 
+  socket.on('client/schedule/initialize', () => {
+    socket.broadcast.emit('server/schedule/initialize');
+  });
+
+  socket.on('client/init-time/get', () => {
+    socket.broadcast.emit('server/init-time/get');
+  });
+
+  socket.on('template/init-time/post', (initTime: number) => {
+    socket.broadcast.emit('server/init-time/post', initTime);
+  });
+
   socket.on('client/data/save', (newData) => {
     data = newData;
     fs.writeFile(DATA_FILE_NAME, JSON.stringify(newData, null, 4), (error) => {

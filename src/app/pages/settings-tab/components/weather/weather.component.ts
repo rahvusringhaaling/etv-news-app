@@ -27,17 +27,15 @@ export class WeatherComponent implements OnInit {
     suppressRowDeselection: true,
     localeText: AG_GRID_LOCALE_EE,
     onGridReady: (event: GridReadyEvent) => this.onGridReady(event),
-    onSelectionChanged: () => {
-      this.saveData();
-      this.isSelected = this.gridApi.getSelectedRows().length > 0;
-    },
+    onSelectionChanged: () =>
+      this.isSelected = this.gridApi.getSelectedRows().length > 0,
     onCellValueChanged: () => this.saveData()
   }
 
   columnDefs: ColDef[] = [
     { field: 'station', headerName: 'Ilmajaam', rowDrag: true },
-    { field: 'x', headerName: 'X', maxWidth: 151 },
-    { field: 'y', headerName: 'Y', maxWidth: 151 }
+    { field: 'x', headerName: 'X', maxWidth: 110 },
+    { field: 'y', headerName: 'Y', maxWidth: 110 }
   ];
 
   rowData = [];
@@ -89,9 +87,10 @@ export class WeatherComponent implements OnInit {
   }
 
   saveData() {
-    const data = this.getTableData();
+    const rows = [...this.getTableData()];
+    rows.forEach(item => delete item['id'])
     const fullData = {
-      rows: [...data],
+      rows,
       showObservations: this.showObservations,
       showForecast: this.showForecast,
       observationsURL: this.observationsURL,

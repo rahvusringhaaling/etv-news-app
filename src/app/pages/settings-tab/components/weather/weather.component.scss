@@ -13,7 +13,7 @@
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
+  -webkit-appearance: none;
 }
 
 mat-panel-title {
@@ -32,7 +32,8 @@ mat-action-row {
   justify-content: flex-start;
 }
 
-.mat-action-row button.mat-button-base, .mat-action-row button.mat-mdc-button-base {
+.mat-action-row button.mat-button-base,
+.mat-action-row button.mat-mdc-button-base {
   margin-left: 0 !important;
 }
 
@@ -95,7 +96,7 @@ h4 {
 .options-container {
   display: flex;
   flex-direction: column;
-  width: 600px;
+  width: min(700px, 100%);
 }
 
 .option {

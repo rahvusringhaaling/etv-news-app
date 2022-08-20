@@ -85,3 +85,10 @@ mat-action-row {
 .ag-theme-alpine-dark {
   height: max(250px, calc(100vh - 212px - 151px));
 }
+
+#import-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 16px;
+}

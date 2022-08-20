@@ -6,6 +6,7 @@ import { SelectEditorComponent } from '../../../shared/components/select-editor/
 import { AG_GRID_LOCALE_EE } from '../../../../assets/locale.ee';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { timeSince } from '../../../core/header/header.component';
 
 @Component({
   selector: 'app-control-layout',
@@ -13,12 +14,15 @@ import { debounceTime } from 'rxjs/operators';
   styleUrls: ['./control-layout.component.scss']
 })
 export class ControlLayoutComponent implements OnInit {
-  isOnAir = false;
-  gridHeight = 500;
+  public isOnAir = false;
+  public gridHeight = 500;
+  public importTimeString = '';
 
+  private importTime = 0;
+  private readonly SLEEP_INTERVAL = 3000;
   private nextSubject = new Subject<void>();
+  private importSubject = new Subject<void>();
   private scheduleLength = 0;
-  private DATA_ID = "controlTable";
   private gridApi;
   gridOptions: GridOptions = {
     components: {
@@ -52,6 +56,9 @@ export class ControlLayoutComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    const data = await this.api.getServerData();
+    this.data.save(data);
+
     this.api.requestTemplateSchedule();
     this.api.onTemplateSchedule((schedule: any[]) => {
       this.scheduleLength = schedule.length;
@@ -67,6 +74,9 @@ export class ControlLayoutComponent implements OnInit {
       if (row) {
         row.setSelected(true);
       }
+
+      this.api.requestInitTime();
+      this.api.onInitTime((initTime: number) => this.importTime = initTime);
     });
 
     this.api.requestTemplateCurrent();
@@ -85,6 +95,14 @@ export class ControlLayoutComponent implements OnInit {
       .pipe(debounceTime(500))
       .subscribe(() => this.api.sendScheduleNext());
 
+    this.importSubject
+      .pipe(debounceTime(2000))
+      .subscribe(() => this.api.initializeSchedule());
+
+    setInterval(async () => {
+      this.importTimeString = timeSince(this.importTime, 'Viimane import')
+    }, this.SLEEP_INTERVAL);
+
     this.resizeGridHeight();
   }
 
@@ -100,13 +118,6 @@ export class ControlLayoutComponent implements OnInit {
     return data;
   }
 
-  saveData() {
-    const data = this.getTableData();
-    const fullData = { rows: [...data] };
-    fullData['selected'] = { ...this.gridApi.getSelectedRows()[0] };
-    this.data.saveObject(this.DATA_ID, fullData);
-  }
-
   start() {
     this.isOnAir = true;
   }
@@ -119,11 +130,16 @@ export class ControlLayoutComponent implements OnInit {
     this.nextSubject.next();
   }
 
+  import() {
+    this.importSubject.next();
+  }
+
   @HostListener('window:resize')
   resizeGridHeight() {
     const top = 163;
+    const button = 52;
     const bottom = 95;
 
-    this.gridHeight = Math.max(200, innerHeight - top - bottom);
+    this.gridHeight = Math.max(200, innerHeight - top - button - bottom);
   }
 }

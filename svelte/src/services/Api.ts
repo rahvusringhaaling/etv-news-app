@@ -12,7 +12,7 @@ import type { IObservationsMap } from '../domain/IObservationsMap';
 export class Api {
   private socket = io(`ws://localhost:${window.location.port}`);
 
-  constructor(next: Function) {
+  constructor(next: Function, initialize: Function, getInitTime: Function) {
     this.socket.on('server/schedule/get', () => {
       this.socket.emit('template/schedule/post', get(schedule));
     });
@@ -23,6 +23,14 @@ export class Api {
 
     this.socket.on('server/schedule/next', () => {
       next();
+    });
+
+    this.socket.on('server/schedule/initialize', () => {
+      initialize();
+    });
+
+    this.socket.on('server/init-time/get', () => {
+      this.socket.emit('template/init-time/post', getInitTime());
     });
 
     index.subscribe(index => {

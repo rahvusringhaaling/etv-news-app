@@ -9,6 +9,7 @@
       <div>Ilmaprognoos:</div>
       <div class="input-container">
         <mat-checkbox [(ngModel)]="showObservations"
+          (ngModelChange)="saveData()"
           color="accent">
           Näita ilmaprognoosi
         </mat-checkbox>
@@ -16,6 +17,7 @@
         <label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label large-textfield">
           <span class="mdc-text-field__ripple"></span>
           <input [(ngModel)]="observationsURL"
+            (ngModelChange)="saveData()"
             class="mdc-text-field__input"
             placeholder="www.ilmateenistus.ee">
           <span class="mdc-line-ripple"></span>
@@ -26,6 +28,7 @@
       <div>Ilmateade:</div>
       <div class="input-container">
         <mat-checkbox [(ngModel)]="showForecast"
+          (ngModelChange)="saveData()"
           color="accent">
           Näita ilmavaatlust
         </mat-checkbox>
@@ -33,6 +36,7 @@
         <label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label large-textfield">
           <span class="mdc-text-field__ripple"></span>
           <input [(ngModel)]="forecastURL"
+            (ngModelChange)="saveData()"
             class="mdc-text-field__input"
             placeholder="www.ilmateenistus.ee">
           <span class="mdc-line-ripple"></span>

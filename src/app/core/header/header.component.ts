@@ -3,6 +3,33 @@ import { MatAccordion } from '@angular/material/expansion';
 import { ApiService } from '../services/api/api.service';
 import { DataService } from '../services/data/data.service';
 
+export function timeSince(date: number, base = 'Viimane muudatus') {  // Takes around 0.1 ms to run
+  const seconds = Math.floor((Date.now() - date) / 1000);
+  let interval = seconds / 31536000;
+
+  interval = seconds / 2592000;
+  let isPlural = Math.floor(interval) !== 1;
+  if (interval > 1) {
+    return `${base} ${Math.floor(interval)} kuu${isPlural ? 'd' : ''} tagasi`;
+  }
+  interval = seconds / 86400;
+  isPlural = Math.floor(interval) !== 1;
+  if (interval > 1) {
+    return `${base} ${Math.floor(interval)} päev${isPlural ? 'a' : ''} tagasi`;
+  }
+  interval = seconds / 3600;
+  isPlural = Math.floor(interval) !== 1;
+  if (interval > 1) {
+    return `${base} ${Math.floor(interval)} tund${isPlural ? 'i' : ''} tagasi`;
+  }
+  interval = seconds / 60;
+  isPlural = Math.floor(interval) !== 1;
+  if (interval > 1) {
+    return `${base} ${Math.floor(interval)} minut${isPlural ? 'it' : ''} tagasi`;
+  }
+  return `${base} mõni sekund tagasi`;
+}
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -35,7 +62,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
         this.lastEditedString = '';
         return;
       }
-      this.lastEditedString = this.timeSince(this.lastEdited);
+      this.lastEditedString = timeSince(this.lastEdited);
     }, this.SLEEP_INTERVAL);
 
     this.data.currentData.subscribe(data => {
@@ -65,33 +92,5 @@ export class HeaderComponent implements OnInit, AfterViewInit {
         this.showSettingsTab = true;
         break;
     }
-  }
-
-  timeSince(date: number) {  // Takes around 0.1 ms to run
-    const seconds = Math.floor((Date.now() - date) / 1000);
-    let interval = seconds / 31536000;
-    const base = 'Viimane muudatus'
-
-    interval = seconds / 2592000;
-    let isPlural = Math.floor(interval) !== 1;
-    if (interval > 1) {
-      return `${base} ${Math.floor(interval)} kuu${isPlural ? 's' : ''} tagasi`;
-    }
-    interval = seconds / 86400;
-    isPlural = Math.floor(interval) !== 1;
-    if (interval > 1) {
-      return `${base} ${Math.floor(interval)} päev${isPlural ? 'a' : ''} tagasi`;
-    }
-    interval = seconds / 3600;
-    isPlural = Math.floor(interval) !== 1;
-    if (interval > 1) {
-      return `${base} ${Math.floor(interval)} tund${isPlural ? 'i' : ''} tagasi`;
-    }
-    interval = seconds / 60;
-    isPlural = Math.floor(interval) !== 1;
-    if (interval > 1) {
-      return `${base} ${Math.floor(interval)} minut${isPlural ? 'it' : ''} tagasi`;
-    }
-    return `${base} mõni sekund tagasi`;
   }
 }

@@ -29,6 +29,7 @@
     if (!item) return;
     if (item.index === 0) {
       forecastPages = [];
+      resetAll();
     }
     if (item.forecast) {
       forecastPages = [
@@ -82,12 +83,7 @@
 
     await sleep(1000);
     if (item.portal.name !== 'ilm') {
-      gsap.set(weatherMap, { bottom: -912 });
-      gsap.set(weatherForecast, { bottom: -912 });
-
-      for (const item of forecastPages) {
-        gsap.set(item.component, { bottom: -912 });
-      }
+      resetWeather();
     }
 
     primaryColor = item.portal.primaryColor;
@@ -103,6 +99,20 @@
       );
     }
   });
+
+  function resetAll() {
+    resetWeather();
+    gsap.set(headline, { bottom: -912 });
+  }
+
+  function resetWeather() {
+    gsap.set(weatherMap, { bottom: -912 });
+    gsap.set(weatherForecast, { bottom: -912 });
+
+    for (const item of forecastPages) {
+      gsap.set(item.component, { bottom: -912 });
+    }
+  }
 
   onDestroy(() => {
     unsubscribeCurrent();

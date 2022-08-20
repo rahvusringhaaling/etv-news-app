@@ -67,6 +67,18 @@ export class ApiService {
     this.socket.emit('client/schedule/next');
   }
 
+  initializeSchedule() {
+    this.socket.emit('client/schedule/initialize');
+  }
+
+  onInitTime(callback: Function) {
+    this.socket.on('server/init-time/post', callback)
+  }
+
+  requestInitTime() {
+    this.socket.emit('client/init-time/get');
+  }
+
   getCasparLocation() {
     return new Promise<string>(resolve => {
       this.socket.emit('client/caspar-media-location/get', (path: string) => {
@@ -81,14 +93,6 @@ export class ApiService {
         resolve(layers);
       })
     });
-  }
-
-  addTitle(data: { firstRow: string, secondRow: string }) {
-    this.socket.emit('client/title/add', data);
-  }
-
-  removeTitle() {
-    this.socket.emit('client/title/remove');
   }
 
   getServerData() {
