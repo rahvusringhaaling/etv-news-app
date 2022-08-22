@@ -22,6 +22,7 @@
   );
   let timeout: NodeJS.Timeout;
   let initTime = 0;
+  console.log(undefined ?? 'default value');
 
   onMount(() => {
     api.sendHeartbeat();

@@ -12,7 +12,7 @@ getForecast()
 
 const webApp: any = express();
 const server = http.createServer(webApp);
-webApp.use(express.static(path.join(__dirname, '../../svelte/public')));
+webApp.use(express.static(path.join(__dirname, '../../template/dist')));
 
 interface Data {
   channel: number
