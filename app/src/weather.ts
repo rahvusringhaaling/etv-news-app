@@ -20,6 +20,23 @@ const locations = new Map([
   ['Lääne-Nigula', [506, 315]],
   ['Väike-Maarja', [944, 266]],
 ])
+
+const rows = [
+  {
+    station: 'Tallinn',
+    x: '123',
+    y: '435',
+  },
+  {
+    station: 'Pärnu',
+    x: '54',
+    y: '22',
+  },
+];
+const newRows: any = rows.map(row => ([
+  row.station, [row.x, row.y]
+]))
+
 const parser = new XMLParser({ ignoreAttributes: false });
 
 function getIcons(isNight: boolean | null = null) {

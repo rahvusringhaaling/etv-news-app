@@ -21,7 +21,7 @@
           </div>
 
           <div class="row bg">
-            <img src="/assets/icons/white/{item.night.icon}.png" alt="" />
+            <img src="/icons/white/{item.night.icon}.png" alt="" />
             <span class="bold">
               {item.night.tempMin}..{item.night.tempMax}°C
             </span>
@@ -34,7 +34,7 @@
           </div>
 
           <div class="row">
-            <img src="/assets/icons/black/{item.day.icon}.png" alt="" />
+            <img src="/icons/black/{item.day.icon}.png" alt="" />
             <span class="primary bold">
               {item.day.tempMin}..{item.day.tempMax}°C
             </span>

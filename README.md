@@ -23,15 +23,15 @@ With this sample, you can:
 
 ## Getting Started
 
-*Clone this repository locally:*
+_Clone this repository locally:_
 
-``` bash
+```bash
 git clone https://gitlab.err.ee/eetrigraafika/portaalid-2022.git
 ```
 
-*Install dependencies with npm (used by Electron renderer process):*
+_Install dependencies with npm (used by Electron renderer process):_
 
-``` bash
+```bash
 npm install
 ```
 
@@ -40,23 +40,23 @@ There is an issue with `yarn` and `node_modules` when the application is built b
 If you want to generate Angular components with Angular-cli , you **MUST** install `@angular/cli` in npm global context.
 Please follow [Angular-cli documentation](https://github.com/angular/angular-cli) if you had installed a previous version of `angular-cli`.
 
-``` bash
+```bash
 npm install -g @angular/cli
 ```
 
-*Install NodeJS dependencies with npm (used by Electron main process):*
+_Install NodeJS dependencies with npm (used by Electron main process):_
 
-``` bash
+```bash
 cd app/
 npm install
 ```
 
 Why two package.json ? This project follow [Electron Builder two package.json structure](https://www.electron.build/tutorials/two-package-structure) in order to optimize final bundle and be still able to use Angular `ng add` feature.
 
-*Install Svelte dependencies with npm (used for CasparCG template):*
+_Install Svelte dependencies with npm (used for CasparCG template):_
 
-``` bash
-cd svelte/
+```bash
+cd template/
 npm install
 ```
 
@@ -72,24 +72,25 @@ You can disable "Developer Tools" by commenting `win.webContents.openDevTools();
 
 ## Project structure
 
-|Folder|Description|
-| ---- | ---- |
-| app | Electron main process folder (NodeJS) |
-| src | Electron renderer process folder (Web / Angular) |
+| Folder | Description                                      |
+| ------ | ------------------------------------------------ |
+| app    | Electron main process folder (NodeJS)            |
+| src    | Electron renderer process folder (Web / Angular) |
 
 ## How to import 3rd party libraries
 
 This sample project runs in both modes (web and electron). To make this work, **you have to import your dependencies the right way**. \
 
 There are two kind of 3rd party libraries :
+
 - NodeJS's one (like an ORM, Database...)
-    - Used in electron's Main process (app folder) have to be added in `dependencies` of `app/package.json`
-    - Used in electron's Renderer process (src folder) have to be added in `dependencies` of both `app/package.json` and `src/package.json`
+  - Used in electron's Main process (app folder) have to be added in `dependencies` of `app/package.json`
+  - Used in electron's Renderer process (src folder) have to be added in `dependencies` of both `app/package.json` and `src/package.json`
 
 Please check `providers/electron.service.ts` to watch how conditional import of libraries has to be done when using NodeJS / 3rd party libraries in renderer context (i.e. Angular).
 
 - Web's one (like bootstrap, material, tailwind...)
-    - It have to be added in `dependencies` of `src/package.json`
+  - It have to be added in `dependencies` of `src/package.json`
 
 ## Add a dependency with ng-add
 
@@ -102,13 +103,13 @@ Maybe you only want to execute the application in the browser with hot reload? J
 
 ## Included Commands
 
-|Command|Description|
-| ---- | ---- |
-|`npm run ng:serve`| Execute the app in the browser |
-|`npm run build`| Build the app. Your built files are in the /dist folder. |
-|`npm run build:prod`| Build the app with Angular aot. Your built files are in the /dist folder. |
-|`npm run electron:local`| Builds your application and start electron
-|`npm run electron:build`| Builds your application and creates an app consumable based on your operating system |
+| Command                  | Description                                                                          |
+| ------------------------ | ------------------------------------------------------------------------------------ |
+| `npm run ng:serve`       | Execute the app in the browser                                                       |
+| `npm run build`          | Build the app. Your built files are in the /dist folder.                             |
+| `npm run build:prod`     | Build the app with Angular aot. Your built files are in the /dist folder.            |
+| `npm run electron:local` | Builds your application and start electron                                           |
+| `npm run electron:build` | Builds your application and creates an app consumable based on your operating system |
 
 **Your application is optimised. Only /dist folder and NodeJS dependencies are included in the final bundle.**
 
@@ -122,9 +123,9 @@ Then use your library by importing it in `app/src/main.ts` file. Quite simple, i
 
 E2E Test scripts can be found in `e2e` folder.
 
-|Command|Description|
-| ---- | ---- |
-|`npm run e2e`| Execute end to end tests |
+| Command       | Description              |
+| ------------- | ------------------------ |
+| `npm run e2e` | Execute end to end tests |
 
 Note: To make it work behind a proxy, you can add this proxy exception in your terminal  
 `export {no_proxy,NO_PROXY}="127.0.0.1,localhost"`

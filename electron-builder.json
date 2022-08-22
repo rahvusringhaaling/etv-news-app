@@ -12,7 +12,7 @@
   ],
   "extraResources": [
     "app/dist",
-    "svelte/public",
+    "template/public",
     {
       "from": "dist",
       "to": "app",

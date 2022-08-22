@@ -3,6 +3,7 @@ import { ColDef, GridOptions, GridReadyEvent, RowNode } from 'ag-grid-community'
 import { DataService } from '../../../../core/services/data/data.service';
 import { ApiService } from '../../../../core/services/api/api.service';
 import { AG_GRID_LOCALE_EE } from '../../../../../assets/locale.ee';
+import { CheckboxRendererComponent } from '../../../../shared/components/checkbox-renderer/checkbox-renderer.component'
 
 @Component({
   selector: 'app-news',
@@ -21,6 +22,9 @@ export class NewsComponent implements OnInit {
     stopEditingWhenCellsLoseFocus: true,
     rowSelection: 'multiple',
     rowDragMultiRow: true,
+    components: {
+      checkboxRenderer: CheckboxRendererComponent,
+    },
     suppressRowDeselection: true,
     localeText: AG_GRID_LOCALE_EE,
     onGridReady: (event: GridReadyEvent) => this.onGridReady(event),
@@ -31,8 +35,16 @@ export class NewsComponent implements OnInit {
   }
 
   columnDefs: ColDef[] = [
-    { field: 'name', headerName: 'Nimetus', rowDrag: true },
-    { field: 'portal', headerName: 'portal' },
+    {
+      field: 'enabled',
+      headerName: 'Näita',
+      rowDrag: true,
+      editable: false,
+      maxWidth: 90,
+      cellRenderer: 'checkboxRenderer'
+    },
+    { field: 'name', headerName: 'Nimetus' },
+    { field: 'portal', headerName: 'Portaal' },
     { field: 'minItems', headerName: 'minItems' },
     { field: 'maxItems', headerName: 'maxItems' },
     { field: 'lastHours', headerName: 'lastHours' },
