@@ -1,0 +1,25 @@
+input {
+  outline: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input:focus {
+  outline: none;
+}
+
+input {
+  background: transparent;
+  border: none;
+  height: 100%;
+}
+
+#input-container {
+  padding: 0 5px 0 5px;
+  height: 100%;
+  background-color: #393a3e;
+}

@@ -7,8 +7,6 @@ import { ICellEditorAngularComp } from 'ag-grid-angular';
   styleUrls: ['./select-editor.component.scss']
 })
 export class SelectEditorComponent implements OnInit, ICellEditorAngularComp {
-  private gridApi;
-  private gridColumnApi;
   private params: any;
   value: string;
   options = [];
@@ -35,7 +33,7 @@ export class SelectEditorComponent implements OnInit, ICellEditorAngularComp {
 
   selectOption(option: string) {
     this.value = option
-    this.params.api.stopEditing();    
+    this.params.api.stopEditing();
   }
 
   /* Component Editor Lifecycle methods */

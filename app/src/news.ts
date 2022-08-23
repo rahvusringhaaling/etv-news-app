@@ -2,73 +2,107 @@
 import fetch from 'node-fetch';
 import { URLSearchParams } from 'url';
 import { IPortal } from './domain/IPortal';
+import { data, port } from './server';
 
-const portals: IPortal[] = [
+const portalsFallback: IPortal[] = [
   {
+    enabled: true,
     name: 'uudised',
     portal: 'uudised',
     minItems: 7,
     maxItems: 7,
+    lastHours: 24,
     primaryColor: '#2E3192',
     textColor: '#EEEEEE'
   },
-  {
-    name: 'kultuur',
-    portal: 'kultuur',
-    minItems: 3,
-    maxItems: 3,
-    primaryColor: '#DAB230',
-    textColor: '#1E1E1E'
-  },
-  {
-    name: 'sport',
-    portal: 'sport',
-    minItems: 2,
-    maxItems: 5,
-    primaryColor: '#BD2020',
-    textColor: '#EEEEEE'
-  },
-  {
-    name: 'meelelahutus',
-    portal: 'menu',
-    minItems: 3,
-    maxItems: 3,
-    primaryColor: '#503084',
-    textColor: '#EEEEEE'
-  },
-  {
-    name: 'teadus',
-    portal: 'teadus',
-    minItems: 3,
-    maxItems: 3,
-    primaryColor: '#64A131',
-    textColor: '#EEEEEE'
-  },
+  // {
+  //   enabled: true,
+  //   name: 'kultuur',
+  //   portal: 'kultuur',
+  //   minItems: 3,
+  //   maxItems: 3,
+  //   lastHours: 24,
+  //   primaryColor: '#DAB230',
+  //   textColor: '#1E1E1E'
+  // },
+  // {
+  //   enabled: true,
+  //   name: 'sport',
+  //   portal: 'sport',
+  //   minItems: 2,
+  //   maxItems: 5,
+  //   lastHours: 24,
+  //   primaryColor: '#BD2020',
+  //   textColor: '#EEEEEE'
+  // },
+  // {
+  //   enabled: true,
+  //   name: 'meelelahutus',
+  //   portal: 'menu',
+  //   minItems: 3,
+  //   maxItems: 3,
+  //   lastHours: 24,
+  //   primaryColor: '#503084',
+  //   textColor: '#EEEEEE'
+  // },
+  // {
+  //   enabled: true,
+  //   name: 'teadus',
+  //   portal: 'teadus',
+  //   minItems: 3,
+  //   maxItems: 3,
+  //   lastHours: 24,
+  //   primaryColor: '#64A131',
+  //   textColor: '#EEEEEE'
+  // },
 ];
 
-const weatherPortal = {
+function getPortalsInternal() {
+  const allPortals = data?.newsTable?.rows ?? portalsFallback;
+  const portals = allPortals.filter((portal) => portal.enabled);
+
+  const isInvalid = portals.some(
+    (portal) => !(
+      'enabled' in portal &&
+      'name' in portal && portal.name.length > 0 &&
+      'portal' in portal && portal.portal.length > 0 &&
+      'minItems' in portal && portal.minItems > 0 &&
+      'maxItems' in portal && portal.maxItems > 0 &&
+      'lastHours' in portal && portal.lastHours > 0 &&
+      'primaryColor' in portal && portal.primaryColor.length > 0 &&
+      'textColor' in portal && portal.textColor.length > 0
+    ));
+
+  return isInvalid ? portalsFallback : portals;
+}
+
+const weatherPortal: IPortal = {
+  enabled: true,
   name: 'ilm',
   portal: 'ilm',
-  minItems: 6,
-  maxItems: 6,
+  minItems: 0,
+  maxItems: 0,
+  lastHours: 0,
   primaryColor: '#29ABE2',
   textColor: '#EEEEEE'
 }
 
 export function getPortals(): IPortal[] {
-  return [...portals, weatherPortal];
+  console.log(getPortalsInternal())
+  return [...getPortalsInternal(), weatherPortal];
 }
 
 export async function getFeeds() {
   const output = {};
+  let portals = getPortalsInternal();
 
   for (const feed of portals) {
-    const { portal, minItems, maxItems } = feed;
+    const { portal, minItems, maxItems, lastHours } = feed;
     const params = {
       portal,
       minItems: minItems.toString(),
       maxItems: maxItems.toString(),
-      lasthours: '24'
+      lasthours: lastHours.toString()
     }
     const url = 'https://services.err.ee/api/feeds/GetTVFeed?'
       + new URLSearchParams(params);

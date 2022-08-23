@@ -4,6 +4,7 @@ import { DataService } from '../../../../core/services/data/data.service';
 import { ApiService } from '../../../../core/services/api/api.service';
 import { AG_GRID_LOCALE_EE } from '../../../../../assets/locale.ee';
 import { CheckboxRendererComponent } from '../../../../shared/components/checkbox-renderer/checkbox-renderer.component'
+import { NumberEditorComponent } from '../../../../shared/components/number-editor/number-editor.component';
 
 @Component({
   selector: 'app-news',
@@ -24,6 +25,7 @@ export class NewsComponent implements OnInit {
     rowDragMultiRow: true,
     components: {
       checkboxRenderer: CheckboxRendererComponent,
+      numberEditor: NumberEditorComponent
     },
     suppressRowDeselection: true,
     localeText: AG_GRID_LOCALE_EE,
@@ -45,9 +47,21 @@ export class NewsComponent implements OnInit {
     },
     { field: 'name', headerName: 'Nimetus' },
     { field: 'portal', headerName: 'Portaal' },
-    { field: 'minItems', headerName: 'minItems' },
-    { field: 'maxItems', headerName: 'maxItems' },
-    { field: 'lastHours', headerName: 'lastHours' },
+    {
+      field: 'minItems',
+      headerName: 'minItems',
+      cellEditor: 'numberEditor',
+    },
+    {
+      field: 'maxItems',
+      headerName: 'maxItems',
+      cellEditor: 'numberEditor'
+    },
+    {
+      field: 'lastHours',
+      headerName: 'lastHours',
+      cellEditor: 'numberEditor'
+    },
     { field: 'primaryColor', headerName: 'Värv' },
     { field: 'textColor', headerName: 'Pealkirja värv' }
   ];
@@ -64,6 +78,14 @@ export class NewsComponent implements OnInit {
   constructor(private data: DataService, private api: ApiService) { }
 
   async ngOnInit() {
+    this.data.currentData.subscribe((data: object) => {
+      this.localData = data;
+    });
+  }
+
+  async onGridReady(params) {
+    this.gridApi = params.api;
+
     const data = await this.api.getServerData();
 
     if (data && data[this.dataID]) {
@@ -71,14 +93,6 @@ export class NewsComponent implements OnInit {
     } else {
       this.addRow();
     }
-
-    this.data.currentData.subscribe((data: object) => {
-      this.localData = data;
-    });
-  }
-
-  onGridReady(params) {
-    this.gridApi = params.api;
   }
 
   getTableData() {

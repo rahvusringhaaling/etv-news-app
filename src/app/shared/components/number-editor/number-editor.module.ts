@@ -10,6 +10,9 @@ import { NumberEditorComponent } from './number-editor.component';
   ],
   imports: [
     CommonModule
+  ],
+  exports: [
+    NumberEditorComponent
   ]
 })
 export class NumberEditorModule { }

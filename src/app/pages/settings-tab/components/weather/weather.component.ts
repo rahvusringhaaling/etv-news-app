@@ -3,6 +3,7 @@ import { ColDef, GridOptions, GridReadyEvent, RowNode } from 'ag-grid-community'
 import { DataService } from '../../../../core/services/data/data.service';
 import { ApiService } from '../../../../core/services/api/api.service';
 import { AG_GRID_LOCALE_EE } from '../../../../../assets/locale.ee';
+import { NumberEditorComponent } from '../../../../shared/components/number-editor/number-editor.component';
 
 @Component({
   selector: 'app-weather',
@@ -24,6 +25,9 @@ export class WeatherComponent implements OnInit {
     stopEditingWhenCellsLoseFocus: true,
     rowSelection: 'multiple',
     rowDragMultiRow: true,
+    components: {
+      numberEditor: NumberEditorComponent
+    },
     suppressRowDeselection: true,
     localeText: AG_GRID_LOCALE_EE,
     onGridReady: (event: GridReadyEvent) => this.onGridReady(event),
@@ -33,9 +37,23 @@ export class WeatherComponent implements OnInit {
   }
 
   columnDefs: ColDef[] = [
-    { field: 'station', headerName: 'Ilmajaam', rowDrag: true },
-    { field: 'x', headerName: 'X', maxWidth: 110 },
-    { field: 'y', headerName: 'Y', maxWidth: 110 }
+    {
+      field: 'station',
+      headerName: 'Ilmajaam',
+      rowDrag: true
+    },
+    {
+      field: 'x',
+      headerName: 'X',
+      maxWidth: 110,
+      cellEditor: 'numberEditor'
+    },
+    {
+      field: 'y',
+      headerName: 'Y',
+      maxWidth: 110,
+      cellEditor: 'numberEditor'
+    }
   ];
 
   rowData = [];
@@ -50,6 +68,14 @@ export class WeatherComponent implements OnInit {
   constructor(private data: DataService, private api: ApiService) { }
 
   async ngOnInit() {
+    this.data.currentData.subscribe((data: object) => {
+      this.localData = data;
+    });
+  }
+
+  async onGridReady(params) {
+    this.gridApi = params.api;
+
     const data = await this.api.getServerData();
 
     if (data && data[this.dataID]) {
@@ -57,14 +83,6 @@ export class WeatherComponent implements OnInit {
     } else {
       this.addRow();
     }
-
-    this.data.currentData.subscribe((data: object) => {
-      this.localData = data;
-    });
-  }
-
-  onGridReady(params) {
-    this.gridApi = params.api;
   }
 
   getTableData() {

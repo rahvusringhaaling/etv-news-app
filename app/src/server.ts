@@ -7,6 +7,7 @@ import { Server } from 'socket.io';
 import { CasparCG, Options } from 'casparcg-connection';
 import { getPortals, getFeeds } from './news'
 import { getObservations, getForecast, getObservationsMap } from './weather';
+import { IServerData } from './domain/IServerData';
 
 getForecast()
 
@@ -14,15 +15,11 @@ const webApp: any = express();
 const server = http.createServer(webApp);
 webApp.use(express.static(path.join(__dirname, '../../template/dist')));
 
-interface Data {
-  channel: number
-}
-
 interface Layers {
   [key: string]: number;
 }
 
-let data: Data = {
+export let data: IServerData = {
   channel: 1
 }
 
