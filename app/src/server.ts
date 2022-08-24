@@ -6,7 +6,7 @@ import * as net from 'net';
 import { Server } from 'socket.io';
 import { CasparCG, Options } from 'casparcg-connection';
 import { getPortals, getFeeds } from './news'
-import { getObservations, getForecast, getObservationsMap } from './weather';
+import { getForecast, getObservationsCombined } from './weather';
 import { IServerData } from './domain/IServerData';
 
 getForecast()
@@ -134,24 +134,9 @@ io.on('connection', (socket) => {
     callback(await getFeeds());
   });
 
-  socket.on('template/weather-observations/get', async (callback: Function) => {
+  socket.on('template/weather-observations-combined/get', async (callback: Function) => {
     try {
-      const result = await getObservations();
-      if (!result) {
-        callback(null)
-        return;
-      };
-
-      const { observations } = result;
-      callback(observations);
-    } catch (error) {
-      callback(null);
-    }
-  });
-
-  socket.on('template/weather-observations-map/get', async (callback: Function) => {
-    try {
-      callback(await getObservationsMap());
+      callback(await getObservationsCombined());
     } catch (error) {
       callback(null);
     }

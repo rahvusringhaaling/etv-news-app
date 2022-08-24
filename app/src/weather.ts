@@ -1,6 +1,7 @@
 import { XMLParser } from 'fast-xml-parser';
 import fetch from 'node-fetch';
 import { IForecastItem } from './domain/IForecastItem';
+import { IObservationsCombined } from './domain/IObservationsCombined';
 import { IObservationsMap } from './domain/IObservationsMap';
 import { IObservationsTimestamp } from './domain/IObservationsTimestamp';
 import { IWeatherForecast } from './domain/IWeatherForecast';
@@ -92,7 +93,7 @@ function getIcons(isNight: boolean | null = null) {
   }
 }
 
-export async function getObservations(): Promise<IObservationsTimestamp | null> {
+async function getObservations(): Promise<IObservationsTimestamp | null> {
   const url = 'https://www.ilmateenistus.ee/ilma_andmed/xml/observations.php';
   const response = await fetch(url);
   const data = await response.text();
@@ -126,10 +127,10 @@ export async function getObservations(): Promise<IObservationsTimestamp | null> 
   return { timestamp: weather.observations['@_timestamp'], observations }
 }
 
-export async function getObservationsMap(): Promise<IObservationsMap | null> {
-  const result = await getObservations();
-  if (!result) return null;
-  const { timestamp, observations } = result;
+function getObservationsMap(
+  observationsTimestamp: IObservationsTimestamp
+): IObservationsMap {
+  const { timestamp, observations } = observationsTimestamp;
 
   const observationsFiltered = observations
     .filter(
@@ -141,6 +142,17 @@ export async function getObservationsMap(): Promise<IObservationsMap | null> {
     });
 
   return { timestamp, observations: observationsFiltered }
+}
+
+export async function getObservationsCombined(): Promise<IObservationsCombined | null> {
+  const observationsTimestamp = await getObservations();
+  if (!observationsTimestamp) return null;
+  const observationsMap = getObservationsMap(observationsTimestamp);
+
+  return {
+    observations: observationsTimestamp.observations,
+    observationsMap
+  }
 }
 
 export async function getForecast(): Promise<IForecastItem[] | null> {

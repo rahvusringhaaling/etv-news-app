@@ -1,18 +1,20 @@
-import { io } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 import { get } from 'svelte/store';
 import type { IFeed } from '../domain/IFeed';
-import type { IObservationItem } from '../domain/IObservationItem';
 import type { IForecastItem } from '../domain/IForecastItem';
 import type { IPortal } from '../domain/IPortal';
 import { index } from '../stores/current';
 import { schedule } from '../stores/schedule';
-import type { IFilteredObservationItem } from '../domain/IFilteredObservationItem';
 import type { IObservationsMap } from '../domain/IObservationsMap';
+import type { IObservationsCombined } from 'src/domain/IObservationsCombined';
 
 export class Api {
-  private socket = io(`ws://localhost:${window.location.port}`);
+  private socket: Socket;
 
   constructor(next: Function, initialize: Function, getInitTime: Function) {
+    const port = import.meta.env.PROD ? window.location.port : '8000';
+    this.socket = io(`ws://localhost:${port}`);
+
     this.socket.on('server/schedule/get', () => {
       this.socket.emit('template/schedule/post', get(schedule));
     });
@@ -26,6 +28,7 @@ export class Api {
     });
 
     this.socket.on('server/schedule/initialize', () => {
+      console.log('api init', Date.now())
       initialize();
     });
 
@@ -55,11 +58,11 @@ export class Api {
   }
 
   getWeatherObservations() {
-    return new Promise<IObservationItem[] | null>((resolve) => {
+    return new Promise<IObservationsCombined | null>((resolve) => {
       this.socket.emit(
-        'template/weather-observations/get',
-        (observations: IObservationItem[] | null) => {
-          resolve(observations);
+        'template/weather-observations-combined/get',
+        (observationsCombined: IObservationsCombined | null) => {
+          resolve(observationsCombined);
         }
       );
     });

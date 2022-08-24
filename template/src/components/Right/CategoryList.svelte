@@ -20,10 +20,12 @@
       }));
 
       await tick();
-      gsap.to('.categories-inactive', {
-        color: '#1d1d1d',
-        duration: 0.25,
-      });
+      if (categories.length > 1) {
+        gsap.to('.categories-inactive', {
+          color: '#1d1d1d',
+          duration: 0.25,
+        });
+      }
 
       gsap.to('.categories-active', {
         color: item.portal.primaryColor,

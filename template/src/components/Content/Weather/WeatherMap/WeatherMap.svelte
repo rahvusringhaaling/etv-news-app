@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { onDestroy } from 'svelte';
+
   import type { IFilteredObservationItem } from '../../../../domain/IFilteredObservationItem';
   import { observationsMap } from '../../../../stores/weather';
   import Svg from './Svg.svelte';
@@ -6,7 +8,7 @@
   let time = '';
   let items: IFilteredObservationItem[] = [];
 
-  observationsMap.subscribe((data) => {
+  const unsubscribe = observationsMap.subscribe((data) => {
     if (!data) return;
     if (data.timestamp) {
       const date = new Date(data.timestamp * 1000);
@@ -21,6 +23,8 @@
     });
     items = data.observations;
   });
+
+  onDestroy(unsubscribe);
 </script>
 
 <main>

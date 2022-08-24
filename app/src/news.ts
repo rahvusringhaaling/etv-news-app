@@ -2,7 +2,7 @@
 import fetch from 'node-fetch';
 import { URLSearchParams } from 'url';
 import { IPortal } from './domain/IPortal';
-import { data, port } from './server';
+import { data } from './server';
 
 const portalsFallback: IPortal[] = [
   {

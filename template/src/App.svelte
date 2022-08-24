@@ -12,6 +12,7 @@
   import { getWeekDay, hexToRgba, sleep } from './utils';
   import { ScheduleType, type IScheduleItem } from './domain/IScheduleItem';
   import { forecast, observations, observationsMap } from './stores/weather';
+  import type { IPortal } from './domain/IPortal';
 
   let articles: any[] = [];
   let rawSchedule: IScheduleItem[][];
@@ -30,28 +31,12 @@
     initialize();
   });
 
-  async function initialize() {
-    const t = Date.now();
-    const observationsData = await api.getWeatherObservations();
-    if (observationsData) {
-      observations.set(observationsData);
+  async function initObservations(): Promise<IPortal> {
+    const observationsCombined = await api.getWeatherObservations();
+    if (observationsCombined) {
+      observations.set(observationsCombined.observations);
+      observationsMap.set(observationsCombined.observationsMap);
     }
-
-    console.log('observations', Date.now() - t);
-
-    const observationsMapData = await api.getWeatherObservationsMap();
-    if (observationsMapData) {
-      observationsMap.set(observationsMapData);
-    }
-
-    console.log('observationsMap', Date.now() - t);
-
-    const forecastData = await api.getWeatherForecast();
-    if (forecastData) {
-      forecast.set(forecastData);
-    }
-
-    console.log('forecast', Date.now() - t);
 
     feed.set(await api.getTVFeed());
     const newPortals = (await api.getPortals()).map((portal, i) => ({
@@ -61,23 +46,9 @@
     }));
     portals.set(newPortals);
 
-    articles = $portals
-      .filter((portal) => portal.name !== 'ilm')
-      .flatMap((portal) =>
-        $feed[portal.portal].flatMap((article) => ({ article, portal }))
-      );
-    rawSchedule = Array(articles.length)
-      .fill(null)
-      .map((_) => []);
-
-    await sleep(0);
-    articles = [];
-    let newSchedule = rawSchedule
-      .flat()
-      .map((item, index) => ({ ...item, index: index + 6 }));
-
     const weather = $portals.find((portal) => portal.name === 'ilm');
-    const weatherSchedule: IScheduleItem[] = [
+    current.set(0);
+    schedule.set([
       {
         index: 0,
         portal: weather!,
@@ -85,6 +56,18 @@
         name: `Faktiline ilm kell ${new Date().getHours()}:00`,
         duration: 30,
       },
+    ]);
+
+    return weather;
+  }
+
+  async function initForecast(weather: IPortal) {
+    const forecastData = await api.getWeatherForecast();
+    if (forecastData) {
+      forecast.set(forecastData);
+    }
+
+    const weatherSchedule: IScheduleItem[] = [
       {
         index: 1,
         portal: weather!,
@@ -104,11 +87,26 @@
         duration: 30,
       });
     }
+    $schedule.push(...weatherSchedule);
+  }
 
-    newSchedule = [...weatherSchedule, ...newSchedule];
+  async function initNews() {
+    articles = $portals
+      .filter((portal) => portal.name !== 'ilm')
+      .flatMap((portal) =>
+        $feed[portal.portal].flatMap((article) => ({ article, portal }))
+      );
+    rawSchedule = Array(articles.length)
+      .fill(null)
+      .map((_) => []);
 
-    current.set(0);
-    schedule.set(newSchedule);
+    await sleep(0);
+    articles = [];
+    let newsSchedule = rawSchedule
+      .flat()
+      .map((item, index) => ({ ...item, index: index + 6 }));
+
+    $schedule.push(...newsSchedule);
 
     const scheduleSet = new Set($schedule.map((item) => item.name));
     for (const portal in $feed) {
@@ -116,8 +114,13 @@
         scheduleSet.has(item.header)
       );
     }
+  }
 
-    console.log('done', Date.now() - t);
+  async function initialize() {
+    const weather = await initObservations();
+    await initForecast(weather);
+    await initNews();
+
     initTime = Date.now();
     api.sendSchedule();
     console.log($schedule);

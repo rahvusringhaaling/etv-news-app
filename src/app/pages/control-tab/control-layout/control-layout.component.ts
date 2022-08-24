@@ -5,7 +5,7 @@ import { ColDef, GridOptions, GridReadyEvent, RowNode } from 'ag-grid-community'
 import { SelectEditorComponent } from '../../../shared/components/select-editor/select-editor.component';
 import { AG_GRID_LOCALE_EE } from '../../../../assets/locale.ee';
 import { Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { throttleTime } from 'rxjs/operators';
 import { timeSince } from '../../../core/header/header.component';
 
 @Component({
@@ -92,14 +92,15 @@ export class ControlLayoutComponent implements OnInit {
     });
 
     this.nextSubject
-      .pipe(debounceTime(500))
+      .pipe(throttleTime(750))
       .subscribe(() => this.api.sendScheduleNext());
 
     this.importSubject
-      .pipe(debounceTime(2000))
+      .pipe(throttleTime(3000))
       .subscribe(() => this.api.initializeSchedule());
 
     setInterval(async () => {
+      if (this.importTime === 0) return;
       this.importTimeString = timeSince(this.importTime, 'Viimane import')
     }, this.SLEEP_INTERVAL);
 
