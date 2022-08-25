@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onDestroy } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   import { gsap } from 'gsap';
   import { previous, current, next } from '../../stores/current';
   import { ScheduleType } from '../../domain/IScheduleItem';
@@ -12,6 +12,19 @@
   let header = '';
   let author = '';
 
+  onMount(() => {
+    gsap.fromTo(
+      caption,
+      { opacity: 0 },
+      { opacity: 0.75, duration: 0.3, delay: 1.35 }
+    );
+    gsap.fromTo(
+      container,
+      { bottom: -150 },
+      { bottom: 0, duration: 0.75, delay: 0.4 }
+    );
+  });
+
   const unsubscribeCurrent = current.subscribe((item) => {
     if (item && item.type === ScheduleType.Headline) {
       src = item.article!.imageURL;
@@ -22,17 +35,6 @@
 
       primaryColor = item.portal.primaryColor;
       backgroundColor = item.portal.backgroundColor;
-
-      gsap.fromTo(
-        caption,
-        { opacity: 0 },
-        { opacity: 0.75, duration: 0.3, delay: 1.35 }
-      );
-      gsap.fromTo(
-        container,
-        { bottom: -150 },
-        { bottom: 0, duration: 0.75, delay: 0.4 }
-      );
     }
   });
 
@@ -56,7 +58,7 @@
   style="--primary-color: {primaryColor}; --background-color: {backgroundColor};"
 >
   <div class="container">
-    <img {src} alt="" />
+    <img {src} on:load alt="" />
     <div class="bottom-container" bind:this={container}>
       <div class="caption" bind:this={caption}>{author}</div>
       <div class="header">{header}</div>

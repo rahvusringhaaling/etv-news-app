@@ -1,11 +1,16 @@
 <script lang="ts">
+  import { current } from '../../../stores/current';
   import type { IForecastItem } from '../../../domain/IForecastItem';
   import { getWeekDay } from '../../../utils';
 
   export let item: IForecastItem | undefined;
+  let primaryColor = $current.portal.primaryColor;
+  let backgroundColor = $current.portal.backgroundColor;
 </script>
 
-<main>
+<main
+  style="--primary-color: {primaryColor}; --background-color: {backgroundColor};"
+>
   <div id="root-container">
     <div>
       <div id="grid">

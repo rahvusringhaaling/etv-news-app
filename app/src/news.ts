@@ -57,7 +57,7 @@ const portalsFallback: IPortal[] = [
   // },
 ];
 
-function getPortalsInternal() {
+function getPortalsArray(): IPortal[] {
   const allPortals = data?.newsTable?.rows ?? portalsFallback;
   const portals = allPortals.filter((portal) => portal.enabled);
 
@@ -88,13 +88,12 @@ const weatherPortal: IPortal = {
 }
 
 export function getPortals(): IPortal[] {
-  console.log(getPortalsInternal())
-  return [...getPortalsInternal(), weatherPortal];
+  return [...getPortalsArray(), weatherPortal];
 }
 
 export async function getFeeds() {
   const output = {};
-  let portals = getPortalsInternal();
+  let portals = getPortalsArray();
 
   for (const feed of portals) {
     const { portal, minItems, maxItems, lastHours } = feed;

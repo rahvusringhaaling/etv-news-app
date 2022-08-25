@@ -24,13 +24,7 @@ export let data: IServerData = {
 }
 
 let layers: Layers = {
-  template: 110,
-  archive: 102,
-  video: 101,
-  efect: 90,
-  efect16by9: 99,
-  creditsBG: 120,
-  creditsText: 121
+  template: 100,
 }
 
 const DATA_FILE_NAME = 'data.json';

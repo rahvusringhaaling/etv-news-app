@@ -6,8 +6,9 @@ import { IObservationsMap } from './domain/IObservationsMap';
 import { IObservationsTimestamp } from './domain/IObservationsTimestamp';
 import { IWeatherForecast } from './domain/IWeatherForecast';
 import { IWeatherObservations } from './domain/IWeatherObservations';
+import { data } from './server';
 
-const locations = new Map([
+const locationsFallback = new Map([
   ['Tallinn-Harku', [655, 172]],
   ['Jõhvi', [1164, 180]],
   ['Jõgeva', [1085, 390]],
@@ -20,23 +21,25 @@ const locations = new Map([
   ['Ristna', [201, 331]],
   ['Lääne-Nigula', [506, 315]],
   ['Väike-Maarja', [944, 266]],
-])
+]);
 
-const rows = [
-  {
-    station: 'Tallinn',
-    x: '123',
-    y: '435',
-  },
-  {
-    station: 'Pärnu',
-    x: '54',
-    y: '22',
-  },
-];
-const newRows: any = rows.map(row => ([
-  row.station, [row.x, row.y]
-]))
+function getLocations() {
+  const rows = data?.weatherTable?.rows;
+  const isInvalid = !rows || rows.some(
+    (row) => !(
+      'station' in row && row.station.length > 0 &&
+      'x' in row && row.x > 0 &&
+      'y' in row && row.y > 0
+    ));
+
+  if (isInvalid) {
+    return locationsFallback;
+  }
+
+  return new Map(rows.map(row => ([
+    row.station, [row.x, row.y]
+  ])));
+}
 
 const parser = new XMLParser({ ignoreAttributes: false });
 
@@ -130,6 +133,7 @@ async function getObservations(): Promise<IObservationsTimestamp | null> {
 function getObservationsMap(
   observationsTimestamp: IObservationsTimestamp
 ): IObservationsMap {
+  const locations = getLocations();
   const { timestamp, observations } = observationsTimestamp;
 
   const observationsFiltered = observations

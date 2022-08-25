@@ -49,12 +49,12 @@ export class NewsComponent implements OnInit {
     { field: 'portal', headerName: 'Portaal' },
     {
       field: 'minItems',
-      headerName: 'minItems',
+      headerName: 'Min',
       cellEditor: 'numberEditor',
     },
     {
       field: 'maxItems',
-      headerName: 'maxItems',
+      headerName: 'Max',
       cellEditor: 'numberEditor'
     },
     {

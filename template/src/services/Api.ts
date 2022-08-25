@@ -28,7 +28,6 @@ export class Api {
     });
 
     this.socket.on('server/schedule/initialize', () => {
-      console.log('api init', Date.now())
       initialize();
     });
 

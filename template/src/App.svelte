@@ -117,9 +117,14 @@
   }
 
   async function initialize() {
+    if (initTime === -1) return;
+    initTime = -1;
     const weather = await initObservations();
+    api.sendSchedule();
     await initForecast(weather);
+    api.sendSchedule();
     await initNews();
+    api.sendSchedule();
 
     initTime = Date.now();
     api.sendSchedule();

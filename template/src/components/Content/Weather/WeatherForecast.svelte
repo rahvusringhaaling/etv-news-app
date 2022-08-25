@@ -1,9 +1,15 @@
 <script lang="ts">
+  import { current } from '../../../stores/current';
   import { forecast } from '../../../stores/weather';
   import { getWeekDay } from '../../../utils';
+
+  let primaryColor = $current.portal.primaryColor;
+  let backgroundColor = $current.portal.backgroundColor;
 </script>
 
-<main>
+<main
+  style="--primary-color: {primaryColor}; --background-color: {backgroundColor};"
+>
   <div id="root-container">
     <div>
       <div id="left">

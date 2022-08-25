@@ -12,7 +12,7 @@
   ],
   "extraResources": [
     "app/dist",
-    "template/public",
+    "template/dist",
     {
       "from": "dist",
       "to": "app",
