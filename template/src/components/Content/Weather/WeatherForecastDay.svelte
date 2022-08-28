@@ -1,5 +1,6 @@
 <script lang="ts">
   import { current } from '../../../stores/current';
+  import { language } from '../../../stores/language';
   import type { IForecastItem } from '../../../domain/IForecastItem';
   import { getWeekDay } from '../../../utils';
 
@@ -16,12 +17,12 @@
       <div id="grid">
         {#if item}
           <div class="header primary left">
-            {getWeekDay(new Date(item.date))}
+            {getWeekDay(new Date(item.date), $language)}
           </div>
 
           <div class="row bg">
             <span class="left">
-              {item?.night.text}
+              {@html item?.night.text}
             </span>
           </div>
 
@@ -34,7 +35,7 @@
 
           <div class="row">
             <span class="left secondary">
-              {item?.day.text}
+              {@html item?.day.text}
             </span>
           </div>
 

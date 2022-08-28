@@ -2,6 +2,8 @@
   import { onMount, tick } from 'svelte';
   import { createEventDispatcher } from 'svelte';
   import { gsap } from 'gsap';
+  import { Language } from '../../../domain/Language';
+  import { language } from '../../../stores/language';
   import type { IArticleNodes } from '../../../domain/IArticleNodes';
   import type { IArticle } from '../../../domain/IArticle';
 
@@ -171,7 +173,13 @@
     </span>
     {#if showMore}
       <div class="more">
-        <p>Loe seda uudist edasi portaalist ERR.ee</p>
+        <p>
+          {#if $language === Language.Estonian}
+            Loe seda uudist edasi portaalist ERR.ee
+          {:else}
+            Читайте дальше на портале rus.err.ee
+          {/if}
+        </p>
         <svg viewBox="0 0 13 16">
           <path d="M13,8L0,0V16L13,8Z" />
         </svg>

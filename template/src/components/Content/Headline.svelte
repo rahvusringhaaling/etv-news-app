@@ -1,6 +1,8 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte';
   import { gsap } from 'gsap';
+  import { Language } from '../../domain/Language';
+  import { language } from '../../stores/language';
   import { previous, current, next } from '../../stores/current';
   import { ScheduleType } from '../../domain/IScheduleItem';
 
@@ -27,10 +29,11 @@
 
   const unsubscribeCurrent = current.subscribe((item) => {
     if (item && item.type === ScheduleType.Headline) {
+      const prefix = $language === Language.Estonian ? 'Foto:' : '';
       src = item.article!.imageURL;
       header = item.article!.header;
       author = item.article!.imageAuthor
-        ? `Foto: ${item.article!.imageAuthor}`
+        ? `${prefix} ${item.article!.imageAuthor}`
         : '';
 
       primaryColor = item.portal.primaryColor;

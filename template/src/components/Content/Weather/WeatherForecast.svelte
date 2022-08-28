@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { language } from '../../../stores/language';
   import { current } from '../../../stores/current';
   import { forecast } from '../../../stores/weather';
   import { getWeekDay } from '../../../utils';
@@ -18,7 +19,7 @@
       <div id="grid">
         {#each $forecast as { date }}
           <div class="header primary ">
-            {getWeekDay(new Date(date))}
+            {getWeekDay(new Date(date), $language)}
           </div>
         {/each}
 

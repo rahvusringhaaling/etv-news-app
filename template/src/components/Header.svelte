@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
+  import { language } from '../stores/language';
   import { current } from '../stores/current';
   import { gsap } from 'gsap';
   import { getMonthName, getWeekDay } from '../utils';
@@ -15,8 +16,8 @@
     const minutes = now.getMinutes();
 
     const dayNumber = now.getDate();
-    const dayName = getWeekDay(now);
-    const monthName = getMonthName(now);
+    const dayName = getWeekDay(now, $language);
+    const monthName = getMonthName(now, $language);
 
     time = getFormattedTime(hours, minutes);
     date = `${dayName}, ${dayNumber}. ${monthName}`;
