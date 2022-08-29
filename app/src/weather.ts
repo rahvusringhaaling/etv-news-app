@@ -24,6 +24,18 @@ const locationsFallback = new Map([
   ['Väike-Maarja', [944, 266]],
 ]);
 
+function getObservationsURL(): string {
+  const url = data?.weatherTable?.observationsURL;
+  const fallback = 'https://www.ilmateenistus.ee/ilma_andmed/xml/observations.php';
+  return url && url.length > 0 ? url : fallback;
+}
+
+function getForecastURL(param: string): string {
+  const url = data?.weatherTable?.forecastURL;
+  const fallback = `https://www.ilmateenistus.ee/ilma_andmed/xml/forecast.php${param}`;
+  return url && url.length > 0 ? url + param : fallback;
+}
+
 function getLocations() {
   const rows = data?.weatherTable?.rows;
   const isInvalid = !rows || rows.some(
@@ -98,7 +110,7 @@ function getIcons(isNight: boolean | null = null) {
 }
 
 async function getObservations(): Promise<IObservationsTimestamp | null> {
-  const url = 'https://www.ilmateenistus.ee/ilma_andmed/xml/observations.php';
+  const url = getObservationsURL();
   const response = await fetch(url);
   const data = await response.text();
 
@@ -164,7 +176,7 @@ export async function getForecast(
   language: Language
 ): Promise<IForecastItem[] | null> {
   const param = language === Language.Estonian ? '' : '?lang=rus';
-  const url = `https://www.ilmateenistus.ee/ilma_andmed/xml/forecast.php${param}`;
+  const url = getForecastURL(param);
   const response = await fetch(url);
   const data = await response.text();
 

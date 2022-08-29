@@ -40,7 +40,7 @@
     const { isLast, isTooLong } = event.detail;
     if (isTooLong) return;
 
-    if (!isLast && pages.length < 4) {
+    if (!isLast && pages.length < 3) {
       addPage(false);
     } else {
       output.push({

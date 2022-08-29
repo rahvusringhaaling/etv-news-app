@@ -18,6 +18,12 @@ export class DataService {
     this.dataSource.next(value);
   }
 
+  saveChannel(value: number) {
+    this.allObjects['channel'] = value;
+    this.dataSource.next(value);
+    this.api.saveData(this.allObjects);
+  }
+
   saveObject(key: string, value: object) {
     this.allObjects['lastEdited'] = Date.now();
     this.allObjects[key] = value;

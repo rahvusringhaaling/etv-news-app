@@ -14,7 +14,7 @@ import { timeSince } from '../../../core/header/header.component';
   styleUrls: ['./control-layout.component.scss']
 })
 export class ControlLayoutComponent implements OnInit {
-  public isOnAir = false;
+  public isOnAir = true;
   public gridHeight = 500;
   public importTimeString = '';
 
@@ -121,10 +121,12 @@ export class ControlLayoutComponent implements OnInit {
 
   start() {
     this.isOnAir = true;
+    this.api.start();
   }
 
   stop() {
     this.isOnAir = false;
+    this.api.stop();
   }
 
   next() {

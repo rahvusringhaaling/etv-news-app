@@ -12,12 +12,14 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { NewsComponent } from './components/news/news.component';
 import { WeatherComponent } from './components/weather/weather.component';
+import { CasparComponent } from './components/caspar/caspar.component';
 
 @NgModule({
   declarations: [
     SettingsLayoutComponent,
     NewsComponent,
-    WeatherComponent
+    WeatherComponent,
+    CasparComponent
   ],
   imports: [
     CommonModule,
