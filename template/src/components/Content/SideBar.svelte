@@ -119,7 +119,6 @@
   li {
     padding: 40px 35px 40px 145px;
     color: var(--text-color);
-    font-family: 'AvenirNextLTPro';
     font-size: 32px;
     white-space: normal;
   }

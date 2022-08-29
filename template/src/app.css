@@ -10,12 +10,25 @@
 	font-weight: bold;
 }
 
+@font-face {
+	font-family: "AvenirNextCyr";
+	src: url("/fonts/AvenirNextCyr-Regular.otf");
+	font-weight: 400;
+}
+
+@font-face {
+	font-family: "AvenirNextCyr";
+	src: url("/fonts/AvenirNextCyr-Bold.otf");
+	font-weight: bold;
+}
+
 * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 	overflow: hidden;
 	white-space: pre;
+	font-family: var(--font-family);
 }
 
 :root {

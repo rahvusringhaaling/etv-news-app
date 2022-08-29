@@ -60,23 +60,19 @@
     width: 1485px;
     height: 912px;
     display: flex;
-    font-family: 'AvenirNextLTPro';
     background-color: #dae7ec;
     color: #282828;
   }
 
   #grid {
+    display: grid;
+    grid-template-rows: 176px repeat(2, 295px);
+    grid-template-columns: auto 336px;
     position: relative;
     width: 100%;
-    grid-template-columns: auto 336px;
     justify-items: start;
 
     color: #edeeee;
-  }
-
-  #grid {
-    display: grid;
-    grid-template-rows: 176px repeat(2, 295px);
   }
 
   .header {
@@ -98,7 +94,7 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    font-size: 37px;
+    font-size: 34px;
     padding-top: 22px;
   }
 

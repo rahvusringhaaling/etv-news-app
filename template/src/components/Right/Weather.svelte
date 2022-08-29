@@ -73,7 +73,6 @@
   }
 
   p {
-    font-family: 'AvenirNextLTPro';
     font-size: 40px;
     color: #1d1d1d;
   }

@@ -16,27 +16,6 @@ input::-webkit-inner-spin-button {
     -webkit-appearance: none;
 }
 
-.small-textfield {
-  height: 36px;
-  width: 75px;
-}
-
-.medium-textfield {
-  height: 36px;
-  width: 450px;
-}
-
-.large-textfield {
-  width: 100%;
-  height: 36px;
-}
-
-.input-container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
 mat-panel-title {
   font-weight: bold;
 }
@@ -57,13 +36,8 @@ mat-action-row {
   margin-left: 0 !important;
 }
 
-h4 {
-  margin: 10px 0;
-}
-
-.input-container {
+mat-radio-group {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
+  gap: 20px;
+  margin-top: 15px;
 }

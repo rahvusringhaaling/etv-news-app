@@ -2,6 +2,7 @@ import { IPortal } from "./IPortal";
 
 export interface IServerData {
   channel: number,
+  language: string,
   lastEdited?: number,
   weatherTable?: {
     rows?: [

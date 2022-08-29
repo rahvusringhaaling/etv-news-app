@@ -24,6 +24,12 @@ export class DataService {
     this.api.saveData(this.allObjects);
   }
 
+  saveLanguage(value: string) {
+    this.allObjects['language'] = value;
+    this.dataSource.next(value);
+    this.api.saveData(this.allObjects);
+  }
+
   saveObject(key: string, value: object) {
     this.allObjects['lastEdited'] = Date.now();
     this.allObjects[key] = value;

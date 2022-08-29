@@ -64,7 +64,6 @@
   }
 
   li {
-    font-family: 'AvenirNextLTPro';
     font-size: 40px;
     margin-bottom: 8px;
   }

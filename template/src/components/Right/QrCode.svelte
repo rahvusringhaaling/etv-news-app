@@ -66,7 +66,6 @@
   }
 
   p {
-    font-family: 'AvenirNextLTPro';
     font-size: 40px;
     color: var(--primary-color);
   }

@@ -2,6 +2,7 @@
 import fetch from 'node-fetch';
 import { URLSearchParams } from 'url';
 import { IPortal } from './domain/IPortal';
+import { Language } from './domain/Language';
 import { data } from './server';
 
 const portalsFallback: IPortal[] = [
@@ -76,18 +77,18 @@ function getPortalsArray(): IPortal[] {
   return isInvalid ? portalsFallback : portals;
 }
 
-const weatherPortal: IPortal = {
-  enabled: true,
-  name: 'ilm',
-  portal: 'ilm',
-  minItems: 0,
-  maxItems: 0,
-  lastHours: 0,
-  primaryColor: '#29ABE2',
-  textColor: '#EEEEEE'
-}
+export function getPortals(language: Language): IPortal[] {
+  const weatherPortal: IPortal = {
+    enabled: true,
+    name: language === Language.Estonian ? 'ilm' : 'погода',
+    portal: 'ilm',
+    minItems: 0,
+    maxItems: 0,
+    lastHours: 0,
+    primaryColor: '#29ABE2',
+    textColor: '#EEEEEE'
+  }
 
-export function getPortals(): IPortal[] {
   return [...getPortalsArray(), weatherPortal];
 }
 

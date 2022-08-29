@@ -16,6 +16,7 @@
   import { language } from './stores/language';
   import { Language } from './domain/Language';
 
+  let fontFamily = 'AvenirNextLTPro';
   let articles: any[] = [];
   let rawSchedule: IScheduleItem[][];
   let api = new Api(
@@ -33,6 +34,13 @@
     initialize();
   });
 
+  async function setLanguage() {
+    const value = await api.getLanguage();
+    language.set(value);
+    fontFamily =
+      value === Language.Estonian ? 'AvenirNextLTPro' : 'AvenirNextCyr';
+  }
+
   async function initObservations(): Promise<IPortal> {
     const observationsCombined = await api.getWeatherObservations();
     if (observationsCombined) {
@@ -41,14 +49,14 @@
     }
 
     feed.set(await api.getTVFeed());
-    const newPortals = (await api.getPortals()).map((portal, i) => ({
+    const newPortals = (await api.getPortals($language)).map((portal, i) => ({
       ...portal,
       backgroundColor: hexToRgba(portal.primaryColor),
       index: i,
     }));
     portals.set(newPortals);
 
-    const weather = $portals.find((portal) => portal.name === 'ilm');
+    const weather = $portals.find((portal) => portal.portal === 'ilm');
     current.set(0);
     schedule.set([
       {
@@ -69,7 +77,7 @@
       forecast.set(forecastData);
     }
 
-    const weather = $portals.find((portal) => portal.name === 'ilm');
+    const weather = $portals.find((portal) => portal.portal === 'ilm');
     const weatherSchedule: IScheduleItem[] = [
       {
         index: 1,
@@ -98,7 +106,7 @@
 
   async function initNews() {
     articles = $portals
-      .filter((portal) => portal.name !== 'ilm')
+      .filter((portal) => portal.portal !== 'ilm')
       .flatMap((portal) =>
         $feed[portal.portal].flatMap((article) => ({ article, portal }))
       );
@@ -125,7 +133,7 @@
   async function initialize() {
     if (initTime === -1) return;
     initTime = -1;
-    language.set(Language.Russian);
+    await setLanguage();
     await initObservations();
     api.sendSchedule();
     await initForecast();
@@ -168,7 +176,7 @@
 
 <svelte:window on:keypress={handleKeyDown} />
 
-<main>
+<main style="--font-family: {fontFamily};">
   <div class="root-container" style="">
     <Header />
     <div class="bottom-container">

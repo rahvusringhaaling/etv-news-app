@@ -43,7 +43,7 @@
       let text = '';
       lastItemIndex = item.index;
 
-      if (item.portal.name === 'ilm') {
+      if (item.portal.portal === 'ilm') {
         url = 'ilm.err.ee';
         type = ComponentType.QrCode;
         text = url;
@@ -64,7 +64,7 @@
       }
       if (
         (text.length > 0 && text === lastText && item.name === lastName) ||
-        (item.portal.name === 'ilm' && text === lastText)
+        (item.portal.portal === 'ilm' && text === lastText)
       ) {
         return;
       }

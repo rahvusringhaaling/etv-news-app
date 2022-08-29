@@ -88,7 +88,6 @@
 
   .caption {
     font-size: 30px;
-    font-family: 'AvenirNextLTPro';
     padding-left: 145px;
     padding-bottom: 20px;
     text-shadow: 0px 0px 4px #000000a6;
@@ -101,7 +100,6 @@
     width: 100%;
     background-color: var(--primary-color);
     color: var(--text-color);
-    font-family: 'AvenirNextLTPro';
     font-size: 55px;
     padding: 43px 30px 105px 145px;
     white-space: normal;

@@ -1,0 +1,11 @@
+<mat-expansion-panel [expanded]="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>Keel</mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <mat-radio-group [(ngModel)]="language"
+    (ngModelChange)="saveData()">
+    <mat-radio-button value="et">Eesti</mat-radio-button>
+    <mat-radio-button value="ru">Vene</mat-radio-button>
+  </mat-radio-group>
+</mat-expansion-panel>

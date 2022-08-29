@@ -41,9 +41,17 @@ export class Api {
     });
   }
 
-  getPortals() {
+  getLanguage() {
+    return new Promise<Language>(resolve => {
+      this.socket.emit('template/language/get', (language: Language) => {
+        resolve(language);
+      });
+    });
+  }
+
+  getPortals(language: Language) {
     return new Promise<IPortal[]>(resolve => {
-      this.socket.emit('template/portals/get', (portals: IPortal[]) => {
+      this.socket.emit('template/portals/get', language, (portals: IPortal[]) => {
         resolve(portals);
       });
     });
@@ -85,8 +93,6 @@ export class Api {
         'template/weather-forecast/get',
         language,
         (forecast: IForecastItem[] | null) => {
-          console.log('forecast api', forecast);
-
           resolve(forecast);
         }
       );

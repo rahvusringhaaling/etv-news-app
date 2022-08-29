@@ -19,7 +19,6 @@ export class WeatherComponent implements OnInit {
   public forecastURL = '';
 
   private dataID = 'weatherTable';
-  private localData: object;
   private gridApi;
   gridOptions: GridOptions = {
     stopEditingWhenCellsLoseFocus: true,
@@ -68,9 +67,6 @@ export class WeatherComponent implements OnInit {
   constructor(private data: DataService, private api: ApiService) { }
 
   async ngOnInit() {
-    this.data.currentData.subscribe((data: object) => {
-      this.localData = data;
-    });
   }
 
   async onGridReady(params) {
@@ -94,7 +90,6 @@ export class WeatherComponent implements OnInit {
   }
 
   loadData(data) {
-    this.localData = data;
     const weatherData = data[this.dataID];
 
     this.rowData = weatherData.rows;

@@ -19,7 +19,8 @@ interface Layers {
 }
 
 export let data: IServerData = {
-  channel: 1
+  channel: 1,
+  language: Language.Estonian
 }
 
 let layers: Layers = {
@@ -108,6 +109,10 @@ io.on('connection', (socket) => {
     callback(data);
   });
 
+  socket.on('template/language/get', (callback: Function) => {
+    callback(data.language);
+  });
+
   socket.on('client/layers/get', (callback: Function) => {
     callback(layers);
   });
@@ -123,8 +128,8 @@ io.on('connection', (socket) => {
     callback(location);
   });
 
-  socket.on('template/portals/get', async (callback: Function) => {
-    callback(getPortals());
+  socket.on('template/portals/get', async (language: Language, callback: Function) => {
+    callback(getPortals(language));
   });
 
   socket.on('template/tv-feed/get', async (callback: Function) => {

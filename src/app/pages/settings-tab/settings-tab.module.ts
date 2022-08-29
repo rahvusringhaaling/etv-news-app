@@ -13,13 +13,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { NewsComponent } from './components/news/news.component';
 import { WeatherComponent } from './components/weather/weather.component';
 import { CasparComponent } from './components/caspar/caspar.component';
+import { LanguageComponent } from './components/language/language.component';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   declarations: [
     SettingsLayoutComponent,
     NewsComponent,
     WeatherComponent,
-    CasparComponent
+    CasparComponent,
+    LanguageComponent
   ],
   imports: [
     CommonModule,
@@ -31,6 +34,7 @@ import { CasparComponent } from './components/caspar/caspar.component';
     MatIconModule,
     MatFormFieldModule,
     MatCheckboxModule,
+    MatRadioModule,
     AgGridModule
   ],
   exports: [

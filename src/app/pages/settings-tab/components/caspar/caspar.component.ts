@@ -17,6 +17,8 @@ export class CasparComponent implements OnInit {
   async ngOnInit() {
     this.port = this.api.port;
     this.casparPath = await this.api.getCasparLocation();
+    const data = await this.api.getServerData();
+    this.channel = data['channel'];
 
     console.log('Layers:', await this.api.getLayers());
   }

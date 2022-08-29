@@ -177,7 +177,7 @@
           {#if $language === Language.Estonian}
             Loe seda uudist edasi portaalist ERR.ee
           {:else}
-            Читайте дальше на портале rus.err.ee
+            Читайте дальше на портале rus.ERR.ee
           {/if}
         </p>
         <svg viewBox="0 0 13 16">
@@ -193,7 +193,6 @@
     width: 955px;
     height: 905px;
     color: #282828;
-    font-family: 'AvenirNextLTPro';
     font-size: 40px;
     padding: 40px 40px 0 95px;
     position: absolute;
@@ -235,7 +234,6 @@
 
   .more {
     display: flex;
-    font-family: 'AvenirNextLTPro';
     font-size: 37px;
     color: var(--primary-color);
     position: absolute;

@@ -59,7 +59,6 @@
     width: 1485px;
     height: 912px;
     background-color: #29abe2;
-    font-family: 'AvenirNextLTPro';
     color: #edeeee;
   }
 

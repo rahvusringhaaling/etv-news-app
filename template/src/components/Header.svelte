@@ -98,7 +98,6 @@
 
     color: #282828;
     font-size: 40px;
-    font-family: 'AvenirNextLTPro';
   }
 
   .left div:first-child {
