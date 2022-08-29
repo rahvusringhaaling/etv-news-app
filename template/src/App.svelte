@@ -13,6 +13,8 @@
   import { ScheduleType, type IScheduleItem } from './domain/IScheduleItem';
   import { forecast, observations, observationsMap } from './stores/weather';
   import type { IPortal } from './domain/IPortal';
+  import { language } from './stores/language';
+  import { Language } from './domain/Language';
 
   let articles: any[] = [];
   let rawSchedule: IScheduleItem[][];
@@ -62,7 +64,7 @@
   }
 
   async function initForecast() {
-    const forecastData = await api.getWeatherForecast();
+    const forecastData = await api.getWeatherForecast($language);
     if (forecastData) {
       forecast.set(forecastData);
     }
@@ -83,7 +85,10 @@
         index: i + 2,
         portal: weather!,
         type: ScheduleType.WeatherForecastDay,
-        name: `Detailne prognoos - ${getWeekDay(new Date($forecast[i].date))}`,
+        name: `Detailne prognoos - ${getWeekDay(
+          new Date($forecast[i].date),
+          $language
+        )}`,
         forecast: $forecast[i],
         duration: 30,
       });
@@ -120,6 +125,7 @@
   async function initialize() {
     if (initTime === -1) return;
     initTime = -1;
+    language.set(Language.Russian);
     await initObservations();
     api.sendSchedule();
     await initForecast();

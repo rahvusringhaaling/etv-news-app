@@ -8,8 +8,7 @@ import { CasparCG, Options } from 'casparcg-connection';
 import { getPortals, getFeeds } from './news'
 import { getForecast, getObservationsCombined } from './weather';
 import { IServerData } from './domain/IServerData';
-
-getForecast()
+import { Language } from './domain/Language';
 
 const webApp: any = express();
 const server = http.createServer(webApp);
@@ -140,9 +139,9 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('template/weather-forecast/get', async (callback: Function) => {
+  socket.on('template/weather-forecast/get', async (language: Language, callback: Function) => {
     try {
-      callback(await getForecast());
+      callback(await getForecast(language));
     } catch (error) {
       callback(null);
     }

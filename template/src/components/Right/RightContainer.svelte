@@ -1,6 +1,8 @@
 <script lang="ts">
   import { onDestroy, tick } from 'svelte';
   import { gsap } from 'gsap';
+  import { Language } from '../../domain/Language';
+  import { language } from '../../stores/language';
   import { current } from '../../stores/current';
   import CategoryList from './CategoryList.svelte';
   import QrCode from './QrCode.svelte';
@@ -47,16 +49,18 @@
         text = url;
       } else if (item.article?.hasAudio) {
         type = ComponentType.QrCode;
-        text = 'Kuula klippi:';
+        text = $language === Language.Estonian ? 'Kuula klippi:' : 'Аудиоклип:';
       } else if (item.article?.hasGallery) {
         type = ComponentType.QrCode;
-        text = 'Vaata galeriid:';
+        text =
+          $language === Language.Estonian ? 'Vaata galeriid:' : 'Фотогалерея:';
       } else if (item.article?.hasVideo) {
         type = ComponentType.QrCode;
-        text = 'Vaata videot:';
+        text =
+          $language === Language.Estonian ? 'Vaata videot:' : 'Смотрите видео:';
       } else if (item.overflow && item.pageCount === item.pageNumber) {
         type = ComponentType.QrCode;
-        text = 'Loe edasi:';
+        text = $language === Language.Estonian ? 'Loe edasi:' : 'Подробнее:';
       }
       if (
         (text.length > 0 && text === lastText && item.name === lastName) ||

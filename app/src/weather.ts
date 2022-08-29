@@ -6,6 +6,7 @@ import { IObservationsMap } from './domain/IObservationsMap';
 import { IObservationsTimestamp } from './domain/IObservationsTimestamp';
 import { IWeatherForecast } from './domain/IWeatherForecast';
 import { IWeatherObservations } from './domain/IWeatherObservations';
+import { Language } from './domain/Language';
 import { data } from './server';
 
 const locationsFallback = new Map([
@@ -29,10 +30,10 @@ function getObservationsURL(): string {
   return url && url.length > 0 ? url : fallback;
 }
 
-function getForecastURL(): string {
+function getForecastURL(param: string): string {
   const url = data?.weatherTable?.forecastURL;
-  const fallback = 'https://www.ilmateenistus.ee/ilma_andmed/xml/forecast.php';
-  return url && url.length > 0 ? url : fallback;
+  const fallback = `https://www.ilmateenistus.ee/ilma_andmed/xml/forecast.php${param}`;
+  return url && url.length > 0 ? url + param : fallback;
 }
 
 function getLocations() {
@@ -171,8 +172,11 @@ export async function getObservationsCombined(): Promise<IObservationsCombined |
   }
 }
 
-export async function getForecast(): Promise<IForecastItem[] | null> {
-  const url = getForecastURL();
+export async function getForecast(
+  language: Language
+): Promise<IForecastItem[] | null> {
+  const param = language === Language.Estonian ? '' : '?lang=rus';
+  const url = getForecastURL(param);
   const response = await fetch(url);
   const data = await response.text();
 

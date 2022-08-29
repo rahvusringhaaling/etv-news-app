@@ -1,6 +1,7 @@
 <script lang="ts">
+  import { Language } from '../../../../domain/Language';
+  import { language } from '../../../../stores/language';
   import { onDestroy } from 'svelte';
-
   import type { IFilteredObservationItem } from '../../../../domain/IFilteredObservationItem';
   import { observationsMap } from '../../../../stores/weather';
   import Svg from './Svg.svelte';
@@ -12,7 +13,9 @@
     if (!data) return;
     if (data.timestamp) {
       const date = new Date(data.timestamp * 1000);
-      time = `Ilm kell ${date.getHours()}:00`;
+      const prefix =
+        $language === Language.Estonian ? 'Ilm kell' : 'Погода сейчас';
+      time = `${prefix} ${date.getHours()}:00`;
     }
 
     data.observations.forEach((item) => {

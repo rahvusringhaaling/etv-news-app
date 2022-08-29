@@ -1,3 +1,5 @@
+import { Language } from "./domain/Language";
+
 export function sleep(time: number) {
   return new Promise(resolve => setTimeout(resolve, time));
 }
@@ -11,12 +13,14 @@ export function hexToRgba(hex: string) {
   return `rgba(${r}, ${g}, ${b}, 0.1)`;
 }
 
-export function getWeekDay(date: Date): string {
-  return capitalize(date.toLocaleDateString('et', { weekday: 'long' }));
+export function getWeekDay(date: Date, language: Language): string {
+  const locale = language === Language.Estonian ? 'et' : 'ru';
+  return capitalize(date.toLocaleDateString(locale, { weekday: 'long' }));
 }
 
-export function getMonthName(date: Date): string {
-  return date.toLocaleDateString('et', { month: 'long' });
+export function getMonthName(date: Date, language: Language): string {
+  const locale = language === Language.Estonian ? 'et' : 'ru';
+  return date.toLocaleDateString(locale, { month: 'long' });
 }
 
 function capitalize(str: string): string {

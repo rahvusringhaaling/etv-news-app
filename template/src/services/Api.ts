@@ -7,6 +7,7 @@ import { index } from '../stores/current';
 import { schedule } from '../stores/schedule';
 import type { IObservationsMap } from '../domain/IObservationsMap';
 import type { IObservationsCombined } from 'src/domain/IObservationsCombined';
+import type { Language } from 'src/domain/Language';
 
 export class Api {
   private socket: Socket;
@@ -78,11 +79,14 @@ export class Api {
     });
   }
 
-  getWeatherForecast() {
+  getWeatherForecast(language: Language) {
     return new Promise<IForecastItem[] | null>(resolve => {
       this.socket.emit(
         'template/weather-forecast/get',
+        language,
         (forecast: IForecastItem[] | null) => {
+          console.log('forecast api', forecast);
+
           resolve(forecast);
         }
       );
