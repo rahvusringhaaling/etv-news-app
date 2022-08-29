@@ -1,22 +1,5 @@
 <div id="settings-root-container">
   <app-news class="component"></app-news>
   <app-weather class="component"></app-weather>
-
-  <mat-expansion-panel [expanded]="true">
-    <mat-expansion-panel-header>
-      <mat-panel-title>Info</mat-panel-title>
-    </mat-expansion-panel-header>
-
-    <div id="info-container">
-      <div>
-        <h4>Veebiserveri port:</h4>
-        <div>{{ port }}</div>
-      </div>
-
-      <div>
-        <h4>CasparCG meedia kataloog:</h4>
-        <div>{{ casparPath }}</div>
-      </div>
-    </div>
-  </mat-expansion-panel>
+  <app-caspar class="component"></app-caspar>
 </div>

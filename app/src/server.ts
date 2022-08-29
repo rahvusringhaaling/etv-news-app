@@ -25,6 +25,7 @@ export let data: IServerData = {
 
 let layers: Layers = {
   template: 100,
+  templateKeyer: 99
 }
 
 const DATA_FILE_NAME = 'data.json';
@@ -76,7 +77,10 @@ const connection: CasparCG = new CasparCG({
         )
         .then()
         .catch(error => logError(error));
-    }, 2000);
+      connection
+        .mixerKeyer(data.channel, layers.templateKeyer, 1)
+        .catch(error => logError(error));
+    }, 250);
   }
 });
 
@@ -174,6 +178,19 @@ io.on('connection', (socket) => {
 
   socket.on('template/init-time/post', (initTime: number) => {
     socket.broadcast.emit('server/init-time/post', initTime);
+  });
+
+  socket.on('client/template/start', () => {
+    connection
+      .play(data.channel, layers.templateKeyer, `Portaalid/mask_in`)
+      .catch(error => logError(error));
+
+  });
+
+  socket.on('client/template/stop', () => {
+    connection
+      .play(data.channel, layers.templateKeyer, `Portaalid/mask_out`)
+      .catch(error => logError(error));
   });
 
   socket.on('client/data/save', (newData) => {

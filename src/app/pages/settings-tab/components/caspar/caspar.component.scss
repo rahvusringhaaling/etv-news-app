@@ -1,0 +1,69 @@
+.mdc-text-field {
+  background-color: #393a3e;
+}
+
+.mdc-text-field__input {
+  color: white !important;
+  caret-color: white !important;
+}
+
+.mdc-text-field__input::placeholder {
+  color: #a4a4a4 !important;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.small-textfield {
+  height: 36px;
+  width: 75px;
+}
+
+.medium-textfield {
+  height: 36px;
+  width: 450px;
+}
+
+.large-textfield {
+  width: 100%;
+  height: 36px;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+mat-panel-title {
+  font-weight: bold;
+}
+
+mat-expansion-panel {
+  width: 100%;
+  height: 100%;
+  overflow-x: inherit;
+  background-color: #303134;
+}
+
+mat-action-row {
+  gap: 8px;
+  justify-content: flex-start;
+}
+
+.mat-action-row button.mat-button-base, .mat-action-row button.mat-mdc-button-base {
+  margin-left: 0 !important;
+}
+
+h4 {
+  margin: 10px 0;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}

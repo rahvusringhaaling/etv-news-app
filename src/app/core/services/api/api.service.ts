@@ -79,6 +79,14 @@ export class ApiService {
     this.socket.emit('client/init-time/get');
   }
 
+  start() {
+    this.socket.emit('client/template/start');
+  }
+
+  stop() {
+    this.socket.emit('client/template/stop');
+  }
+
   getCasparLocation() {
     return new Promise<string>(resolve => {
       this.socket.emit('client/caspar-media-location/get', (path: string) => {

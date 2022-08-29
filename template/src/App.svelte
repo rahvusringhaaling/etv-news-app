@@ -61,12 +61,13 @@
     return weather;
   }
 
-  async function initForecast(weather: IPortal) {
+  async function initForecast() {
     const forecastData = await api.getWeatherForecast();
     if (forecastData) {
       forecast.set(forecastData);
     }
 
+    const weather = $portals.find((portal) => portal.name === 'ilm');
     const weatherSchedule: IScheduleItem[] = [
       {
         index: 1,
@@ -119,9 +120,9 @@
   async function initialize() {
     if (initTime === -1) return;
     initTime = -1;
-    const weather = await initObservations();
+    await initObservations();
     api.sendSchedule();
-    await initForecast(weather);
+    await initForecast();
     api.sendSchedule();
     await initNews();
     api.sendSchedule();

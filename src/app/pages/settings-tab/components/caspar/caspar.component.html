@@ -1,0 +1,31 @@
+<mat-expansion-panel [expanded]="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>CasparCG</mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <div id="info-container">
+    <div class="input-container">
+      <div>Väljundi kanal: </div>
+
+      <label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label small-textfield">
+        <span class="mdc-text-field__ripple"></span>
+        <input [(ngModel)]="channel"
+          (ngModelChange)="saveData()"
+          class="mdc-text-field__input"
+          type="number"
+          placeholder="1">
+        <span class="mdc-line-ripple"></span>
+      </label>
+    </div>
+
+    <div>
+      <h4>Veebiserveri port:</h4>
+      <div>{{ port }}</div>
+    </div>
+
+    <div>
+      <h4>CasparCG meedia kataloog:</h4>
+      <div>{{ casparPath }}</div>
+    </div>
+  </div>
+</mat-expansion-panel>
