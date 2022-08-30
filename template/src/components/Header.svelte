@@ -3,7 +3,7 @@
   import { language } from '../stores/language';
   import { current } from '../stores/current';
   import { gsap } from 'gsap';
-  import { getMonthName, getWeekDay } from '../utils';
+  import { getDateFull } from '../utils';
 
   let time = '';
   let date = '';
@@ -15,12 +15,8 @@
     const hours = now.getHours();
     const minutes = now.getMinutes();
 
-    const dayNumber = now.getDate();
-    const dayName = getWeekDay(now, $language);
-    const monthName = getMonthName(now, $language);
-
     time = getFormattedTime(hours, minutes);
-    date = `${dayName}, ${dayNumber}. ${monthName}`;
+    date = getDateFull(now, $language);
   }
 
   setDate();

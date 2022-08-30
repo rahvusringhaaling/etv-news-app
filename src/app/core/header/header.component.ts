@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { MatAccordion } from '@angular/material/expansion';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Language } from '../../../../app/src/domain/Language';
 import { ApiService } from '../services/api/api.service';
 import { DataService } from '../services/data/data.service';
 
@@ -36,12 +36,12 @@ export function timeSince(date: number, base = 'Viimane muudatus') {  // Takes a
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, AfterViewInit {
-  @ViewChild(MatAccordion) accordion: MatAccordion;
-  lastEditedString: string = '';
-  templateConnection = false;
-  casparConnection = false;
-  showSettingsTab = false;
-  private lastEdited: number = 0;
+  public lastEditedString = '';
+  public templateConnection = false;
+  public casparConnection = false;
+  public showSettingsTab = false;
+  public language = '';
+  private lastEdited = 0;
   private readonly SLEEP_INTERVAL = 3000;
   private lastTemplateHeartbeat = 0;
   private readonly DISCONNECT_THRESHOLD = 3500;
@@ -58,7 +58,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       this.casparConnection = await this.api.isCasparConnected();
       this.updateTemplateConnection();
 
-      if (!this.lastEdited) {
+      if (this.lastEdited === 0) {
         this.lastEditedString = '';
         return;
       }
@@ -67,6 +67,9 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
     this.data.currentData.subscribe(data => {
       this.lastEdited = data.lastEdited;
+      this.language = data.language === Language.Estonian
+        ? 'eesti'
+        : 'vene';
     });
   }
 

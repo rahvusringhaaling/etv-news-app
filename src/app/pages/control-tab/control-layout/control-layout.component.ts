@@ -100,7 +100,7 @@ export class ControlLayoutComponent implements OnInit {
       .subscribe(() => this.api.initializeSchedule());
 
     setInterval(async () => {
-      if (this.importTime === 0) return;
+      if (this.importTime <= 0) return;
       this.importTimeString = timeSince(this.importTime, 'Viimane import')
     }, this.SLEEP_INTERVAL);
 
@@ -117,16 +117,6 @@ export class ControlLayoutComponent implements OnInit {
       data.push({ id: node.id, ...node.data });
     });
     return data;
-  }
-
-  start() {
-    this.isOnAir = true;
-    this.api.start();
-  }
-
-  stop() {
-    this.isOnAir = false;
-    this.api.stop();
   }
 
   next() {

@@ -14,15 +14,15 @@ import { port, clearLayers } from "./server";
 // Disable renderer backgrounding
 app.commandLine.appendSwitch("disable-renderer-backgrounding");
 
-// // Check to see if second instance is requested and terminate it
-const gotTheLock = app.requestSingleInstanceLock();
+// // // Check to see if second instance is requested and terminate it
+// const gotTheLock = app.requestSingleInstanceLock();
 
-if (!gotTheLock) {
-  app.exit();
-}
+// if (!gotTheLock) {
+//   app.exit();
+// }
 
 nativeTheme.themeSource = 'dark';
-let win: BrowserWindow = null;
+let win: BrowserWindow | null = null;
 const args = process.argv.slice(1);
 const serve = args.some(val => val === '--serve');
 
@@ -54,7 +54,7 @@ function createWindow(): BrowserWindow {
   win.removeMenu();
   win.webContents.on('before-input-event', (event, input) => {
     if (!input.alt && input.control && input.shift && input.key.toLowerCase() === 'i') {
-      win.webContents.toggleDevTools();
+      win!.webContents.toggleDevTools();
       event.preventDefault()
     }
   });

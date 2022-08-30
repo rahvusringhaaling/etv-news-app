@@ -16,9 +16,12 @@ export function hexToRgba(hex: string) {
 export function getWeekDay(date: Date, language: Language): string {
   return capitalize(date.toLocaleDateString(language, { weekday: 'long' }));
 }
-
-export function getMonthName(date: Date, language: Language): string {
-  return date.toLocaleDateString(language, { month: 'long' });
+export function getDateFull(date: Date, language: Language): string {
+  return capitalize(date.toLocaleDateString(language, {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long'
+  }));
 }
 
 function capitalize(str: string): string {

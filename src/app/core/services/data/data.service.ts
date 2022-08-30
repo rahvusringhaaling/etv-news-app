@@ -20,13 +20,13 @@ export class DataService {
 
   saveChannel(value: number) {
     this.allObjects['channel'] = value;
-    this.dataSource.next(value);
+    this.dataSource.next(this.allObjects);
     this.api.saveData(this.allObjects);
   }
 
   saveLanguage(value: string) {
     this.allObjects['language'] = value;
-    this.dataSource.next(value);
+    this.dataSource.next(this.allObjects);
     this.api.saveData(this.allObjects);
   }
 

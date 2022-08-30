@@ -159,7 +159,6 @@
 
     initTime = Date.now();
     api.sendSchedule();
-    console.log($schedule);
   }
 
   const unsubscribe = current.subscribe((item) => {
