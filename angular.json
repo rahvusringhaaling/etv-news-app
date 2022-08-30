@@ -1,7 +1,9 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "cli": {
-    "defaultCollection": "@angular-eslint/schematics"
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   },
   "version": 1,
   "newProjectRoot": "projects",
@@ -173,14 +175,22 @@
       }
     }
   },
-  "defaultProject": "portaalid-2022",
   "schematics": {
     "@schematics/angular:component": {
-      "prefix": "app",
-      "style": "scss"
+      "style": "scss",
+      "skipTests": true
+    },
+    "@schematics/angular:class": {
+      "skipTests": true
     },
     "@schematics/angular:directive": {
-      "prefix": "app"
+      "skipTests": true
+    },
+    "@schematics/angular:pipe": {
+      "skipTests": true
+    },
+    "@schematics/angular:service": {
+      "skipTests": true
     }
   }
 }

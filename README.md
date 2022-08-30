@@ -6,8 +6,8 @@ Bootstrap and package your project with Angular 13 and Electron 16 (Typescript +
 
 Currently runs with:
 
-- Node v14.17.5
-- Angular v13.2.2
+- Node v14.20.0
+- Angular v14.2.1
 - Electron v16.0.0
 - Electron Builder v22.13.1
 
