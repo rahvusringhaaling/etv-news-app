@@ -9,6 +9,7 @@ import { getPortals, getFeeds } from './news'
 import { getForecast, getObservationsCombined } from './weather';
 import { IServerData } from './domain/IServerData';
 import { Language } from './domain/Language';
+import { ISettings } from './domain/ISettings';
 
 const webApp: any = express();
 const server = http.createServer(webApp);
@@ -109,8 +110,13 @@ io.on('connection', (socket) => {
     callback(data);
   });
 
-  socket.on('template/language/get', (callback: Function) => {
-    callback(data.language);
+  socket.on('template/settings/get', (callback: Function) => {
+    const settings: ISettings = {
+      language: data.language,
+      showForecast: data.weatherTable?.showForecast ?? false,
+      showObservations: data.weatherTable?.showObservations ?? false
+    }
+    callback(settings);
   });
 
   socket.on('client/layers/get', (callback: Function) => {

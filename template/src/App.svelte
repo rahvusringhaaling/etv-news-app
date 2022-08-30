@@ -12,7 +12,6 @@
   import { getWeekDay, hexToRgba, sleep } from './utils';
   import { ScheduleType, type IScheduleItem } from './domain/IScheduleItem';
   import { forecast, observations, observationsMap } from './stores/weather';
-  import type { IPortal } from './domain/IPortal';
   import { language } from './stores/language';
   import { Language } from './domain/Language';
 
@@ -34,28 +33,29 @@
     initialize();
   });
 
-  async function setLanguage() {
-    const value = await api.getLanguage();
+  async function setLanguage(value: Language) {
     language.set(value);
     fontFamily =
       value === Language.Estonian ? 'AvenirNextLTPro' : 'AvenirNextCyr';
   }
 
-  async function initObservations(): Promise<IPortal> {
+  async function initData() {
     const observationsCombined = await api.getWeatherObservations();
     if (observationsCombined) {
       observations.set(observationsCombined.observations);
       observationsMap.set(observationsCombined.observationsMap);
     }
 
-    feed.set(await api.getTVFeed());
     const newPortals = (await api.getPortals($language)).map((portal, i) => ({
       ...portal,
       backgroundColor: hexToRgba(portal.primaryColor),
       index: i,
     }));
     portals.set(newPortals);
+    feed.set(await api.getTVFeed());
+  }
 
+  async function initObservations() {
     const weather = $portals.find((portal) => portal.portal === 'ilm');
     current.set(0);
     schedule.set([
@@ -67,11 +67,9 @@
         duration: 30,
       },
     ]);
-
-    return weather;
   }
 
-  async function initForecast() {
+  async function initForecast(isFirst: boolean) {
     const forecastData = await api.getWeatherForecast($language);
     if (forecastData) {
       forecast.set(forecastData);
@@ -101,10 +99,15 @@
         duration: 30,
       });
     }
-    $schedule.push(...weatherSchedule);
+    if (isFirst) {
+      current.set(0);
+      schedule.set([...weatherSchedule]);
+    } else {
+      $schedule.push(...weatherSchedule);
+    }
   }
 
-  async function initNews() {
+  async function initNews(isFirst: boolean) {
     articles = $portals
       .filter((portal) => portal.portal !== 'ilm')
       .flatMap((portal) =>
@@ -120,7 +123,12 @@
       .flat()
       .map((item, index) => ({ ...item, index: index + 6 }));
 
-    $schedule.push(...newsSchedule);
+    if (isFirst) {
+      current.set(0);
+      schedule.set([...newsSchedule]);
+    } else {
+      $schedule.push(...newsSchedule);
+    }
 
     const scheduleSet = new Set($schedule.map((item) => item.name));
     for (const portal in $feed) {
@@ -133,12 +141,20 @@
   async function initialize() {
     if (initTime === -1) return;
     initTime = -1;
-    await setLanguage();
-    await initObservations();
-    api.sendSchedule();
-    await initForecast();
-    api.sendSchedule();
-    await initNews();
+    const { language, showObservations, showForecast } =
+      await api.getSettings();
+    await setLanguage(language);
+    await initData();
+
+    if (showObservations) {
+      await initObservations();
+      api.sendSchedule();
+    }
+    if (showForecast) {
+      await initForecast(!showObservations);
+      api.sendSchedule();
+    }
+    await initNews(!showObservations && !showForecast);
     api.sendSchedule();
 
     initTime = Date.now();

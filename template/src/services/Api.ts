@@ -5,9 +5,9 @@ import type { IForecastItem } from '../domain/IForecastItem';
 import type { IPortal } from '../domain/IPortal';
 import { index } from '../stores/current';
 import { schedule } from '../stores/schedule';
-import type { IObservationsMap } from '../domain/IObservationsMap';
 import type { IObservationsCombined } from 'src/domain/IObservationsCombined';
 import type { Language } from 'src/domain/Language';
+import type { ISettings } from 'src/domain/ISettings';
 
 export class Api {
   private socket: Socket;
@@ -41,10 +41,10 @@ export class Api {
     });
   }
 
-  getLanguage() {
-    return new Promise<Language>(resolve => {
-      this.socket.emit('template/language/get', (language: Language) => {
-        resolve(language);
+  getSettings() {
+    return new Promise<ISettings>(resolve => {
+      this.socket.emit('template/settings/get', (settings: ISettings) => {
+        resolve(settings);
       });
     });
   }
@@ -71,17 +71,6 @@ export class Api {
         'template/weather-observations-combined/get',
         (observationsCombined: IObservationsCombined | null) => {
           resolve(observationsCombined);
-        }
-      );
-    });
-  }
-
-  getWeatherObservationsMap() {
-    return new Promise<IObservationsMap | null>((resolve) => {
-      this.socket.emit(
-        'template/weather-observations-map/get',
-        (observations: IObservationsMap | null) => {
-          resolve(observations);
         }
       );
     });

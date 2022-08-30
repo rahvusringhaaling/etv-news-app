@@ -89,7 +89,10 @@ export function getPortals(language: Language): IPortal[] {
     textColor: '#EEEEEE'
   }
 
-  return [...getPortalsArray(), weatherPortal];
+  if (data.weatherTable?.showObservations || data.weatherTable?.showForecast) {
+    return [...getPortalsArray(), weatherPortal];
+  }
+  return [...getPortalsArray()];
 }
 
 export async function getFeeds() {
