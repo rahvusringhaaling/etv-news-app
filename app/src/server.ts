@@ -56,7 +56,7 @@ const io = new Server(server, {
   maxHttpBufferSize: 1e8
 });
 
-let casparInfo;
+let casparInfo: any;
 let templateID: string;
 const connection: CasparCG = new CasparCG({
   autoConnect: true,
@@ -109,8 +109,8 @@ io.on('connection', (socket) => {
     const settings: ISettings = {
       language: data.language,
       showForecast: data.weatherTable?.showForecast ?? false,
-      showObservations: data.weatherTable?.showObservations ?? false
-    }
+      showObservations: data.weatherTable?.showObservations ?? false,
+    };
     callback(settings);
   });
 
@@ -129,29 +129,38 @@ io.on('connection', (socket) => {
     callback(location);
   });
 
-  socket.on('template/portals/get', async (language: Language, callback: Function) => {
-    callback(getPortals(language));
-  });
+  socket.on(
+    'template/portals/get',
+    async (language: Language, callback: Function) => {
+      callback(getPortals(language));
+    }
+  );
 
   socket.on('template/tv-feed/get', async (callback: Function) => {
     callback(await getFeeds());
   });
 
-  socket.on('template/weather-observations-combined/get', async (callback: Function) => {
-    try {
-      callback(await getObservationsCombined());
-    } catch (error) {
-      callback(null);
+  socket.on(
+    'template/weather-observations-combined/get',
+    async (callback: Function) => {
+      try {
+        callback(await getObservationsCombined());
+      } catch (error) {
+        callback(null);
+      }
     }
-  });
+  );
 
-  socket.on('template/weather-forecast/get', async (language: Language, callback: Function) => {
-    try {
-      callback(await getForecast(language));
-    } catch (error) {
-      callback(null);
+  socket.on(
+    'template/weather-forecast/get',
+    async (language: Language, callback: Function) => {
+      try {
+        callback(await getForecast(language));
+      } catch (error) {
+        callback(null);
+      }
     }
-  });
+  );
 
   socket.on('client/schedule/get', () => {
     io.to(templateID).emit('server/schedule/get');
