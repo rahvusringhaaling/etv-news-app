@@ -2,7 +2,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as http from 'http';
 import * as net from 'net';
-import express, { Express } from 'express';
+import * as express from 'express';
 import { Server } from 'socket.io';
 import { CasparCG, Options } from 'casparcg-connection';
 import { getPortals, getFeeds } from './news'
@@ -13,7 +13,7 @@ import { ISettings } from './types/ISettings';
 import { ILayers } from './types/ILayers';
 import { IScheduleItem } from './types/IScheduleItem';
 
-const webApp: Express = express();
+const webApp: express.Express = express();
 const server = http.createServer(webApp);
 webApp.use(express.static(path.join(__dirname, '../../template/dist')));
 
