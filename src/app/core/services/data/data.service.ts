@@ -1,40 +1,29 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { IServerData } from '../../../../../app/src/types/IServerData';
 import { ApiService } from '../api/api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
-  private readonly dataSource: any = new BehaviorSubject<object>({});
-  readonly currentData: any = this.dataSource.asObservable();
-  private allObjects = {}
+  private readonly dataSource = new BehaviorSubject<IServerData | null>(null);
+  readonly currentData = this.dataSource.asObservable();
 
   constructor(private api: ApiService) {
   }
 
-  save(value: object) {
-    this.allObjects = value
+  save(value: IServerData) {
     this.dataSource.next(value);
   }
 
-  saveChannel(value: number) {
-    this.allObjects['channel'] = value;
-    this.dataSource.next(this.allObjects);
-    this.api.saveData(this.allObjects);
-  }
+  saveKey(key: string, value: any) {
+    const data = this.dataSource.value as any;
+    if (!data) return;
+    data.lastEdited = Date.now();
+    data[key] = value;
 
-  saveLanguage(value: string) {
-    this.allObjects['language'] = value;
-    this.dataSource.next(this.allObjects);
-    this.api.saveData(this.allObjects);
-  }
-
-  saveObject(key: string, value: object) {
-    this.allObjects['lastEdited'] = Date.now();
-    this.allObjects[key] = value;
-
-    this.dataSource.next(this.allObjects);
-    this.api.saveData(this.allObjects);
+    this.dataSource.next(data);
+    this.api.saveData(data);
   }
 }

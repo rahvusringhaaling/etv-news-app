@@ -8,9 +8,10 @@ import { ICellRendererParams } from 'ag-grid-community';
   styleUrls: ['./checkbox-renderer.component.scss']
 })
 export class CheckboxRendererComponent implements ICellRendererAngularComp {
-  params: any;
+  public params: ICellRendererParams;
+  public value = false;
 
-  agInit(params: any): void {
+  agInit(params: ICellRendererParams): void {
     this.params = params;
   }
 
@@ -19,9 +20,8 @@ export class CheckboxRendererComponent implements ICellRendererAngularComp {
     return true;
   }
 
-  checkedHandler(event) {
-    let checked = event.target.checked;
-    let colId = this.params.column.colId;
-    this.params.node.setDataValue(colId, checked);
+  checkedHandler() {
+    let colId = this.params.column!.getId();
+    this.params.node.setDataValue(colId, this.value);
   }
 }

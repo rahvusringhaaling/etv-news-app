@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { Language } from '../../../../app/src/domain/Language';
+import { IServerData } from '../../../../app/src/types/IServerData';
+import { Language } from '../../../../app/src/types/Language';
 import { ApiService } from '../services/api/api.service';
 import { DataService } from '../services/data/data.service';
 
@@ -65,8 +66,9 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       this.lastEditedString = timeSince(this.lastEdited);
     }, this.SLEEP_INTERVAL);
 
-    this.data.currentData.subscribe(data => {
-      this.lastEdited = data.lastEdited;
+    this.data.currentData.subscribe((data: IServerData | null) => {
+      if (!data) return;
+      this.lastEdited = data.lastEdited ?? 0;
       this.language = data.language === Language.Estonian
         ? 'eesti'
         : 'vene';
@@ -88,9 +90,6 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   tabChange(index: number) {
     // Index starts at zero.
     switch (index) {
-      // case 0:
-      //   this.showTitleTab = true;
-      //   break;
       case 1:
         this.showSettingsTab = true;
         break;

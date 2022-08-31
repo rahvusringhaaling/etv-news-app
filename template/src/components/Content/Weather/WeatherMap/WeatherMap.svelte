@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Language } from '../../../../domain/Language';
+  import { Language } from '../../../../types/Language';
   import { language } from '../../../../stores/language';
   import { onDestroy } from 'svelte';
-  import type { IFilteredObservationItem } from '../../../../domain/IFilteredObservationItem';
+  import type { IFilteredObservationItem } from '../../../../types/IFilteredObservationItem';
   import { observationsMap } from '../../../../stores/weather';
   import Svg from './Svg.svelte';
 

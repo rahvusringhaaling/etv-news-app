@@ -5,16 +5,16 @@
   import Headline from './Headline.svelte';
   import { sleep } from '../../utils';
   import { current, previous } from '../../stores/current';
-  import { ScheduleType } from '../../domain/IScheduleItem';
+  import { ScheduleType } from '../../types/IScheduleItem';
   import Article from './Article/Article.svelte';
   import WeatherMap from './Weather/WeatherMap/WeatherMap.svelte';
   import WeatherForecast from './Weather/WeatherForecast.svelte';
   import WeatherForecastDay from './Weather/WeatherForecastDay.svelte';
-  import type { IForecastItem } from '../../domain/IForecastItem';
+  import type { IForecastItem } from '../../types/IForecastItem';
 
   interface IPage {
     type: ScheduleType;
-    forecast: IForecastItem;
+    forecast?: IForecastItem;
     element: HTMLElement | null;
   }
 
@@ -53,6 +53,8 @@
       const headline = pages.find(
         (item) => item.type === ScheduleType.Headline
       );
+      if (!headline) return;
+
       gsap.fromTo(
         headline.element,
         { left: 0, top: 0 },
@@ -61,7 +63,7 @@
     }
   });
 
-  function addPage(type: ScheduleType, forecast: IForecastItem) {
+  function addPage(type: ScheduleType, forecast?: IForecastItem) {
     pages = [
       ...pages.slice(pages.length - 1),
       {

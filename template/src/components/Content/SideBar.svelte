@@ -1,9 +1,9 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
-  import type { IArticle } from '../../domain/IArticle';
-  import type { IPortal } from '../../domain/IPortal';
-  import { ScheduleType } from '../../domain/IScheduleItem';
-  import type { ISideBarItem } from '../../domain/ISideBarItem';
+  import type { IArticle } from '../../types/IArticle';
+  import type { IPortal } from '../../types/IPortal';
+  import { ScheduleType } from '../../types/IScheduleItem';
+  import type { ISideBarItem } from '../../types/ISideBarItem';
   import { current } from '../../stores/current';
   import { feed } from '../../stores/feed';
   import { sleep } from '../../utils';

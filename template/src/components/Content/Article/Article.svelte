@@ -1,10 +1,10 @@
 <script lang="ts">
   import { onDestroy, tick } from 'svelte';
   import { current, previous } from '../../../stores/current';
-  import { ScheduleType } from '../../../domain/IScheduleItem';
+  import { ScheduleType } from '../../../types/IScheduleItem';
   import Text from './Text.svelte';
   import PageIndicator from './PageIndicator.svelte';
-  import type { IArticlePage } from '../../../domain/IArticlePage';
+  import type { IArticlePage } from '../../../types/IArticlePage';
 
   let indicator: PageIndicator;
   let pageCount = 1;

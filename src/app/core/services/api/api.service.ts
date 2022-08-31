@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { ipcRenderer } from 'electron';
-import { io } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
+import { ILayers } from '../../../../../app/src/types/ILayers';
+import { IServerData } from '../../../../../app/src/types/IServerData';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
   private ipcRenderer: typeof ipcRenderer;
-  private socket;
-  private serverData: object;
+  private socket: Socket;
+  private serverData: IServerData;
   private _port: number;
 
   get port() {
@@ -43,11 +45,11 @@ export class ApiService {
     });
   }
 
-  onTemplateHeartbeat(callback: Function) {
+  onTemplateHeartbeat(callback: any) {
     this.socket.on('server/template/heartbeat', callback)
   }
 
-  onTemplateSchedule(callback: Function) {
+  onTemplateSchedule(callback: any) {
     this.socket.on('server/schedule/post', callback)
   }
 
@@ -55,7 +57,7 @@ export class ApiService {
     this.socket.emit('client/schedule/get');
   }
 
-  onTemplateCurrent(callback: Function) {
+  onTemplateCurrent(callback: any) {
     this.socket.on('server/current/post', callback)
   }
 
@@ -71,8 +73,8 @@ export class ApiService {
     this.socket.emit('client/schedule/initialize');
   }
 
-  onInitTime(callback: Function) {
-    this.socket.on('server/init-time/post', callback)
+  onInitTime(callback: any) {
+    this.socket.on('server/init-time/post', callback);
   }
 
   requestInitTime() {
@@ -88,22 +90,22 @@ export class ApiService {
   }
 
   getLayers() {
-    return new Promise<object>(resolve => {
-      this.socket.emit('client/layers/get', (layers: object) => {
+    return new Promise<ILayers>(resolve => {
+      this.socket.emit('client/layers/get', (layers: ILayers) => {
         resolve(layers);
       })
     });
   }
 
   getServerData() {
-    return new Promise<object>(resolve => {
+    return new Promise<IServerData>(resolve => {
       if (this.serverData) {
         console.log('%c CACHED DATA: ', 'background: #222; color: #bada55', this.serverData);
         resolve(this.serverData);
         return;
       }
 
-      this.socket.emit('client/data/get', (serverData) => {
+      this.socket.emit('client/data/get', (serverData: IServerData) => {
         console.log('%c SERVER DATA: ', 'background: #222; color: #bada55', serverData);
         this.serverData = serverData;
         resolve(serverData);
@@ -111,15 +113,7 @@ export class ApiService {
     });
   }
 
-  saveData(data: any) {
+  saveData(data: IServerData | {}) {
     this.socket.emit('client/data/save', data);
-  }
-
-  getImage() {
-    return new Promise<string>(resolve => {
-      this.socket.emit('client/dialog/image', (uri: string) => {
-        resolve(uri);
-      });
-    });
   }
 }

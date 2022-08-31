@@ -8,6 +8,7 @@ import { DataService } from '../../../../core/services/data/data.service';
   styleUrls: ['./caspar.component.scss']
 })
 export class CasparComponent implements OnInit {
+  private dataID = 'channel';
   public port: number;
   public casparPath: string;
   public channel = 1;
@@ -18,12 +19,12 @@ export class CasparComponent implements OnInit {
     this.port = this.api.port;
     this.casparPath = await this.api.getCasparLocation();
     const data = await this.api.getServerData();
-    this.channel = data['channel'];
+    this.channel = data.channel;
 
     console.log('Layers:', await this.api.getLayers());
   }
 
   saveData() {
-    this.data.saveChannel(this.channel);
+    this.data.saveKey(this.dataID, this.channel);
   }
 }
