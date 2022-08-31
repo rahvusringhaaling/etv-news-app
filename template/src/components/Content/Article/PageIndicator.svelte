@@ -2,7 +2,7 @@
   import { onDestroy } from 'svelte';
   import { gsap } from 'gsap';
   import { current } from '../../../stores/current';
-  import { ScheduleType } from '../../../domain/IScheduleItem';
+  import { ScheduleType } from '../../../types/IScheduleItem';
 
   export let pageCount: number;
   const curves = [

@@ -1,13 +1,13 @@
 import { io, Socket } from 'socket.io-client';
 import { get } from 'svelte/store';
-import type { IFeed } from '../domain/IFeed';
-import type { IForecastItem } from '../domain/IForecastItem';
-import type { IPortal } from '../domain/IPortal';
+import type { IFeed } from '../types/IFeed';
+import type { IForecastItem } from '../types/IForecastItem';
+import type { IPortal } from '../types/IPortal';
 import { index } from '../stores/current';
 import { schedule } from '../stores/schedule';
-import type { IObservationsCombined } from 'src/domain/IObservationsCombined';
-import type { Language } from 'src/domain/Language';
-import type { ISettings } from 'src/domain/ISettings';
+import type { IObservationsCombined } from 'src/types/IObservationsCombined';
+import type { Language } from 'src/types/Language';
+import type { ISettings } from 'src/types/ISettings';
 
 export class Api {
   private socket: Socket;

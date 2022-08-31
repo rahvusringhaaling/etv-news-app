@@ -1,12 +1,12 @@
 import { XMLParser } from 'fast-xml-parser';
 import fetch from 'node-fetch';
-import { IForecastItem } from './domain/IForecastItem';
-import { IObservationsCombined } from './domain/IObservationsCombined';
-import { IObservationsMap } from './domain/IObservationsMap';
-import { IObservationsTimestamp } from './domain/IObservationsTimestamp';
-import { IWeatherForecast } from './domain/IWeatherForecast';
-import { IWeatherObservations } from './domain/IWeatherObservations';
-import { Language } from './domain/Language';
+import { IForecastItem } from './types/IForecastItem';
+import { IObservationsCombined } from './types/IObservationsCombined';
+import { IObservationsMap } from './types/IObservationsMap';
+import { IObservationsTimestamp } from './types/IObservationsTimestamp';
+import { IWeatherForecast } from './types/IWeatherForecast';
+import { IWeatherObservations } from './types/IWeatherObservations';
+import { Language } from './types/Language';
 import { data } from './server';
 
 const locationsFallback = new Map([

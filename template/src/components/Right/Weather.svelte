@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import type { IObservationItem } from '../../domain/IObservationItem';
+  import type { IObservationItem } from '../../types/IObservationItem';
   import { gsap } from 'gsap';
 
   export let observation: IObservationItem;

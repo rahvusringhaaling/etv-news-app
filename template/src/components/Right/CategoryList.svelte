@@ -4,7 +4,7 @@
   import { current } from '../../stores/current';
   import { portals } from '../../stores/portals';
   import { get } from 'svelte/store';
-  import type { ICategoryItem } from '../../domain/ICategoryItem';
+  import type { ICategoryItem } from '../../types/ICategoryItem';
 
   let categories: ICategoryItem[] = [];
   let activeIndex = 0;

@@ -1,26 +1,37 @@
 <script lang="ts">
   import { onDestroy, tick } from 'svelte';
   import { gsap } from 'gsap';
-  import { Language } from '../../domain/Language';
+  import { Language } from '../../types/Language';
   import { language } from '../../stores/language';
   import { current } from '../../stores/current';
   import CategoryList from './CategoryList.svelte';
   import QrCode from './QrCode.svelte';
   import Weather from './Weather.svelte';
   import { observations } from '../../stores/weather';
-  import type { IObservationItem } from '../../domain/IObservationItem';
-  import { ScheduleType } from '../../domain/IScheduleItem';
-
-  let container: HTMLDivElement;
-  let pages: any[] = [];
-  let interval: NodeJS.Timeout;
-  let observationIndex = 0;
-  let filtered: IObservationItem[] = [];
+  import type { IObservationItem } from '../../types/IObservationItem';
+  import { ScheduleType } from '../../types/IScheduleItem';
 
   enum ComponentType {
     QrCode,
     Weather,
   }
+
+  interface IPage {
+    left: number;
+    component: any;
+    url?: string;
+    text?: any;
+    primaryColor: string;
+    observation: IObservationItem;
+    type: ComponentType;
+  }
+
+  let container: HTMLDivElement;
+  let pages: IPage[] = [];
+  let interval: NodeJS.Timeout;
+  let observationIndex = 0;
+  let filtered: IObservationItem[] = [];
+
   let lastText = '';
   let lastName = '';
   let lastItemIndex = 0;

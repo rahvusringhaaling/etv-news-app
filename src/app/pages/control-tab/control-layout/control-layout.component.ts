@@ -1,12 +1,13 @@
 import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { ApiService } from '../../../core/services/api/api.service';
 import { DataService } from '../../../core/services/data/data.service';
-import { ColDef, GridOptions, GridReadyEvent, RowNode } from 'ag-grid-community';
+import { ColDef, GridApi, GridOptions, GridReadyEvent, RowNode } from 'ag-grid-community';
 import { SelectEditorComponent } from '../../../shared/components/select-editor/select-editor.component';
 import { AG_GRID_LOCALE_EE } from '../../../../assets/locale.ee';
 import { Subject } from 'rxjs';
 import { throttleTime } from 'rxjs/operators';
 import { timeSince } from '../../../core/header/header.component';
+import { IScheduleItem } from '../../../../../app/src/types/IScheduleItem';
 
 @Component({
   selector: 'app-control-layout',
@@ -23,7 +24,7 @@ export class ControlLayoutComponent implements OnInit {
   private nextSubject = new Subject<void>();
   private importSubject = new Subject<void>();
   private scheduleLength = 0;
-  private gridApi;
+  private gridApi: GridApi;
   gridOptions: GridOptions = {
     components: {
       selectEditor: SelectEditorComponent
@@ -60,7 +61,7 @@ export class ControlLayoutComponent implements OnInit {
     this.data.save(data);
 
     this.api.requestTemplateSchedule();
-    this.api.onTemplateSchedule((schedule: any[]) => {
+    this.api.onTemplateSchedule((schedule: IScheduleItem[]) => {
       this.scheduleLength = schedule.length;
       this.rowData = schedule.map(item => ({
         portal: item.portal.name,
@@ -107,7 +108,7 @@ export class ControlLayoutComponent implements OnInit {
     this.resizeGridHeight();
   }
 
-  onGridReady(params) {
+  onGridReady(params: GridReadyEvent) {
     this.gridApi = params.api;
   }
 

@@ -2,10 +2,10 @@
   import { onMount, tick } from 'svelte';
   import { createEventDispatcher } from 'svelte';
   import { gsap } from 'gsap';
-  import { Language } from '../../../domain/Language';
+  import { Language } from '../../../types/Language';
   import { language } from '../../../stores/language';
-  import type { IArticleNodes } from '../../../domain/IArticleNodes';
-  import type { IArticle } from '../../../domain/IArticle';
+  import type { IArticleNodes } from '../../../types/IArticleNodes';
+  import type { IArticle } from '../../../types/IArticle';
 
   let lead = '';
   let body = '';

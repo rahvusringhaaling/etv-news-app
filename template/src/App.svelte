@@ -10,13 +10,14 @@
   import { current, index } from './stores/current';
   import ScheduleBuilder from './components/Content/Builder/ScheduleBuilder.svelte';
   import { getWeekDay, hexToRgba, sleep } from './utils';
-  import { ScheduleType, type IScheduleItem } from './domain/IScheduleItem';
+  import { ScheduleType, type IScheduleItem } from './types/IScheduleItem';
   import { forecast, observations, observationsMap } from './stores/weather';
   import { language } from './stores/language';
-  import { Language } from './domain/Language';
+  import { Language } from './types/Language';
+  import type { IArticlePortalWrapper } from './types/IArticlePortalWrapper';
 
   let fontFamily = 'AvenirNextLTPro';
-  let articles: any[] = [];
+  let articles: IArticlePortalWrapper[] = [];
   let rawSchedule: IScheduleItem[][];
   let api = new Api(
     () => next(),

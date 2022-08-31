@@ -1,7 +1,7 @@
 <script lang="ts">
   import { current } from '../../../stores/current';
   import { language } from '../../../stores/language';
-  import type { IForecastItem } from '../../../domain/IForecastItem';
+  import type { IForecastItem } from '../../../types/IForecastItem';
   import { getWeekDay } from '../../../utils';
 
   export let item: IForecastItem | undefined;

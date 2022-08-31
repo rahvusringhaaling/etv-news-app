@@ -1,5 +1,5 @@
 <div id="input-container">
   <input type="checkbox"
-    (click)="checkedHandler($event)"
-    [checked]="params.value" />
+    [(ngModel)]="showObservations"
+    (ngModelChange)="checkedHandler()" />
 </div>

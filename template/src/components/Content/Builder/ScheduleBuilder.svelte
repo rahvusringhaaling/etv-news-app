@@ -4,12 +4,21 @@
   import {
     ScheduleType,
     type IScheduleItem,
-  } from '../../../domain/IScheduleItem';
+  } from '../../../types/IScheduleItem';
+  import type { IArticleNodes } from 'src/types/IArticleNodes';
+  import type { IArticlePortalWrapper } from 'src/types/IArticlePortalWrapper';
 
-  let pages: any[] = [];
+  interface IPage {
+    component: any;
+    leadArticleNodes?: IArticleNodes;
+    bodyArticleNodes?: IArticleNodes;
+  }
+
+  let pages: IPage[] = [];
   export let output: IScheduleItem[];
-  export let input: any;
+  export let input: IArticlePortalWrapper;
   const { portal, article } = input;
+  let x;
 
   onMount(() => {
     pages = [];

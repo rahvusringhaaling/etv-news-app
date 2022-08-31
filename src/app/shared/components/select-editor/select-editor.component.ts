@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ICellEditorAngularComp } from 'ag-grid-angular';
+import { ICellEditorParams } from 'ag-grid-community';
 
 @Component({
   selector: 'app-select-test',
@@ -7,18 +8,9 @@ import { ICellEditorAngularComp } from 'ag-grid-angular';
   styleUrls: ['./select-editor.component.scss']
 })
 export class SelectEditorComponent implements OnInit, ICellEditorAngularComp {
-  private params: any;
-  value: string;
-  options = [];
-
-  // public data = [
-  //   { value: 'Nimetiiter', selected: false, element: null },
-  //   { value: 'Lai', selected: false, element: null },
-  //   { value: 'Bänd', selected: false, element: null },
-  //   { value: 'Üleval', selected: false, element: null },
-  //   { value: 'Kitsas', selected: false, element: null },
-  //   { value: 'Arhiiv', selected: false, element: null }
-  // ];
+  private params: ICellEditorParams;
+  public value = '';
+  public options = [];
 
   constructor() { }
 
@@ -27,8 +19,8 @@ export class SelectEditorComponent implements OnInit, ICellEditorAngularComp {
 
   agInit(params: any): void {
     this.params = params;
-    this.value = this.params.value;
-    this.options = this.params.options;
+    this.value = params.value;
+    this.options = params.options;
   }
 
   selectOption(option: string) {

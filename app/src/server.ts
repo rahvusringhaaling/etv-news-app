@@ -1,30 +1,28 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import * as http from 'http';
-import * as express from 'express';
 import * as net from 'net';
+import express, { Express } from 'express';
 import { Server } from 'socket.io';
 import { CasparCG, Options } from 'casparcg-connection';
 import { getPortals, getFeeds } from './news'
 import { getForecast, getObservationsCombined } from './weather';
-import { IServerData } from './domain/IServerData';
-import { Language } from './domain/Language';
-import { ISettings } from './domain/ISettings';
+import { IServerData } from './types/IServerData';
+import { Language } from './types/Language';
+import { ISettings } from './types/ISettings';
+import { ILayers } from './types/ILayers';
+import { IScheduleItem } from './types/IScheduleItem';
 
-const webApp: any = express();
+const webApp: Express = express();
 const server = http.createServer(webApp);
 webApp.use(express.static(path.join(__dirname, '../../template/dist')));
-
-interface Layers {
-  [key: string]: number;
-}
 
 export let data: IServerData = {
   channel: 1,
   language: Language.Estonian
 }
 
-let layers: Layers = {
+let layers: ILayers = {
   template: 100,
   templateKeyer: 99
 }
@@ -58,7 +56,7 @@ const io = new Server(server, {
   maxHttpBufferSize: 1e8
 });
 
-let casparInfo;
+let casparInfo: any;
 let templateID: string;
 const connection: CasparCG = new CasparCG({
   autoConnect: true,
@@ -111,8 +109,8 @@ io.on('connection', (socket) => {
     const settings: ISettings = {
       language: data.language,
       showForecast: data.weatherTable?.showForecast ?? false,
-      showObservations: data.weatherTable?.showObservations ?? false
-    }
+      showObservations: data.weatherTable?.showObservations ?? false,
+    };
     callback(settings);
   });
 
@@ -131,35 +129,44 @@ io.on('connection', (socket) => {
     callback(location);
   });
 
-  socket.on('template/portals/get', async (language: Language, callback: Function) => {
-    callback(getPortals(language));
-  });
+  socket.on(
+    'template/portals/get',
+    async (language: Language, callback: Function) => {
+      callback(getPortals(language));
+    }
+  );
 
   socket.on('template/tv-feed/get', async (callback: Function) => {
     callback(await getFeeds());
   });
 
-  socket.on('template/weather-observations-combined/get', async (callback: Function) => {
-    try {
-      callback(await getObservationsCombined());
-    } catch (error) {
-      callback(null);
+  socket.on(
+    'template/weather-observations-combined/get',
+    async (callback: Function) => {
+      try {
+        callback(await getObservationsCombined());
+      } catch (error) {
+        callback(null);
+      }
     }
-  });
+  );
 
-  socket.on('template/weather-forecast/get', async (language: Language, callback: Function) => {
-    try {
-      callback(await getForecast(language));
-    } catch (error) {
-      callback(null);
+  socket.on(
+    'template/weather-forecast/get',
+    async (language: Language, callback: Function) => {
+      try {
+        callback(await getForecast(language));
+      } catch (error) {
+        callback(null);
+      }
     }
-  });
+  );
 
   socket.on('client/schedule/get', () => {
     io.to(templateID).emit('server/schedule/get');
   });
 
-  socket.on('template/schedule/post', schedule => {
+  socket.on('template/schedule/post', (schedule: IScheduleItem[]) => {
     socket.broadcast.emit('server/schedule/post', schedule);
   });
 
@@ -187,7 +194,7 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('server/init-time/post', initTime);
   });
 
-  socket.on('client/data/save', (newData) => {
+  socket.on('client/data/save', (newData: IServerData) => {
     data = newData;
     fs.writeFile(DATA_FILE_NAME, JSON.stringify(newData, null, 4), (error) => {
       if (error) return logError('Error when saving file:\n' + error);

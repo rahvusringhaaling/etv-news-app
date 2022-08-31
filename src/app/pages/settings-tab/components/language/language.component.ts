@@ -8,16 +8,17 @@ import { DataService } from '../../../../core/services/data/data.service';
   styleUrls: ['./language.component.scss']
 })
 export class LanguageComponent implements OnInit {
+  private dataID = 'language';
   public language = 'et';
 
   constructor(private data: DataService, private api: ApiService) { }
 
   async ngOnInit() {
     const data = await this.api.getServerData();
-    this.language = data['language'];
+    this.language = data.language;
   }
 
   saveData() {
-    this.data.saveLanguage(this.language);
+    this.data.saveKey(this.dataID, this.language);
   }
 }
