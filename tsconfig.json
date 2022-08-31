@@ -9,6 +9,11 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowJs": true,
+    "strict": true,
+    "alwaysStrict": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
     "target": "es2020",
     "typeRoots": [
       "node_modules/@types"
