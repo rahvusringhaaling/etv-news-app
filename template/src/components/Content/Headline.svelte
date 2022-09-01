@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onDestroy, onMount } from 'svelte';
+  import { onDestroy } from 'svelte';
   import { gsap } from 'gsap';
   import { Language } from '../../types/Language';
   import { language } from '../../stores/language';
@@ -14,7 +14,7 @@
   let header = '';
   let author = '';
 
-  onMount(() => {
+  export function animateIn() {
     gsap.fromTo(
       caption,
       { opacity: 0 },
@@ -25,7 +25,7 @@
       { bottom: -150 },
       { bottom: 0, duration: 0.75, delay: 0.4 }
     );
-  });
+  }
 
   const unsubscribeCurrent = current.subscribe((item) => {
     if (item && item.type === ScheduleType.Headline) {
@@ -61,7 +61,7 @@
   style="--primary-color: {primaryColor}; --background-color: {backgroundColor};"
 >
   <div class="container">
-    <img {src} on:load alt="" />
+    <img {src} alt="" />
     <div class="bottom-container" bind:this={container}>
       <div class="caption" bind:this={caption}>{author}</div>
       <div class="header">{header}</div>

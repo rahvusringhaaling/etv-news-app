@@ -4,7 +4,7 @@
   import SideBar from './SideBar.svelte';
   import Headline from './Headline.svelte';
   import { sleep } from '../../utils';
-  import { current, previous } from '../../stores/current';
+  import { current, next, previous } from '../../stores/current';
   import { ScheduleType } from '../../types/IScheduleItem';
   import Article from './Article/Article.svelte';
   import WeatherMap from './Weather/WeatherMap/WeatherMap.svelte';
@@ -15,7 +15,8 @@
   interface IPage {
     type: ScheduleType;
     forecast?: IForecastItem;
-    element: HTMLElement | null;
+    container: HTMLElement | null;
+    component: Headline | null;
   }
 
   let bar: HTMLElement;
@@ -25,21 +26,33 @@
 
   const unsubscribeCurrent = current.subscribe(async (item) => {
     if (!item) return;
-    addPage(item.type, item.forecast);
-
-    await tick();
-    const lastPage = pages[pages.length - 1];
     if (item.type !== ScheduleType.Headline) {
-      gsap.fromTo(
-        lastPage.element,
-        { top: 912, left: 0 },
-        { top: 0, left: 0, duration: 1 }
-      );
-    } else {
-      gsap.set(lastPage.element, { top: 912 });
+      addPage(item.type, item.forecast);
     }
 
-    if (item.type === ScheduleType.Text) {
+    await tick();
+    if ($next && $next.type === ScheduleType.Headline) {
+      addPage($next.type, $next.forecast, true);
+    }
+    await tick();
+
+    const page = pages
+      .slice()
+      .reverse()
+      .find((page) => page.type === item.type)!;
+    gsap.fromTo(
+      page.container,
+      { top: 912, left: 0 },
+      { top: 0, left: 0, duration: 1 }
+    );
+
+    if (item.type === ScheduleType.Headline) {
+      page.component!.animateIn();
+      await sleep(1000);
+
+      primaryColor = $current.portal.primaryColor;
+      backgroundColor = $current.portal.backgroundColor;
+    } else if (item.type === ScheduleType.Text) {
       gsap.fromTo(
         bar,
         { width: 530 },
@@ -56,36 +69,27 @@
       if (!headline) return;
 
       gsap.fromTo(
-        headline.element,
+        headline.container,
         { left: 0, top: 0 },
         { left: -1485, top: 0, duration: 0.75 }
       );
     }
   });
 
-  function addPage(type: ScheduleType, forecast?: IForecastItem) {
+  function addPage(
+    type: ScheduleType,
+    forecast?: IForecastItem,
+    isHeadline: boolean = false
+  ) {
     pages = [
-      ...pages.slice(pages.length - 1),
+      ...(isHeadline ? pages : pages.slice(pages.length - 1)),
       {
-        element: null,
+        container: null,
+        component: null,
         type,
         forecast,
       },
     ];
-  }
-
-  async function onHeadlineLoad() {
-    const lastPage = pages[pages.length - 1];
-    gsap.fromTo(
-      lastPage.element,
-      { top: 912, left: 0 },
-      { top: 0, left: 0, duration: 1 }
-    );
-
-    await sleep(1000);
-
-    primaryColor = $current.portal.primaryColor;
-    backgroundColor = $current.portal.backgroundColor;
   }
 
   onDestroy(() => {
@@ -105,11 +109,7 @@
     </div>
 
     {#each pages as item, i (item)}
-      <div
-        class="overlay"
-        class:visible={i === pages.length - 1}
-        bind:this={item.element}
-      >
+      <div class="overlay" bind:this={item.container}>
         {#if item.type === ScheduleType.WeatherObservation}
           <WeatherMap />
         {:else if item.type === ScheduleType.WeatherForecast}
@@ -117,7 +117,7 @@
         {:else if item.type === ScheduleType.WeatherForecastDay}
           <WeatherForecastDay item={item.forecast} />
         {:else if item.type === ScheduleType.Headline}
-          <Headline on:load={onHeadlineLoad} />
+          <Headline bind:this={item.component} />
         {/if}
       </div>
     {/each}
@@ -152,9 +152,5 @@
   .overlay {
     position: absolute;
     top: 912px;
-  }
-
-  .visible {
-    top: 0;
   }
 </style>
