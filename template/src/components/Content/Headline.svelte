@@ -13,8 +13,10 @@
   let src = '';
   let header = '';
   let author = '';
+  console.time('headline');
 
-  onMount(() => {
+  export function animateIn() {
+    console.timeEnd('headline');
     gsap.fromTo(
       caption,
       { opacity: 0 },
@@ -25,7 +27,7 @@
       { bottom: -150 },
       { bottom: 0, duration: 0.75, delay: 0.4 }
     );
-  });
+  }
 
   const unsubscribeCurrent = current.subscribe((item) => {
     if (item && item.type === ScheduleType.Headline) {
