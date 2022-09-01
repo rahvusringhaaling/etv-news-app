@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onDestroy, onMount } from 'svelte';
+  import { onDestroy } from 'svelte';
   import { gsap } from 'gsap';
   import { Language } from '../../types/Language';
   import { language } from '../../stores/language';
@@ -13,10 +13,8 @@
   let src = '';
   let header = '';
   let author = '';
-  console.time('headline');
 
   export function animateIn() {
-    console.timeEnd('headline');
     gsap.fromTo(
       caption,
       { opacity: 0 },
@@ -63,7 +61,7 @@
   style="--primary-color: {primaryColor}; --background-color: {backgroundColor};"
 >
   <div class="container">
-    <img {src} on:load alt="" />
+    <img {src} alt="" />
     <div class="bottom-container" bind:this={container}>
       <div class="caption" bind:this={caption}>{author}</div>
       <div class="header">{header}</div>
