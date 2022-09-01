@@ -47,6 +47,7 @@
 
   function setActive(index: number) {
     const newItems = $feed[$current.portal.portal];
+    if (!newItems) return;
 
     if (index === 0) {
       setItems(newItems);

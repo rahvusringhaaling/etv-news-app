@@ -9,7 +9,7 @@
   let caption: HTMLElement;
   let container: HTMLElement;
   let primaryColor = '';
-  let backgroundColor = '';
+  let textColor = '';
   let src = '';
   let header = '';
   let author = '';
@@ -37,7 +37,7 @@
         : '';
 
       primaryColor = item.portal.primaryColor;
-      backgroundColor = item.portal.backgroundColor;
+      textColor = item.portal.textColor;
     }
   });
 
@@ -57,9 +57,7 @@
   });
 </script>
 
-<main
-  style="--primary-color: {primaryColor}; --background-color: {backgroundColor};"
->
+<main style="--primary-color: {primaryColor}; --text-color: {textColor};">
   <div class="container">
     <img {src} alt="" />
     <div class="bottom-container" bind:this={container}>

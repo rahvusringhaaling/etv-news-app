@@ -5,7 +5,7 @@
   import Headline from './Headline.svelte';
   import { sleep } from '../../utils';
   import { current, next, previous } from '../../stores/current';
-  import { ScheduleType } from '../../types/IScheduleItem';
+  import { ScheduleType, type IScheduleItem } from '../../types/IScheduleItem';
   import Article from './Article/Article.svelte';
   import WeatherMap from './Weather/WeatherMap/WeatherMap.svelte';
   import WeatherForecast from './Weather/WeatherForecast.svelte';
@@ -24,9 +24,19 @@
   let backgroundColor = '';
   let pages: IPage[] = [];
 
+  function getPage(item: IScheduleItem) {
+    return pages
+      .slice()
+      .reverse()
+      .find((page) => page.type === item.type);
+  }
+
   const unsubscribeCurrent = current.subscribe(async (item) => {
     if (!item) return;
-    if (item.type !== ScheduleType.Headline) {
+    if (
+      item.type !== ScheduleType.Headline ||
+      (item.type === ScheduleType.Headline && !getPage(item))
+    ) {
       addPage(item.type, item.forecast);
     }
 
@@ -36,22 +46,21 @@
     }
     await tick();
 
-    const page = pages
-      .slice()
-      .reverse()
-      .find((page) => page.type === item.type)!;
-    gsap.fromTo(
-      page.container,
-      { top: 912, left: 0 },
-      { top: 0, left: 0, duration: 1 }
-    );
+    const page = getPage(item)!;
+    if (page) {
+      gsap.fromTo(
+        page.container,
+        { top: 912, left: 0 },
+        { top: 0, left: 0, duration: 1 }
+      );
+    }
 
-    if (item.type === ScheduleType.Headline) {
+    if (page && item.type === ScheduleType.Headline) {
       page.component!.animateIn();
       await sleep(1000);
 
-      primaryColor = $current.portal.primaryColor;
-      backgroundColor = $current.portal.backgroundColor;
+      primaryColor = item.portal.primaryColor;
+      backgroundColor = item.portal.backgroundColor;
     } else if (item.type === ScheduleType.Text) {
       gsap.fromTo(
         bar,

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte';
   import Header from './components/Header.svelte';
-  import ArticleContainer from './components/Content/ArticleContainer.svelte';
+  import ArticleContainer from './components/Content/ContentContainer.svelte';
   import Right from './components/Right/RightContainer.svelte';
   import { Api } from './services/Api';
   import { portals } from './stores/portals';
@@ -40,7 +40,7 @@
       value === Language.Estonian ? 'AvenirNextLTPro' : 'AvenirNextCyr';
   }
 
-  async function initData() {
+  async function initData(): Promise<boolean> {
     const observationsCombined = await api.getWeatherObservations();
     if (observationsCombined) {
       observations.set(observationsCombined.observations);
@@ -54,6 +54,8 @@
     }));
     portals.set(newPortals);
     feed.set(await api.getTVFeed());
+
+    return !!observationsCombined;
   }
 
   async function initObservations() {
@@ -70,11 +72,11 @@
     ]);
   }
 
-  async function initForecast(isFirst: boolean) {
+  async function initForecast(isFirst: boolean): Promise<boolean> {
     const forecastData = await api.getWeatherForecast($language);
-    if (forecastData) {
-      forecast.set(forecastData);
-    }
+    if (!forecastData) return false;
+
+    forecast.set(forecastData);
 
     const weather = $portals.find((portal) => portal.portal === 'ilm');
     const weatherSchedule: IScheduleItem[] = [
@@ -106,6 +108,7 @@
     } else {
       $schedule.push(...weatherSchedule);
     }
+    return true;
   }
 
   async function initNews(isFirst: boolean) {
@@ -145,17 +148,25 @@
     const { language, showObservations, showForecast } =
       await api.getSettings();
     await setLanguage(language);
-    await initData();
+    const observationsSuccess = await initData();
 
-    if (showObservations) {
+    if (showObservations && observationsSuccess) {
       await initObservations();
       api.sendSchedule();
     }
+    let forecastSuccess = true;
     if (showForecast) {
-      await initForecast(!showObservations);
+      forecastSuccess = await initForecast(
+        !showObservations || !observationsSuccess
+      );
       api.sendSchedule();
     }
-    await initNews(!showObservations && !showForecast);
+    const isNewsFirst =
+      (!showObservations && !showForecast) ||
+      (!observationsSuccess && !forecastSuccess) ||
+      (!showObservations && !forecastSuccess) ||
+      (!observationsSuccess && !showForecast);
+    await initNews(isNewsFirst);
     api.sendSchedule();
 
     initTime = Date.now();

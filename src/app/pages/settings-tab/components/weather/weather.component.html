@@ -6,12 +6,12 @@
 
   <div class="options-container">
     <div class="option">
-      <div>Ilmaprognoos:</div>
+      <div>Ilmateade:</div>
       <div class="input-container">
         <mat-checkbox [(ngModel)]="showObservations"
           (ngModelChange)="saveData()"
           color="accent">
-          Näita ilmaprognoosi
+          Näita ilmavaatlust
         </mat-checkbox>
 
         <label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label large-textfield">
@@ -25,12 +25,12 @@
       </div>
     </div>
     <div class="option">
-      <div>Ilmateade:</div>
+      <div>Ilmaprognoos:</div>
       <div class="input-container">
         <mat-checkbox [(ngModel)]="showForecast"
           (ngModelChange)="saveData()"
           color="accent">
-          Näita ilmavaatlust
+          Näita ilmaprognoosi
         </mat-checkbox>
 
         <label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label large-textfield">

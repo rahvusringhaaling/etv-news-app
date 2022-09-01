@@ -11,17 +11,17 @@ import { data } from './server';
 
 const locationsFallback = new Map([
   ['Tallinn-Harku', [655, 172]],
-  ['Jõhvi', [1164, 180]],
-  ['Jõgeva', [1085, 390]],
+  // ['Jõhvi', [1164, 180]],
+  // ['Jõgeva', [1085, 390]],
   ['Tartu-Tõravere', [999, 528]],
-  ['Võru', [1180, 681]],
+  // ['Võru', [1180, 681]],
   ['Valga', [852, 699]],
-  ['Türi', [787, 360]],
+  // ['Türi', [787, 360]],
   ['Pärnu-Sauga', [634, 494]],
-  ['Sõrve', [200, 649]],
-  ['Ristna', [201, 331]],
-  ['Lääne-Nigula', [506, 315]],
-  ['Väike-Maarja', [944, 266]],
+  // ['Sõrve', [200, 649]],
+  // ['Ristna', [201, 331]],
+  // ['Lääne-Nigula', [506, 315]],
+  // ['Väike-Maarja', [944, 266]],
 ]);
 
 function getObservationsURL(): string {
