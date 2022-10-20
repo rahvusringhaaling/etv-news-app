@@ -2,7 +2,7 @@
 
 ![App icon](screenshot.png)
 
-## Introduction
+## Getting Started
 
 Project runs with:
 
@@ -10,8 +10,6 @@ Project runs with:
 - Angular v14.2.0
 - Electron v16.0.0
 - Electron Builder v22.13.1
-
-## Getting Started
 
 _Install dependencies with npm (used by Electron renderer process):_
 
