@@ -1,6 +1,10 @@
 # ERR News App for Estonian Television
 
-![App icon](screenshot.png)
+![Template](screenshot-1.png)
+
+![GUI](screenshot-2.png)
+
+![GUI 2](screenshot-3.png)
 
 ## Getting Started
 
